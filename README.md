@@ -1,6 +1,6 @@
 # LITERAR.io
 
-Bem-vindo ao **Literar.io** - uma rede social para amantes de livros! Este projeto faz parte da disciplina **Laboratório de Programação II** e está sendo desenvolvido por nós, alunos, com o objetivo de criar uma plataforma onde os usuários possam compartilhar suas leituras, resenhas e interagir com outros leitores.
+Bem-vindo ao **Literar.io** - uma rede social para amantes de livros! Este projeto faz parte da disciplina **Laboratório de Programação II** e está sendo desenvolvido por com o objetivo de criar uma plataforma onde os usuários possam compartilhar suas leituras, resenhas e interagir com outros leitores.
 
 ## Tecnologias Utilizadas
 
