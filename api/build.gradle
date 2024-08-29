@@ -6,10 +6,11 @@ plugins {
 
 group = 'com.literario'
 version = '0.0.1-SNAPSHOT'
+javaVersion = project.hasProperty('javaVersion') ? project.getProperty('javaVersion') : '22'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(22)
+		languageVersion = JavaLanguageVersion.of(javaVersion)
 	}
 }
 
