@@ -20,7 +20,7 @@ public interface ReviewRepo extends JpaRepository<Review,String> {
     @Query("SELECT re.id, re.created_at, us.username, bo.title, re.rating, re.review " +
     "FROM Review re " +
     "LEFT JOIN Users us ON re.user_id = us.id " +
-    "LEFT JOIN Books bo ON bo.id = re.book_id " +
+    "LEFT JOIN Book bo ON bo.id = re.book_id " +
     "WHERE re.book_id = :book_id")
     List<Review> findReviewsByBook(@Param("book_id") String book_id);
 
