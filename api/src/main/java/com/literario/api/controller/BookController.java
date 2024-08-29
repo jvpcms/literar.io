@@ -6,14 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.literario.api.repo.BookRepo;
-import com.literario.api.repo.ReviewRepo;
 
 @RestController
 @RequestMapping("/books")
 public class BookController {
 
     private BookRepo bookRepo;
-    private ReviewRepo reviewRepo;
 
     public BookController(BookRepo bookRepo) {
         this.bookRepo = bookRepo;
@@ -27,11 +25,6 @@ public class BookController {
     @GetMapping("/{year}")
     public String getBooksByYear(@PathVariable Integer year) {
         return bookRepo.findBooksByYear(year).toString();
-    }
-
-    @GetMapping("/{id}/reviews")
-    public String getReviewsByBook(@PathVariable String id) {
-        return reviewRepo.findReviewsByBook(id).toString();
     }
 
 }
