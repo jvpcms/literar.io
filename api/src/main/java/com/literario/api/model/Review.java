@@ -19,4 +19,15 @@ public class Review {
     private String rating;	
     private String review;
 
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id='" + id + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", username='" + username + '\'' +
+                ", title='" + title + '\'' +
+                ", rating='" + rating + '\'' +
+                ", review='" + review + '\'' +
+                '}';
+    }
 }

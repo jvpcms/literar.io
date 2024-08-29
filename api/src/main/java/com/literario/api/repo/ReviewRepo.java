@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.literario.api.model.Review;
 import com.literario.api.model.Users;
-import com.literario.api.model.Books;
+import com.literario.api.model.Book;
 
 import jakarta.transaction.Transactional;
 
@@ -27,7 +27,7 @@ public interface ReviewRepo extends JpaRepository<Review,String> {
     @Query("SELECT re.id, re.created_at, us.username, bo.title, re.rating, re.review " +
     "FROM Review re " +
     "LEFT JOIN Users us ON re.user_id = us.id " +
-    "LEFT JOIN Books bo ON re.book_id = bo.id " +
+    "LEFT JOIN Book bo ON re.book_id = bo.id " +
     "WHERE re.user_id = :user_id")
     List<Review> findReviewsByUser(@Param("user_id") String user_id);
 
