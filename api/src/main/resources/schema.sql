@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS public.books (
     id UUID NOT NULL PRIMARY KEY DEFAULT gen_random_uuid(),
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     title VARCHAR(255) NOT NULL,
-    syonpsis TEXT NOT NULL,
+    synopsis TEXT NOT NULL,
     author_id UUID NOT NULL,
     CONSTRAINT fk_author FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE
 );
