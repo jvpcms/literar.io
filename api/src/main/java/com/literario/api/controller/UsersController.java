@@ -22,7 +22,11 @@ public class UsersController {
 
     @GetMapping("/{id}/reviews")
     public String getReviewsByUser(@PathVariable("id") UUID userId) {
+        try {
         return reviewRepo.findReviewsByUser(userId).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
+        }
     }
-    
 }

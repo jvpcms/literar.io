@@ -3,9 +3,12 @@ package com.literario.api.model;
 import lombok.Data;
 import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -13,11 +16,12 @@ import java.util.UUID;
 public class Review {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String createdAt;
+    private LocalDateTime createdAt;
     private UUID userId;
     private UUID bookId;
-    private String rating;	
+    private float rating;	
     private String review;
     private String title;
     private String username;
@@ -34,5 +38,21 @@ public class Review {
                 ", title='" + title + '\'' +
                 ", username='" + username + '\'' +
                 '}';
+    }
+
+    public String getReview() {
+        return review;
+    }
+    
+    public UUID getBookId() {
+        return bookId;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public float getRate() {
+        return rating;
     }
 }

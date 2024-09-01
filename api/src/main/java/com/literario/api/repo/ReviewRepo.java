@@ -25,12 +25,12 @@ public interface ReviewRepo extends JpaRepository<Review,UUID> {
     @Transactional
     @Modifying
     @Query("INSERT INTO Review (userId, bookId, rating, review) VALUES (:userId, :bookId, :rating, :review)")
-    void insertReview(@Param("userId") UUID userId, @Param("bookId") UUID bookId, @Param("rating") String rating, @Param("review") String review);
+    void insertReview(@Param("userId") UUID userId, @Param("bookId") UUID bookId, @Param("rating") float rating, @Param("review") String review);
 
     @Transactional
     @Modifying
     @Query("UPDATE Review SET rating = :rating WHERE userId = :userId AND bookId = :bookId")
-    void updateReview(@Param("userId") UUID userId, @Param("bookId") UUID bookId, @Param("rating") String rating);
+    void updateReview(@Param("userId") UUID userId, @Param("bookId") UUID bookId, @Param("rating") float rating);
 
     @Transactional
     @Modifying

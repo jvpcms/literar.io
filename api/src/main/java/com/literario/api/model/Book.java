@@ -3,6 +3,8 @@ package com.literario.api.model;
 import lombok.Data;
 import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.util.UUID; // Add this import statement
@@ -12,7 +14,8 @@ import java.util.UUID; // Add this import statement
 @Table(name = "books")
 public class Book {
 
-    @Id 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO) 
     private UUID id;
     private String title;
     private String author;

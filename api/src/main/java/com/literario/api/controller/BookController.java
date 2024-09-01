@@ -46,6 +46,4 @@ public class BookController {
             return "Error: " + e.getMessage();
         }
     }
-    
-
 }

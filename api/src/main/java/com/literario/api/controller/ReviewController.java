@@ -10,26 +10,33 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.literario.api.model.Review; // Add this import statement
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
     
-    // private ReviewRepo reviewRepo;
+    private ReviewRepo reviewRepo;
 
-    // public ReviewController(ReviewRepo reviewRepo) {
-    //     this.reviewRepo = reviewRepo;
-    // }
+    public ReviewController(ReviewRepo reviewRepo) {
+        this.reviewRepo = reviewRepo;
+        }
 
-    // @PostMapping("path")
-    // public String postReview(@RequestBody String entity) {
-    //     reviewRepo.insertReview(entity);
-    // }
+    @PostMapping("/post")
+    public void postReview(@RequestBody Review review_request) {
+        UUID bookId = review_request.getBookId();
+        UUID userId = review_request.getUserId();
+        String review = review_request.getReview();
+        float rate = review_request.getRate();
+        
+        reviewRepo.insertReview(userId, bookId, rate, review);
+    }
 
-    // @DeleteMapping("/{id}")
-    // public void deleteReview(@PathVariable Long id) {
-
-    //     reviewRepo.deleteReview(id);
+    // @DeleteMapping("/{id}/delete")
+    // public void deleteReview(@PathVariable Long reviewid) {
+    // reviewRepo.deleteReview(reviewid);
     // }
     
     // @PutMapping("/{id}")
