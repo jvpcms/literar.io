@@ -5,6 +5,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+import java.util.UUID;
 
 @Data
 @Entity
@@ -12,22 +13,26 @@ import jakarta.persistence.Id;
 public class Review {
     
     @Id
-    private String id;
-    private String created_at;
-    private String username;
-    private String title;
+    private UUID id;
+    private String createdAt;
+    private UUID userId;
+    private UUID bookId;
     private String rating;	
     private String review;
+    private String title;
+    private String username;
 
     @Override
-    public String toString() {
+    public String toString(){
         return "Review{" +
-                "id='" + id + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", username='" + username + '\'' +
-                ", title='" + title + '\'' +
+                "id=" + id +
+                ", createdAt='" + createdAt + '\'' +
+                ", userId=" + userId +
+                ", bookId=" + bookId +
                 ", rating='" + rating + '\'' +
                 ", review='" + review + '\'' +
+                ", title='" + title + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 }

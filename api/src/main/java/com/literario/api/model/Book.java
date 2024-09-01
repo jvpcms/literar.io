@@ -5,13 +5,15 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+import java.util.UUID; // Add this import statement
+
 @Data
 @Entity
 @Table(name = "books")
 public class Book {
 
     @Id 
-    private String id;
+    private UUID id;
     private String title;
     private String author;
     private int year;
