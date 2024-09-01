@@ -25,22 +25,34 @@ public class ReviewController {
         }
 
     @PostMapping("/post")
-    public void postReview(@RequestBody Review review_request) {
-        UUID bookId = review_request.getBookId();
-        UUID userId = review_request.getUserId();
-        String review = review_request.getReview();
-        float rate = review_request.getRate();
+    public void postReview(@RequestBody Review reviewRequest) {
+        UUID bookId = reviewRequest.getBookId();
+        UUID userId = reviewRequest.getUserId();
+        String review = reviewRequest.getReview();
+        float rate = reviewRequest.getRate();
         
-        reviewRepo.insertReview(userId, bookId, rate, review);
+        try{
+            reviewRepo.insertReview(userId, bookId, rate, review);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    // @DeleteMapping("/{id}/delete")
-    // public void deleteReview(@PathVariable Long reviewid) {
-    // reviewRepo.deleteReview(reviewid);
-    // }
+    @DeleteMapping("/{id}/delete")
+    public void deleteReview(@PathVariable("id") UUID reviewId) { 
+        try {
+            reviewRepo.deleteReview(reviewId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }    
+    }
     
-    // @PutMapping("/{id}")
-    // public void updateReview(@PathVariable Long id, @RequestBody String entity) {
-    //     reviewRepo.updateReview(id, entity);
-    // }
+    @PutMapping("/{id}/update")
+    public void updateReview(@PathVariable("id") UUID reviewId, @RequestBody Review reviewRequest) {
+        try {
+            reviewRepo.updateReview(reviewId, reviewRequest.getRate());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -29,11 +29,11 @@ public interface ReviewRepo extends JpaRepository<Review,UUID> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE Review SET rating = :rating WHERE userId = :userId AND bookId = :bookId")
-    void updateReview(@Param("userId") UUID userId, @Param("bookId") UUID bookId, @Param("rating") float rating);
+    @Query("UPDATE Review SET rating = :rating WHERE id = :reviewId")
+    void updateReview(@Param("reviewId") UUID reviewId, @Param("rating") float rating);
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM Review WHERE userId = :userId AND bookId = :bookId")
-    void deleteReview(@Param("userId") UUID userId, @Param("bookId") UUID bookId);
+    @Query("DELETE FROM Review WHERE id = :reviewId")
+    void deleteReview(@Param("reviewId") UUID reviewId);
 }

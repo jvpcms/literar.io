@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.literario.api.model.Review;
 import com.literario.api.repo.BookRepo;
 import com.literario.api.repo.ReviewRepo;
 
@@ -33,10 +32,6 @@ public class BookController {
         return bookRepo.findBooksByYear(year).toString();
     }
 
-    // @GetMapping("/{id}/reviews")
-    // public String getReviewsByBook(@PathVariable("id") UUID bookId) {
-    //     return reviewRepo.findReviewsByBook(bookId).toString();
-    // }
     @GetMapping("/{id}/reviews")
     public String getReviewsByBook(@PathVariable("id") UUID bookId) {
         try {
