@@ -38,10 +38,9 @@ public class BookController {
     //     return reviewRepo.findReviewsByBook(bookId).toString();
     // }
     @GetMapping("/{id}/reviews")
-    public String getReviewsByBook(@PathVariable("id") String bookId) {
-        UUID bookUUID = UUID.fromString(bookId);
+    public String getReviewsByBook(@PathVariable("id") UUID bookId) {
         try {
-            return reviewRepo.findReviewsByBook(bookUUID).toString();
+            return reviewRepo.findReviewsByBook(bookId).toString();
         } catch (Exception e) {
             e.printStackTrace();
             return "Error: " + e.getMessage();

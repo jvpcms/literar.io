@@ -21,9 +21,8 @@ public class UsersController {
     }
 
     @GetMapping("/{id}/reviews")
-    public String getReviewsByUser(@PathVariable("id") String userId) {
-        UUID userUUID = UUID.fromString(userId);
-        return reviewRepo.findReviewsByUser(userUUID).toString();
+    public String getReviewsByUser(@PathVariable("id") UUID userId) {
+        return reviewRepo.findReviewsByUser(userId).toString();
     }
     
 }
