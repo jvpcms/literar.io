@@ -1,8 +1,5 @@
 package com.literario.api;
 
-// teste 1
-// teste 2
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
