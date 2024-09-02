@@ -27,6 +27,9 @@ public class User {
     private String salt;
     private String hash;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReadingList> readingLists;
+
     public UUID getId() {
         return id;
     }
