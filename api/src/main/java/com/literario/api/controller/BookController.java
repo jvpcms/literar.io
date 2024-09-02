@@ -10,6 +10,8 @@ import com.literario.api.repo.BookRepo;
 
 import java.util.UUID;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/books")
 public class BookController {
@@ -32,7 +34,10 @@ public class BookController {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> reviews_endpoints
     // @GetMapping("/{id}/reviews")
     // public String getReviewsByBook(@PathVariable("id") UUID bookId) {
     //     return reviewRepo.findReviewsByBook(bookId).toString();
@@ -46,5 +51,8 @@ public class BookController {
             return "Error: " + e.getMessage();
         }
     }
+<<<<<<< HEAD
+>>>>>>> reviews_endpoints
+=======
 >>>>>>> reviews_endpoints
 }

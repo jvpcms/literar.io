@@ -7,9 +7,15 @@
 // class ApiApplicationTests {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// @Test
 	// void contextLoads() {
 	// }
+=======
+// 	@Test
+// 	void contextLoads() {
+// 	}
+>>>>>>> reviews_endpoints
 =======
 // 	@Test
 // 	void contextLoads() {
