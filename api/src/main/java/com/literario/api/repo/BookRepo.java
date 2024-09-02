@@ -6,11 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.literario.api.model.Book;
 
 @RepositoryRestResource
-public interface BookRepo extends JpaRepository<Book, String> {
+public interface BookRepo extends JpaRepository<Book, UUID> {
 
 
     @Query("SELECT b FROM Book b WHERE b.year = :year")
