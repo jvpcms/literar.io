@@ -30,7 +30,7 @@ public interface ReviewRepo extends JpaRepository<Review,UUID> {
     @Transactional
     @Modifying
     @Query("UPDATE Review SET rating = :rating WHERE id = :reviewId")
-    void updateReview(@Param("reviewId") UUID reviewId, @Param("rating") float rating);
+    void updateReview(@Param("reviewId") UUID reviewId, @Param("rating") Integer rating);
 
     @Transactional
     @Modifying

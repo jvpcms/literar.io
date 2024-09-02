@@ -21,7 +21,7 @@ public class Review {
     private LocalDateTime createdAt;
     private UUID userId;
     private UUID bookId;
-    private float rating;	
+    private Integer rating;	
     private String review;
     private String title;
     private String username;
@@ -52,7 +52,7 @@ public class Review {
         return userId;
     }
 
-    public float getRate() {
+    public Integer getRate() {
         return rating;
     }
 }

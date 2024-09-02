@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.UUID;
+
 import com.literario.api.repo.BookRepo;
 import com.literario.api.repo.ReviewRepo;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/books")
@@ -33,12 +33,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}/reviews")
-    public String getReviewsByBook(@PathVariable("id") UUID bookId) {
-        try {
-            return reviewRepo.findReviewsByBook(bookId).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error: " + e.getMessage();
-        }
+    public String getReviewsByBook(@PathVariable UUID id) {
+        return reviewRepo.findReviewsByBook(id).toString();
     }
+
 }

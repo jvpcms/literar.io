@@ -6,11 +6,14 @@ plugins {
 
 group = 'com.literario'
 version = '0.0.1-SNAPSHOT'
+javaVersion = project.hasProperty('javaVersion') ? project.getProperty('javaVersion') : '22'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(22)
+		languageVersion = JavaLanguageVersion.of(javaVersion)
 	}
+	sourceCompatibility = JavaVersion.toVersion(javaVersion)
+	targetCompatibility = JavaVersion.toVersion(javaVersion)
 }
 
 repositories {
@@ -24,8 +27,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.projectlombok:lombok:1.18.24' // @Data
 	implementation 'io.github.cdimascio:java-dotenv:5.2.2' //Env loader
+	implementation 'org.postgresql:postgresql:42.2.23' // Postgres
+    implementation 'org.springframework.security:spring-security-crypto' // Password encoder
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation 'org.postgresql:postgresql:42.2.23'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
