@@ -8,15 +8,24 @@ import io.github.cdimascio.dotenv.Dotenv;
 @SpringBootApplication
 public class ApiApplication {
 
-	public static void main(String[] args) {
-
+    public static void main(String[] args) {
         Dotenv dotenv = Dotenv.load();
 
-		System.setProperty("POSTGRES_URL", dotenv.get("POSTGRES_URL"));
-        System.setProperty("POSTGRES_USER", dotenv.get("POSTGRES_USER"));
-        System.setProperty("POSTGRES_PASSWORD", dotenv.get("POSTGRES_PASSWORD"));
+        // Carregar variáveis de ambiente
+        String postgresUrl = dotenv.get("POSTGRES_URL");
+        String postgresUser = dotenv.get("POSTGRES_USER");
+        String postgresPassword = dotenv.get("POSTGRES_PASSWORD");
 
-		SpringApplication.run(ApiApplication.class, args);
-	}
+        // Verificar se todas as variáveis estão definidas
+        if (postgresUrl == null || postgresUser == null || postgresPassword == null) {
+            throw new IllegalStateException("Algumas variáveis de ambiente não estão definidas no arquivo .env");
+        }
 
+        // Definir propriedades do sistema
+        System.setProperty("POSTGRES_URL", postgresUrl);
+        System.setProperty("POSTGRES_USER", postgresUser);
+        System.setProperty("POSTGRES_PASSWORD", postgresPassword);
+
+        SpringApplication.run(ApiApplication.class, args);
+    }
 }

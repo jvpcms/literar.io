@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.literario.api.model.Book;
-import com.literario.api.repo.BookRepo;
+import com.literario.api.model.Review;
+import com.literario.api.repo.ReviewRepo;
 
 @RestController
-@RequestMapping("/books")
-public class BookController {
+@RequestMapping("/reviews")
+public class ReviewController {
 
-    private final BookRepo bookRepo;
+    private final ReviewRepo reviewRepo;
 
-    public BookController(BookRepo bookRepo) {
-        this.bookRepo = bookRepo;
+    public ReviewController(ReviewRepo reviewRepo) {
+        this.reviewRepo = reviewRepo;
     }
 
     @PostMapping("/post")
-    public ResponseEntity<Book> postBook(@RequestBody Book bookRequest) {
+    public ResponseEntity<Review> postReview(@RequestBody Review reviewRequest) {
         try {
-            Book savedBook = bookRepo.save(bookRequest);
-            return ResponseEntity.ok(savedBook);
+            Review savedReview = reviewRepo.save(reviewRequest);
+            return ResponseEntity.ok(savedReview);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(null);
@@ -36,10 +36,10 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Void> deleteBook(@PathVariable("id") UUID bookId) {
+    public ResponseEntity<Void> deleteReview(@PathVariable("id") UUID reviewId) {
         try {
-            if (bookRepo.existsById(bookId)) {
-                bookRepo.deleteById(bookId);
+            if (reviewRepo.existsById(reviewId)) {
+                reviewRepo.deleteById(reviewId);
                 return ResponseEntity.ok().build();
             } else {
                 return ResponseEntity.notFound().build();
@@ -51,12 +51,12 @@ public class BookController {
     }
 
     @PutMapping("/{id}/update")
-    public ResponseEntity<Book> updateBook(@PathVariable("id") UUID bookId, @RequestBody Book bookRequest) {
+    public ResponseEntity<Review> updateReview(@PathVariable("id") UUID reviewId, @RequestBody Review reviewRequest) {
         try {
-            if (bookRepo.existsById(bookId)) {
-                bookRequest.setId(bookId);
-                Book updatedBook = bookRepo.save(bookRequest);
-                return ResponseEntity.ok(updatedBook);
+            if (reviewRepo.existsById(reviewId)) {
+                reviewRequest.setId(reviewId);
+                Review updatedReview = reviewRepo.save(reviewRequest);
+                return ResponseEntity.ok(updatedReview);
             } else {
                 return ResponseEntity.notFound().build();
             }

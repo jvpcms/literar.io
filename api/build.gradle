@@ -1,42 +1,42 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.3.3'
-	id 'io.spring.dependency-management' version '1.1.6'
+    id 'java'
+    id 'org.springframework.boot' version '3.3.3'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 group = 'com.literario'
 version = '0.0.1-SNAPSHOT'
-javaVersion = project.hasProperty('javaVersion') ? project.getProperty('javaVersion') : '22'
 
+// Definindo a versão do Java diretamente
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(javaVersion)
-	}
-	sourceCompatibility = JavaVersion.toVersion(javaVersion)
-	targetCompatibility = JavaVersion.toVersion(javaVersion)
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(22)) // Substitua '22' pela versão desejada
+    }
+    sourceCompatibility = JavaVersion.VERSION_22 // Substitua '22' pela versão desejada
+    targetCompatibility = JavaVersion.VERSION_22 // Substitua '22' pela versão desejada
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.projectlombok:lombok:1.18.24' // @Data
-	implementation 'io.github.cdimascio:java-dotenv:5.2.2' //Env loader
-	implementation 'org.postgresql:postgresql:42.2.23' // Postgres
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.projectlombok:lombok:1.18.24' // @Data
+    implementation 'io.github.cdimascio:java-dotenv:5.2.2' // Env loader
+    implementation 'org.postgresql:postgresql:42.2.23' // Postgres
     implementation 'org.springframework.security:spring-security-crypto' // Password encoder
-	implementation 'io.jsonwebtoken:jjwt:0.9.1' // JWT
-	implementation 'javax.xml.bind:jaxb-api:2.3.1' // JAXB API
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.junit.jupiter:junit-jupiter-engine'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1' // JWT
+    implementation 'javax.xml.bind:jaxb-api:2.3.1' // JAXB API
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
