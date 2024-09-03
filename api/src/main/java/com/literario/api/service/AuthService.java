@@ -25,10 +25,10 @@ public class AuthService {
 
         return (
             Jwts.builder()
-            .setHeaderParam("alg", "HS256")                   // Algorithm
-            .setHeaderParam("typ", "JWT")                     // Type
+            .setHeaderParam("alg", "HS256")        // Algorithm
+            .setHeaderParam("typ", "JWT")          // Type
             .setSubject(user.getUsername())                   // Subject
-            .claim("user_id", user.getId())                   // Custom claim
+            .claim("user_id", user.getId())              // Custom claim
             .setIssuedAt(new Date(currentTimeMillis))         // Issued at
             .setExpiration(new Date(expirationTimeMillis))    // Expiration
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)   // Signature
