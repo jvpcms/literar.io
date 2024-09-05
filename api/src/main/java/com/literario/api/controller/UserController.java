@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.literario.api.service.UserService;
 import com.literario.api.service.PasswordService;
 
-import com.literario.api.model.User;
+import com.literario.api.model.UserEntity;
 import com.literario.api.repo.UserRepo;
 import com.literario.api.repo.ReviewRepo;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<UserEntity> registerUser(@RequestBody UserEntity user) {
         return userService.registerUser(user);
     }
 

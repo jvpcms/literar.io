@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.literario.api.model.Review; // Add this import statement
+import com.literario.api.model.ReviewEntity; // Add this import statement
 
 import java.util.UUID;
 
@@ -25,11 +25,11 @@ public class ReviewController {
         }
 
     @PostMapping("/post")
-    public void postReview(@RequestBody Review reviewRequest) {
+    public void postReview(@RequestBody ReviewEntity reviewRequest) {
         UUID bookId = reviewRequest.getBookId();
         UUID userId = reviewRequest.getUserId();
         String review = reviewRequest.getReview();
-        float rate = reviewRequest.getRate();
+        Integer rate = reviewRequest.getRate();
         
         try{
             reviewRepo.insertReview(userId, bookId, rate, review);
@@ -48,7 +48,7 @@ public class ReviewController {
     }
     
     @PutMapping("/{id}/update")
-    public void updateReview(@PathVariable("id") UUID reviewId, @RequestBody Review reviewRequest) {
+    public void updateReview(@PathVariable("id") UUID reviewId, @RequestBody ReviewEntity reviewRequest) {
         try {
             reviewRepo.updateReview(reviewId, reviewRequest.getRate());
         } catch (Exception e) {
