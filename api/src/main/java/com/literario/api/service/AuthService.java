@@ -2,7 +2,6 @@ package com.literario.api.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.http.HttpStatus;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,13 +11,13 @@ import io.jsonwebtoken.ExpiredJwtException;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 import com.literario.api.model.NotAuthedUserEntity;
 import com.literario.api.model.UserEntity;
 import com.literario.api.repo.UserRepo;
+import com.literario.api.utils.CustomResponse;
 
 @Service
 public class AuthService {
@@ -50,16 +49,12 @@ public class AuthService {
     }
 
     public static ResponseEntity<Map<String, String>> login(NotAuthedUserEntity notAuthedUser) {
-        
-        Map<String, String> responseBody = new HashMap<>();
 
         // retirve user data from db
         List<UserEntity> usersInDatabase = userRepo.findByUsername(notAuthedUser.getUsername());
 
         if (usersInDatabase.isEmpty()) {
-            responseBody.put("ok", "fasle");
-            responseBody.put("message", "User not found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+            return CustomResponse.userNotFound();
         }
 
         UserEntity user = usersInDatabase.get(0);
@@ -68,15 +63,11 @@ public class AuthService {
         Boolean passwordIsValid = passwordService.checkPassword(notAuthedUser.getPassword(), user.getHash());
 
         if (passwordIsValid == null || !passwordIsValid) {
-            responseBody.put("ok", "false");
-            responseBody.put("message", "Invalid password");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+            return CustomResponse.invalidPassword();
         }
 
         // generate token
-        responseBody.put("ok", "true");
-        responseBody.put("token", AuthService.genToken(user));
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        return CustomResponse.returnToken(genToken(user));
     }
     
 
@@ -98,32 +89,23 @@ public class AuthService {
 
     public static ResponseEntity<Map<String, String>> verifyToken(String token, UUID id) {
 
-        Map<String, String> responseBody = new HashMap<>();
-
         Claims claims = null;
 
         try {
             claims = extractAllClaims(token);
         }
         catch (ExpiredJwtException e) {
-            responseBody.put("ok", "false");
-            responseBody.put("message", "Token expired");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+            return CustomResponse.tokenExpired();
         }
         catch (SignatureException e) {
-            responseBody.put("ok", "false");
-            responseBody.put("message", "Invalid signature");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+            return CustomResponse.invalidSignature();
         }
 
         if (verifyId(claims, id) == null || !verifyId(claims, id)) {
-            responseBody.put("ok", "false");
-            responseBody.put("message", "Invalid user id");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+            return CustomResponse.invalidUserId();
         }
         
-        responseBody.put("ok", "true");
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        return CustomResponse.ok();
 
     }
     

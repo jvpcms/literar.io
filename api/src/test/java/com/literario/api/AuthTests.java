@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.literario.api.service.AuthService;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 
 @SpringBootTest
@@ -26,13 +28,26 @@ class AuthTests {
     private static final String EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdnBzb3V6YSIsInVzZXJfaWQiOiJiNmIzNjNkZi1kZTc2LTQ3MWItYTY2Mi1iNTNkZTZiMGNhMjUiLCJpYXQiOjE3MjU2Njk2NzAsImV4cCI6MTcyNTY3MzI3MH0.guMmWTBO_A1A-mv9n0uHyBv1C0xZqilwyGfQ5i-TaCw";
     private static final String INVALID_SIGN_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdnBzb3V6YSIsInVzZXJfaWQiOiJiNmIzNjNkZi1kZTc2LTQ3MWItYTY2Mi1iNTNkZTZiMGNhMjUiLCJpYXQiOjE3MjU2Njk2NzAsImV4cCI6MTcyNTY3MzI3MH0.guMmWTBO_A1A-mv9n0uHyBv1C0xZqilwyGfQ5i-TaC";
     private static final String NOT_EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqdnBzb3V6YSIsInVzZXJfaWQiOiJiNmIzNjNkZi1kZTc2LTQ3MWItYTY2Mi1iNTNkZTZiMGNhMjUiLCJpYXQiOjE3MjU3MjAzMzAsImV4cCI6MTcyNzE5MTU1OX0.2VvXVFPn7gr23AQjwAp6B173NVSTLLkS6-JEMfs4agg";
-    private static final Claims CLAIMS = AuthService.extractAllClaims(NOT_EXPIRED_TOKEN);
+    private static Claims claims;
+
+    @BeforeAll
+    public static void setup() {
+        
+        Dotenv dotenv = Dotenv.load();
+
+		System.setProperty("POSTGRES_URL", dotenv.get("POSTGRES_URL"));
+        System.setProperty("POSTGRES_USER", dotenv.get("POSTGRES_USER"));
+        System.setProperty("POSTGRES_PASSWORD", dotenv.get("POSTGRES_PASSWORD"));
+		System.setProperty("HS256_SECRET", dotenv.get("HS256_SECRET"));
+
+        claims = AuthService.extractAllClaims(NOT_EXPIRED_TOKEN);
+    }
 
     @Test
     void checkId() {
         UUID id = UUID.fromString("b6b363df-de76-471b-a662-b53de6b0ca25");
-        assertEquals(true, AuthService.verifyId(CLAIMS, id));
-        assertEquals(false, AuthService.verifyId(CLAIMS, UUID.randomUUID()));
+        assertEquals(true, AuthService.verifyId(claims, id));
+        assertEquals(false, AuthService.verifyId(claims, UUID.randomUUID()));
     }
 
     @Test
