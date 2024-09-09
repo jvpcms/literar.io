@@ -33,7 +33,7 @@ public class AuthService {
     public static String genToken(UserEntity user) {
 
         long currentTimeMillis = System.currentTimeMillis();
-        long expirationTimeMillis = currentTimeMillis + 1000 * 60 * 60;
+        long expirationTimeMillis = currentTimeMillis + 1000 * 60 * 60 * 24 * 7;
 
         return (
             Jwts.builder()

@@ -2,13 +2,14 @@ package com.literario.api.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Map;
 
 import com.literario.api.model.UserEntity;
 import com.literario.api.model.NotAuthedUserEntity;
 import com.literario.api.repo.UserRepo;
+import com.literario.api.utils.CustomResponse;
 
 @Service
 public class UserService {
@@ -21,19 +22,19 @@ public class UserService {
         this.passwordService = new PasswordService();
     }
 
-    public ResponseEntity<UserEntity> registerUser(NotAuthedUserEntity notAuthedUser) {
+    public ResponseEntity<Map<String, String>> registerUser(NotAuthedUserEntity notAuthedUser) {
 
         //check if user already exists
         List<UserEntity> existentUsers = userRepo.findByUsername(notAuthedUser.getUsername());
         if (!existentUsers.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            return CustomResponse.existentUser();
         }
 
         // hash password
         String hashedPassword = passwordService.hashPassword(notAuthedUser.getPassword());
         UserEntity user = new UserEntity(notAuthedUser.getUsername(), hashedPassword);
 
-        UserEntity savedUser = userRepo.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+        userRepo.save(user);
+        return CustomResponse.created();
     }
 }

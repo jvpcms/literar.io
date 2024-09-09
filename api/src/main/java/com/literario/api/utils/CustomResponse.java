@@ -55,7 +55,15 @@ public class CustomResponse {
         return create(HttpStatus.FORBIDDEN, false, Optional.of("Invalid user id"), Optional.empty());
     }
 
+    public static ResponseEntity<Map<String, String>> existentUser() {
+        return create(HttpStatus.CONFLICT, false, Optional.of("User already exists"), Optional.empty());
+    }
+
     public static ResponseEntity<Map<String, String>> ok() {
         return create(HttpStatus.OK, true, Optional.empty(), Optional.empty());
+    }
+
+    public static ResponseEntity<Map<String, String>> created() {
+        return create(HttpStatus.CREATED, true, Optional.empty(), Optional.empty());
     }
 }
