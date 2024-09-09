@@ -8,28 +8,30 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-import com.literario.api.model.Review;
+import com.literario.api.model.BookEntity;
+import com.literario.api.model.ReviewEntity;
+import com.literario.api.model.UserEntity;
 
 @RepositoryRestResource
-public interface ReviewRepo extends JpaRepository<Review,UUID> {
+public interface ReviewRepo extends JpaRepository<ReviewEntity,UUID> {
     
-    @Query("SELECT re FROM Review re WHERE re.bookId = :bookId")
-    List<Review> findReviewsByBook(@Param("bookId") UUID bookId);
+    @Query("SELECT re FROM ReviewEntity re WHERE re.book = :bookId")
+    List<ReviewEntity> findReviewsByBook(@Param("bookId") UUID bookId);
     
-    @Query("SELECT re FROM Review re WHERE re.userId = :userId")
-    List<Review> findReviewsByUser(@Param("userId") UUID userId);
+    @Query("SELECT re FROM ReviewEntity re WHERE re.user = :userId")
+    List<ReviewEntity> findReviewsByUser(@Param("userId") UUID userId);
 
-    default void insertReview(UUID userId, UUID bookId, int rating, String review){
-        Review newReview = new Review();
-        newReview.setUserId(userId);
-        newReview.setBookId(bookId);
+    default void insertReview(UserEntity user, BookEntity book, Integer rating, String review){
+        ReviewEntity newReview = new ReviewEntity();
+        newReview.setUser(user);
+        newReview.setBook(book);
         newReview.setRating(rating);
         newReview.setReview(review);
         save(newReview);
     }
 
     default void updateReview(UUID reviewId, Integer rating) throws Exception{
-        Review review = findById(reviewId).get();
+        ReviewEntity review = findById(reviewId).get();
         if (review == null) {
             throw new Exception("Review not found");
         }
@@ -38,7 +40,7 @@ public interface ReviewRepo extends JpaRepository<Review,UUID> {
     }
 
     default void deleteReview(UUID reviewId) throws Exception{
-        Review review = findById(reviewId).get();
+        ReviewEntity review = findById(reviewId).get();
         if (review == null) {
             throw new Exception("Review not found");
         }

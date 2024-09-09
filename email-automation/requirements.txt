@@ -1,0 +1,2 @@
+abstra==2.26.2
+google-api-python-client==2.129.0

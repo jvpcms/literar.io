@@ -8,12 +8,14 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 import java.util.UUID;
 
-import com.literario.api.model.User;
+import com.literario.api.model.UserEntity;
 
 @RepositoryRestResource
-public interface UserRepo extends JpaRepository<User, UUID> {
+public interface UserRepo extends JpaRepository<UserEntity, UUID> {
 
-    @Query("SELECT u FROM User u WHERE u.username = :username")
-    List<User> findByUsername(@Param("username") String username);
+    @Query("SELECT u FROM UserEntity u WHERE u.username = :username")
+    List<UserEntity> findByUsername(@Param("username") String username);
+
+    public UserEntity findUserById(UUID userId);
 
 }

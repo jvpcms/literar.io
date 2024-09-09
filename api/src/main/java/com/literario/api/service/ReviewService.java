@@ -7,19 +7,27 @@ import java.util.ArrayList; // Add this import statement
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.literario.api.model.Review; // Add this import statement
+import com.literario.api.model.ReviewEntity;
+import com.literario.api.model.UserEntity;
+import com.literario.api.model.BookEntity;
+import com.literario.api.repo.BookRepo;
+import com.literario.api.repo.UserRepo;
 import com.literario.api.repo.ReviewRepo;
 
 @Service
 public class ReviewService {
     
     private ReviewRepo reviewRepo;
+    private BookRepo bookRepo;
+    private UserRepo userRepo;
 
-    public ReviewService(ReviewRepo reviewRepo) {
+    public ReviewService(ReviewRepo reviewRepo, BookRepo bookRepo, UserRepo userRepo) {
         this.reviewRepo = reviewRepo;
+        this.bookRepo = bookRepo;
+        this.userRepo = userRepo;
     }
 
-    public List<Review> getReviewsByUser(UUID userId) {
+    public List<ReviewEntity> getReviewsByUser(UUID userId) {
         try {
             return reviewRepo.findReviewsByUser(userId);
         } catch (Exception e) {
@@ -28,7 +36,7 @@ public class ReviewService {
         }
     }
 
-    public List<Review> getReviewsByBook(UUID bookId) {
+    public List<ReviewEntity> getReviewsByBook(UUID bookId) {
         try {
             return reviewRepo.findReviewsByBook(bookId);
         } catch (Exception e) {
@@ -37,14 +45,14 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<Review> postReview(Review reviewRequest) {
+    public ResponseEntity<ReviewEntity> postReview(ReviewEntity reviewRequest) {
         try {
-            UUID bookId = reviewRequest.getBookId();
-            UUID userId = reviewRequest.getUserId();
+            BookEntity book = bookRepo.findBookById(reviewRequest.getBookId());
+            UserEntity user = userRepo.findUserById(reviewRequest.getUserId());
             int rating = reviewRequest.getRate();
             String review = reviewRequest.getReview();
 
-            reviewRepo.insertReview(userId, bookId, rating, review);
+            reviewRepo.insertReview(user, book, rating, review);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,7 +60,7 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<Review> deleteReview(UUID reviewId) {
+    public ResponseEntity<ReviewEntity> deleteReview(UUID reviewId) {
         try {
             reviewRepo.deleteReview(reviewId);
             return ResponseEntity.ok().build();
@@ -62,7 +70,7 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<Review> updateReview(UUID reviewId, Review reviewRequest) {
+    public ResponseEntity<ReviewEntity> updateReview(UUID reviewId, ReviewEntity reviewRequest) {
         try {
             reviewRepo.updateReview(reviewId, reviewRequest.getRate());
             return ResponseEntity.ok().build();

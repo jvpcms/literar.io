@@ -1,0 +1,46 @@
+{
+  "workspace": {
+    "name": "Workspace",
+    "language": "en",
+    "theme": null,
+    "logo_url": "./logo.png",
+    "favicon_url": "./favicon.ico",
+    "brand_name": "Abstra Project",
+    "main_color": null,
+    "font_family": null,
+    "font_color": null
+  },
+  "kanban": {
+    "access_control": {
+      "is_public": false,
+      "required_roles": []
+    }
+  },
+  "home": {
+    "access_control": {
+      "is_public": false,
+      "required_roles": []
+    }
+  },
+  "jobs": [],
+  "hooks": [
+    {
+      "id": "7fcc4cd6-4928-4095-889b-99434db90fee",
+      "file": "verification_email.py",
+      "path": "verification-email",
+      "title": "Verification Email",
+      "enabled": true,
+      "workflow_position": [
+        600.0,
+        315.0
+      ],
+      "is_initial": true,
+      "transitions": []
+    }
+  ],
+  "forms": [],
+  "scripts": [],
+  "iterators": [],
+  "conditions": [],
+  "version": "11.0"
+}

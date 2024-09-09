@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import com.literario.api.repo.BookRepo;
 import com.literario.api.repo.ReviewRepo;
+import com.literario.api.repo.UserRepo;
 import com.literario.api.service.ReviewService;
 @RestController
 @RequestMapping("/books")
@@ -17,9 +18,9 @@ public class BookController {
     private BookRepo bookRepo;
     private ReviewService reviewService;
 
-    public BookController(BookRepo bookRepo, ReviewRepo reviewRepo) {
+    public BookController(BookRepo bookRepo, ReviewRepo reviewRepo, UserRepo userRepo) {
         this.bookRepo = bookRepo;
-        this.reviewService = new ReviewService(reviewRepo);
+        this.reviewService = new ReviewService(reviewRepo, bookRepo, userRepo);
     }
 
     @GetMapping

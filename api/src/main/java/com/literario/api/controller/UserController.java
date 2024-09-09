@@ -13,9 +13,10 @@ import com.literario.api.service.UserService;
 import com.literario.api.service.PasswordService;
 import com.literario.api.service.ReviewService; // Add this import
 
-import com.literario.api.model.User;
+import com.literario.api.model.UserEntity;
 import com.literario.api.repo.UserRepo;
 import com.literario.api.repo.ReviewRepo;
+import com.literario.api.repo.BookRepo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,11 +30,11 @@ public class UserController {
     private PasswordService passwordService;
     private ReviewService reviewService;
 
-    public UserController(UserRepo userRepo, ReviewRepo reviewRepo) {
+    public UserController(UserRepo userRepo, BookRepo bookRepo, ReviewRepo reviewRepo) {
         this.userRepo = userRepo;
         this.userService = new UserService(userRepo);
         this.passwordService = new PasswordService();
-        this.reviewService = new ReviewService(reviewRepo);
+        this.reviewService = new ReviewService(reviewRepo, bookRepo, userRepo);
     }
 
     @GetMapping()
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<UserEntity> registerUser(@RequestBody UserEntity user) {
         return userService.registerUser(user);
     }
 

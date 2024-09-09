@@ -6,11 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 import java.sql.Timestamp;
 
-import com.literario.api.model.User;
+import com.literario.api.model.UserEntity;
 import com.literario.api.repo.UserRepo;
 
 @Service
@@ -22,18 +20,18 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public ResponseEntity<User> registerUser(User user) {
+    public ResponseEntity<UserEntity> registerUser(UserEntity user) {
 
         //check if user already exists
-        List<User> users = userRepo.findByUsername(user.getUsername());
+        List<UserEntity> users = userRepo.findByUsername(user.getUsername());
         if (!users.isEmpty()) {
             return ResponseEntity.badRequest().body(null);
         }
 
         user.setId(UUID.randomUUID());
-        user.setCreated_at(new Timestamp(System.currentTimeMillis()));
+        user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
-        User savedUser = userRepo.save(user);
+        UserEntity savedUser = userRepo.save(user);
         return ResponseEntity.ok(savedUser);
     }
 }
