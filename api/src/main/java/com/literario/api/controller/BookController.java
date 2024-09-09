@@ -9,17 +9,17 @@ import java.util.UUID;
 
 import com.literario.api.repo.BookRepo;
 import com.literario.api.repo.ReviewRepo;
-
+import com.literario.api.service.ReviewService;
 @RestController
 @RequestMapping("/books")
 public class BookController {
 
     private BookRepo bookRepo;
-    private ReviewRepo reviewRepo;
+    private ReviewService reviewService;
 
     public BookController(BookRepo bookRepo, ReviewRepo reviewRepo) {
         this.bookRepo = bookRepo;
-        this.reviewRepo = reviewRepo;
+        this.reviewService = new ReviewService(reviewRepo);
     }
 
     @GetMapping
@@ -33,8 +33,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}/reviews")
-    public String getReviewsByBook(@PathVariable UUID id) {
-        return reviewRepo.findReviewsByBook(id).toString();
+    public String getReviews(@PathVariable("id") UUID bookId) {
+        return reviewService.getReviewsByBook(bookId).toString();
     }
 
 }

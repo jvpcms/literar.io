@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.literario.api.service.UserService;
 import com.literario.api.service.PasswordService;
+import com.literario.api.service.ReviewService; // Add this import
 
 import com.literario.api.model.User;
 import com.literario.api.repo.UserRepo;
@@ -24,16 +25,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class UserController {
 
     private UserRepo userRepo;
-    private ReviewRepo reviewRepo;
     private UserService userService;
     private PasswordService passwordService;
+    private ReviewService reviewService;
 
     public UserController(UserRepo userRepo, ReviewRepo reviewRepo) {
         this.userRepo = userRepo;
         this.userService = new UserService(userRepo);
         this.passwordService = new PasswordService();
-
-        this.reviewRepo = reviewRepo;
+        this.reviewService = new ReviewService(reviewRepo);
     }
 
     @GetMapping()
@@ -52,13 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/reviews")
-    public String getReviewsByUser(@PathVariable("id") UUID userId) {
-        try {
-        return reviewRepo.findReviewsByUser(userId).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error: " + e.getMessage();
-        }
+    public String getReviews(@PathVariable("id") UUID userId) {
+        return reviewService.getReviewsByUser(userId).toString();
     }
-    
 }
