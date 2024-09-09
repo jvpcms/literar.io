@@ -29,9 +29,20 @@ dependencies {
 	implementation 'io.github.cdimascio:java-dotenv:5.2.2' //Env loader
 	implementation 'org.postgresql:postgresql:42.2.23' // Postgres
     implementation 'org.springframework.security:spring-security-crypto' // Password encoder
+	implementation 'io.jsonwebtoken:jjwt:0.9.1' // JWT
+	implementation 'javax.xml.bind:jaxb-api:2.3.1' // JAXB API
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+	testImplementation 'com.h2database:h2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
 }
 
 tasks.named('test') {

@@ -4,9 +4,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.HashMap;
-
 @Service
 public class PasswordService {
 
@@ -16,20 +13,8 @@ public class PasswordService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public Map<String, String> hashPassword(String rawPassword) {
-        Map<String, String> passwordMap = new HashMap<>();
-
-        // Gera o hash da senha
-        String hash = passwordEncoder.encode(rawPassword);
-
-        // Extrai o salt do hash gerado
-        String salt = hash.substring(0, 29); // O salt é os primeiros 29 caracteres do hash
-
-        passwordMap.put("salt", salt);
-        passwordMap.put("hash", hash);
-
-        return passwordMap;
-
+    public String hashPassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
     }
 
     public boolean checkPassword(String rawPassword, String hashedPassword) {
