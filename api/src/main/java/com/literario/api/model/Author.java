@@ -2,7 +2,6 @@ package com.literario.api.model;
 
 import java.util.*;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,12 +14,10 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-
-
 @Data
 @Entity
 @Table(name = "author")
-public class AuthorEntity{
+public class Author{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +30,7 @@ public class AuthorEntity{
     private String description;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<Book> books = new ArrayList<>();    
+    private List<Book> books = new ArrayList<>();
 
     @Override
     public String toString() {

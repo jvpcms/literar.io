@@ -2,8 +2,10 @@ package com.literario.api.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.UUID;
 
@@ -14,7 +16,10 @@ import com.literario.api.repo.ReviewRepo;
 @RequestMapping("/books")
 public class BookController {
 
+    @Autowired
     private BookRepo bookRepo;
+    
+    @Autowired
     private ReviewRepo reviewRepo;
 
     public BookController(BookRepo bookRepo, ReviewRepo reviewRepo) {
@@ -35,6 +40,11 @@ public class BookController {
     @GetMapping("/{id}/reviews")
     public String getReviewsByBook(@PathVariable UUID id) {
         return reviewRepo.findReviewsByBook(id).toString();
+    }
+
+    @GetMapping("/{title}")
+    public String getBooksByTitle(@PathVariable String title) {
+        return bookRepo.findBooksByTitle(title).toString();
     }
 
 }
