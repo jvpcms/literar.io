@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.literario.api.model.ReviewEntity;
 import com.literario.api.model.UserEntity;
+import com.literario.api.dto.ReviewRequestDTO;
 import com.literario.api.model.BookEntity;
 import com.literario.api.repo.BookRepo;
 import com.literario.api.repo.UserRepo;
@@ -45,7 +46,7 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<ReviewEntity> postReview(ReviewEntity reviewRequest) {
+    public ResponseEntity<ReviewEntity> postReview(ReviewRequestDTO reviewRequest) {
         try {
             BookEntity book = bookRepo.findBookById(reviewRequest.getBookId());
             UserEntity user = userRepo.findUserById(reviewRequest.getUserId());

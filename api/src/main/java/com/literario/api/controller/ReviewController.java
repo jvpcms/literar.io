@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.literario.api.dto.ReviewRequestDTO;
 import com.literario.api.model.ReviewEntity; // Add this import statement
 import com.literario.api.service.ReviewService; // Add this import statement
 
@@ -26,7 +27,7 @@ public class ReviewController {
     }
 
     @PostMapping("/post")
-    public void postReview(@RequestBody ReviewEntity reviewRequest) {
+    public void postReview(@RequestBody ReviewRequestDTO reviewRequest) {
         reviewService.postReview(reviewRequest);
     }
 
