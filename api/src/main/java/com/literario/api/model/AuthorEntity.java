@@ -33,7 +33,7 @@ public class AuthorEntity{
     private String description;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<Book> books = new ArrayList<>();    
+    private List<BookEntity> books = new ArrayList<>();    
 
     @Override
     public String toString() {

@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-import com.literario.api.model.Book;
 import com.literario.api.model.BookEntity;
 
 @RepositoryRestResource
@@ -19,9 +18,9 @@ public interface BookRepo extends JpaRepository<BookEntity, UUID> {
     List<BookEntity> findBooksByYear(@Param("year") Integer year);
 
     @Query("SELECT b FROM Book b WHERE b.author_id = :author_id")
-    List<Book> findBooksByAuthor(@Param("author_id") UUID author_id);
+    List<BookEntity> findBooksByAuthor(@Param("author_id") UUID author_id);
 
     @Query("SELECT b FROM Book b WHERE b.title = :title")
-    List<Book> findBooksByTitle(@Param("title") String title);
+    List<BookEntity> findBooksByTitle(@Param("title") String title);
 }
 
