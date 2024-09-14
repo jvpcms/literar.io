@@ -15,6 +15,7 @@ public class ApiApplication {
 		System.setProperty("POSTGRES_URL", dotenv.get("POSTGRES_URL"));
         System.setProperty("POSTGRES_USER", dotenv.get("POSTGRES_USER"));
         System.setProperty("POSTGRES_PASSWORD", dotenv.get("POSTGRES_PASSWORD"));
+		System.setProperty("HS256_SECRET", dotenv.get("HS256_SECRET"));
 
 		SpringApplication.run(ApiApplication.class, args);
 	}

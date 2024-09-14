@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ import com.literario.api.service.UserService;
 import com.literario.api.service.PasswordService;
 import com.literario.api.service.ReviewService; // Add this import
 
-import com.literario.api.model.UserEntity;
+import com.literario.api.model.NotAuthedUserEntity;
 import com.literario.api.repo.UserRepo;
 import com.literario.api.repo.ReviewRepo;
 import com.literario.api.repo.BookRepo;
@@ -44,12 +45,12 @@ public class UserController {
 
     @GetMapping("/{password}")
     public String hashPassword(@PathVariable String password) {
-        return passwordService.hashPassword(password).toString();
+        return passwordService.hashPassword(password);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserEntity> registerUser(@RequestBody UserEntity user) {
-        return userService.registerUser(user);
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody NotAuthedUserEntity notAuthedUser) {
+        return userService.registerUser(notAuthedUser);
     }
 
     @GetMapping("/{id}/reviews")

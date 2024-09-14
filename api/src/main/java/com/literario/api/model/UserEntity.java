@@ -41,6 +41,14 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<ReviewEntity> reviews = new ArrayList<>();
 
+    public UserEntity() {
+    }
+
+    public UserEntity(String username, String hash) {
+        this.username = username;
+        this.hash = hash;
+    }
+
     public UUID getId() {
         return id;
     }

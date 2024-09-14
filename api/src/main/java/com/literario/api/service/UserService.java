@@ -1,37 +1,40 @@
 package com.literario.api.service;
 
-import java.util.UUID;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.sql.Timestamp;
+import java.util.Map;
 
 import com.literario.api.model.UserEntity;
+import com.literario.api.model.NotAuthedUserEntity;
 import com.literario.api.repo.UserRepo;
+import com.literario.api.utils.CustomResponse;
 
 @Service
 public class UserService {
     
     private UserRepo userRepo;
+    private PasswordService passwordService;
 
     public UserService(UserRepo userRepo) {
         this.userRepo = userRepo;
+        this.passwordService = new PasswordService();
     }
 
-    public ResponseEntity<UserEntity> registerUser(UserEntity user) {
+    public ResponseEntity<Map<String, String>> registerUser(NotAuthedUserEntity notAuthedUser) {
 
         //check if user already exists
-        List<UserEntity> users = userRepo.findByUsername(user.getUsername());
-        if (!users.isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
+        List<UserEntity> existentUsers = userRepo.findByUsername(notAuthedUser.getUsername());
+        if (!existentUsers.isEmpty()) {
+            return CustomResponse.existentUser();
         }
 
-        user.setId(UUID.randomUUID());
-        user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        // hash password
+        String hashedPassword = passwordService.hashPassword(notAuthedUser.getPassword());
+        UserEntity user = new UserEntity(notAuthedUser.getUsername(), hashedPassword);
 
-        UserEntity savedUser = userRepo.save(user);
-        return ResponseEntity.ok(savedUser);
+        userRepo.save(user);
+        return CustomResponse.created();
     }
 }
