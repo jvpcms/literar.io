@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.literario.api.model.BookEntity;
@@ -15,35 +16,32 @@ import com.literario.api.model.UserEntity;
 @RepositoryRestResource
 public interface ReviewRepo extends JpaRepository<ReviewEntity,UUID> {
     
-    @Query("SELECT re FROM ReviewEntity re WHERE re.book = :bookId")
-    List<ReviewEntity> findReviewsByBook(@Param("bookId") UUID bookId);
+    @Query("SELECT re FROM ReviewEntity re WHERE re.book = :book")
+    List<ReviewEntity> findReviewsByBook(@Param("book") BookEntity book);
     
-    @Query("SELECT re FROM ReviewEntity re WHERE re.user = :userId")
-    List<ReviewEntity> findReviewsByUser(@Param("userId") UUID userId);
+    @Query("SELECT re FROM ReviewEntity re WHERE re.user = :user")
+    List<ReviewEntity> findReviewsByUser(@Param("user") UserEntity userId);
 
-    default void insertReview(UserEntity user, BookEntity book, Integer rating, String review){
+    default ReviewEntity insertReview(UserEntity user, BookEntity book, Integer rating, String review){
         ReviewEntity newReview = new ReviewEntity();
         newReview.setUser(user);
         newReview.setBook(book);
         newReview.setRating(rating);
         newReview.setReview(review);
-        save(newReview);
+        return save(newReview);
     }
 
-    default void updateReview(UUID reviewId, Integer rating) throws Exception{
-        ReviewEntity review = findById(reviewId).get();
-        if (review == null) {
-            throw new Exception("Review not found");
-        }
+    default ReviewEntity updateReview(ReviewEntity review, Integer rating){
         review.setRating(rating);
         save(review);
+        return review;
     }
 
-    default void deleteReview(UUID reviewId) throws Exception{
-        ReviewEntity review = findById(reviewId).get();
-        if (review == null) {
-            throw new Exception("Review not found");
-        }
+    default void deleteReview(UUID reviewId){
         deleteById(reviewId);
+    }
+
+    default Optional<ReviewEntity> findReviewById(UUID reviewId){
+        return findById(reviewId);
     }
 }

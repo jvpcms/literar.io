@@ -2,7 +2,8 @@ package com.literario.api.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PathVariable;	
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.literario.api.dto.ReviewRequestDTO;
-import com.literario.api.model.ReviewEntity; // Add this import statement
-import com.literario.api.service.ReviewService; // Add this import statement
+import com.literario.api.model.ReviewEntity;
+import com.literario.api.service.ReviewService;
 
 
 import java.util.UUID;
@@ -27,17 +28,17 @@ public class ReviewController {
     }
 
     @PostMapping("/post")
-    public void postReview(@RequestBody ReviewRequestDTO reviewRequest) {
-        reviewService.postReview(reviewRequest);
+    public ResponseEntity<ReviewEntity> postReview(@RequestBody ReviewRequestDTO reviewRequest){
+       return reviewService.postReview(reviewRequest);
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteReview(@PathVariable("id") UUID reviewId) { 
-        reviewService.deleteReview(reviewId);
+    public ResponseEntity<String> deleteReview(@PathVariable("id") UUID reviewId) { 
+        return reviewService.deleteReview(reviewId);
     }
     
     @PutMapping("/{id}/update")
-    public void updateReview(@PathVariable("id") UUID reviewId, @RequestBody ReviewEntity reviewRequest) {
-        reviewService.updateReview(reviewId, reviewRequest);
+    public ResponseEntity<ReviewEntity> updateReview(@PathVariable("id") UUID reviewId, @RequestBody ReviewRequestDTO reviewRequest) {
+        return reviewService.updateReview(reviewId, reviewRequest);
     }
 }

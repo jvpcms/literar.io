@@ -1,8 +1,8 @@
 package com.literario.api.service;
 
 import java.util.List;
-import java.util.UUID; // Add this import statement
-import java.util.ArrayList; // Add this import statement
+import java.util.UUID; 
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,62 +22,53 @@ public class ReviewService {
     private BookRepo bookRepo;
     private UserRepo userRepo;
 
-    public ReviewService(ReviewRepo reviewRepo, BookRepo bookRepo, UserRepo userRepo) {
+    public ReviewService(ReviewRepo reviewRepo, BookRepo bookRepo, UserRepo userRepo){
         this.reviewRepo = reviewRepo;
         this.bookRepo = bookRepo;
         this.userRepo = userRepo;
     }
 
-    public List<ReviewEntity> getReviewsByUser(UUID userId) {
-        try {
-            return reviewRepo.findReviewsByUser(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
+    public ResponseEntity<List<ReviewEntity>> getReviewsByUser(UUID userId){
+        Optional<UserEntity> user = userRepo.findUserById(userId);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(reviewRepo.findReviewsByUser(user.get()));
     }
 
-    public List<ReviewEntity> getReviewsByBook(UUID bookId) {
-        try {
-            return reviewRepo.findReviewsByBook(bookId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
+    public ResponseEntity<List<ReviewEntity>> getReviewsByBook(UUID bookId){
+        Optional<BookEntity> book = bookRepo.findBookById(bookId);
+        if (book.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(reviewRepo.findReviewsByBook(book.get()));
     }
 
-    public ResponseEntity<ReviewEntity> postReview(ReviewRequestDTO reviewRequest) {
-        try {
-            BookEntity book = bookRepo.findBookById(reviewRequest.getBookId());
-            UserEntity user = userRepo.findUserById(reviewRequest.getUserId());
-            int rating = reviewRequest.getRate();
-            String review = reviewRequest.getReview();
-
-            reviewRepo.insertReview(user, book, rating, review);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<ReviewEntity> postReview(ReviewRequestDTO reviewRequest){
+        int rating = reviewRequest.getRate();
+        String review = reviewRequest.getReview();
+        Optional<BookEntity> book = bookRepo.findBookById(reviewRequest.getBookId());
+        Optional<UserEntity> user = userRepo.findUserById(reviewRequest.getUserId());
+        if (user.isEmpty() || book.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(reviewRepo.insertReview(user.get(), book.get(), rating, review));
     }
 
-    public ResponseEntity<ReviewEntity> deleteReview(UUID reviewId) {
-        try {
-            reviewRepo.deleteReview(reviewId);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<String> deleteReview(UUID reviewId){
+        Optional<ReviewEntity> review = reviewRepo.findReviewById(reviewId);
+        if (review.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        reviewRepo.deleteReview(reviewId);
+        return ResponseEntity.status(204).body("Review deleted");
     }
 
-    public ResponseEntity<ReviewEntity> updateReview(UUID reviewId, ReviewEntity reviewRequest) {
-        try {
-            reviewRepo.updateReview(reviewId, reviewRequest.getRate());
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<ReviewEntity> updateReview(UUID reviewId, ReviewRequestDTO reviewRequest){
+        Optional<ReviewEntity> review = reviewRepo.findReviewById(reviewId);
+        if (review.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(reviewRepo.updateReview(review.get(), reviewRequest.getRate()));
     }
 }

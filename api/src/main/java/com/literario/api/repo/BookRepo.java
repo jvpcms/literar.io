@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.literario.api.model.BookEntity;
@@ -13,10 +14,12 @@ import com.literario.api.model.BookEntity;
 @RepositoryRestResource
 public interface BookRepo extends JpaRepository<BookEntity, UUID> {
 
-
     @Query("SELECT b FROM BookEntity b WHERE b.year = :year")
     List<BookEntity> findBooksByYear(@Param("year") Integer year);
 
-    public BookEntity findBookById(UUID bookId);
+    default Optional<BookEntity> findBookById(UUID bookId){
+        Optional<BookEntity> book = findById(bookId);
+        return book;
+    }
 }
 
