@@ -44,4 +44,4 @@ out/
 gradle.properties
 
 ### Test ###
-/test/
+*/test/

@@ -4,22 +4,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
+import java.util.List;
 
 import com.literario.api.repo.BookRepo;
 import com.literario.api.repo.ReviewRepo;
-
+import com.literario.api.repo.UserRepo;
+import com.literario.api.service.ReviewService;
+import com.literario.api.model.ReviewEntity;
 @RestController
 @RequestMapping("/books")
 public class BookController {
 
     private BookRepo bookRepo;
-    private ReviewRepo reviewRepo;
+    private ReviewService reviewService;
 
-    public BookController(BookRepo bookRepo, ReviewRepo reviewRepo) {
+    public BookController(BookRepo bookRepo, ReviewRepo reviewRepo, UserRepo userRepo) {
         this.bookRepo = bookRepo;
-        this.reviewRepo = reviewRepo;
+        this.reviewService = new ReviewService(reviewRepo, bookRepo, userRepo);
     }
 
     @GetMapping
@@ -33,8 +37,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}/reviews")
-    public String getReviewsByBook(@PathVariable UUID id) {
-        return reviewRepo.findReviewsByBook(id).toString();
+    public ResponseEntity<List<ReviewEntity>> getReviews(@PathVariable("id") UUID bookId) {
+        return reviewService.getReviewsByBook(bookId);
     }
 
 }
