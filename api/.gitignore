@@ -45,3 +45,6 @@ gradle.properties
 
 ### Test ###
 */test/
+
+### Application ###
+src/main/resources/application.properties
