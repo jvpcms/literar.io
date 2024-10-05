@@ -46,6 +46,9 @@ public class CustomResponse {
             }
         }
 
+        // Set content type to application/json
+        servletResponse.setContentType("application/json");
+
         // Write body (if present)
         try {
             if (responseEntity.getBody() != null) {
