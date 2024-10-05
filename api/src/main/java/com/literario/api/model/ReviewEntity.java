@@ -60,6 +60,22 @@ public class ReviewEntity {
     public String getReview() {
         return review;
     }
+
+    public void setBook(BookEntity book) {
+        this.book = book;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
     
     @Override
     public String toString(){

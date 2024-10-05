@@ -4,36 +4,44 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import com.literario.api.model.BookEntity;
 import com.literario.api.model.ReviewEntity;
-
-import jakarta.transaction.Transactional;
+import com.literario.api.model.UserEntity;
 
 @RepositoryRestResource
 public interface ReviewRepo extends JpaRepository<ReviewEntity,UUID> {
     
-    @Query("SELECT re FROM ReviewEntity re WHERE re.book = :bookId")
-    List<ReviewEntity> findReviewsByBook(@Param("bookId") UUID bookId);
+    @Query("SELECT re FROM ReviewEntity re WHERE re.book = :book")
+    List<ReviewEntity> findReviewsByBook(@Param("book") BookEntity book);
     
-    @Query("SELECT re FROM ReviewEntity re WHERE re.user = :userId")
-    List<ReviewEntity> findReviewsByUser(@Param("userId") UUID userId);
+    @Query("SELECT re FROM ReviewEntity re WHERE re.user = :user")
+    List<ReviewEntity> findReviewsByUser(@Param("user") UserEntity userId);
 
-    @Transactional
-    @Modifying
-    @Query("INSERT INTO ReviewEntity (user, book, rating, review) VALUES (:userId, :bookId, :rating, :review)")
-    void insertReview(@Param("userId") UUID userId, @Param("bookId") UUID bookId, @Param("rating") Integer rating, @Param("review") String review);
+    default ReviewEntity insertReview(UserEntity user, BookEntity book, Integer rating, String review){
+        ReviewEntity newReview = new ReviewEntity();
+        newReview.setUser(user);
+        newReview.setBook(book);
+        newReview.setRating(rating);
+        newReview.setReview(review);
+        return save(newReview);
+    }
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE ReviewEntity SET rating = :rating WHERE id = :reviewId")
-    void updateReview(@Param("reviewId") UUID reviewId, @Param("rating") Integer rating);
+    default ReviewEntity updateReview(ReviewEntity review, Integer rating){
+        review.setRating(rating);
+        save(review);
+        return review;
+    }
 
-    @Transactional
-    @Modifying
-    @Query("DELETE FROM ReviewEntity WHERE id = :reviewId")
-    void deleteReview(@Param("reviewId") UUID reviewId);
+    default void deleteReview(UUID reviewId){
+        deleteById(reviewId);
+    }
+
+    default Optional<ReviewEntity> findReviewById(UUID reviewId){
+        return findById(reviewId);
+    }
 }

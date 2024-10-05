@@ -4,12 +4,25 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.UUID;
+import java.util.Map;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.literario.api.service.UserService;
+import com.literario.api.service.PasswordService;
+import com.literario.api.service.ReviewService; 
+
+import com.literario.api.model.ReviewEntity;
+
+import com.literario.api.model.NotAuthedUserEntity;
 import com.literario.api.repo.UserRepo;
 import com.literario.api.repo.ReviewRepo;
+import com.literario.api.repo.BookRepo;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -17,12 +30,15 @@ import com.literario.api.repo.ReviewRepo;
 public class UserController {
 
     private UserRepo userRepo;
-    private ReviewRepo reviewRepo;
+    private UserService userService;
+    private PasswordService passwordService;
+    private ReviewService reviewService;
 
-    public UserController(UserRepo userRepo, ReviewRepo reviewRepo) {
+    public UserController(UserRepo userRepo, BookRepo bookRepo, ReviewRepo reviewRepo) {
         this.userRepo = userRepo;
-        this.reviewRepo = reviewRepo;
-
+        this.userService = new UserService(userRepo);
+        this.passwordService = new PasswordService();
+        this.reviewService = new ReviewService(reviewRepo, bookRepo, userRepo);
     }
 
     @GetMapping()
@@ -31,13 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/reviews")
-    public String getReviewsByUser(@PathVariable("id") UUID userId) {
-        try {
-        return reviewRepo.findReviewsByUser(userId).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error: " + e.getMessage();
-        }
+    public ResponseEntity<List<ReviewEntity>> getReviews(@PathVariable("id") UUID userId) {
+        return reviewService.getReviewsByUser(userId);
     }
-    
 }
