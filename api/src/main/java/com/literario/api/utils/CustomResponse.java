@@ -1,7 +1,9 @@
 package com.literario.api.utils;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -13,9 +15,11 @@ public class CustomResponse {
     private static final String MESSAGE = "message";
     private static final String TOKEN = "token";
 
-    private CustomResponse() {}
+    private CustomResponse() {
+    }
 
-    public static ResponseEntity<Map<String, String>> create(HttpStatus status, Boolean ok, Optional<String> message, Optional<String> token) {
+    public static ResponseEntity<Map<String, String>> create(HttpStatus status, Boolean ok, Optional<String> message,
+            Optional<String> token) {
 
         Map<String, String> responseBody = new HashMap<>();
 
@@ -31,6 +35,30 @@ public class CustomResponse {
         return ResponseEntity.status(status).body(responseBody);
     }
 
+    public static void copyFromResponseEntity(ResponseEntity<Map<String, String>> responseEntity, HttpServletResponse servletResponse) {
+        // Set status code
+        servletResponse.setStatus(responseEntity.getStatusCode().value());
+
+        // Copy headers
+        for (Map.Entry<String, java.util.List<String>> header : responseEntity.getHeaders().entrySet()) {
+            for (String value : header.getValue()) {
+                servletResponse.addHeader(header.getKey(), value);
+            }
+        }
+
+        // Set content type to application/json
+        servletResponse.setContentType("application/json");
+
+        // Write body (if present)
+        try {
+            if (responseEntity.getBody() != null) {
+                servletResponse.getWriter().write(responseEntity.getBody().toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static ResponseEntity<Map<String, String>> userNotFound() {
         return create(HttpStatus.NOT_FOUND, false, Optional.of("User not found"), Optional.empty());
     }
@@ -43,12 +71,20 @@ public class CustomResponse {
         return create(HttpStatus.OK, true, Optional.empty(), Optional.of(token));
     }
 
+    public static ResponseEntity<Map<String, String>> tokenNotPresent() {
+        return create(HttpStatus.UNAUTHORIZED, false, Optional.of("Token not present"), Optional.empty());
+    }
+
     public static ResponseEntity<Map<String, String>> tokenExpired() {
         return create(HttpStatus.UNAUTHORIZED, false, Optional.of("Token expired"), Optional.empty());
     }
 
     public static ResponseEntity<Map<String, String>> invalidSignature() {
         return create(HttpStatus.UNAUTHORIZED, false, Optional.of("Invalid signature"), Optional.empty());
+    }
+
+    public static ResponseEntity<Map<String, String>> tokenException() {
+        return create(HttpStatus.FORBIDDEN, false, Optional.of("Token Exception"), Optional.empty());
     }
 
     public static ResponseEntity<Map<String, String>> invalidUserId() {

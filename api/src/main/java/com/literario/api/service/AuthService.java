@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 
 import java.util.Date;
 import java.util.Map;
@@ -22,35 +23,35 @@ import com.literario.api.utils.CustomResponse;
 @Service
 public class AuthService {
     
-    private AuthService() {}
-
     private static final String SECRET_KEY = System.getProperty("HS256_SECRET");
-    
-    private static UserRepo userRepo;
-    private static PasswordService passwordService;
 
+    private UserRepo userRepo;
+    private PasswordService passwordService;
+
+    public AuthService(UserRepo userRepo, PasswordService passwordService) {
+        this.userRepo = userRepo;
+        this.passwordService = passwordService;
+    }
 
     public static String genToken(UserEntity user) {
 
         long currentTimeMillis = System.currentTimeMillis();
         long expirationTimeMillis = currentTimeMillis + 1000 * 60 * 60 * 24 * 7;
 
-        return (
-            Jwts.builder()
-            .setHeaderParam("alg", "HS256")        // Algorithm
-            .setHeaderParam("typ", "JWT")          // Type
-            .setSubject(user.getUsername())                   // Subject
-            .claim("user_id", user.getId())              // Custom claim
-            .setIssuedAt(new Date(currentTimeMillis))         // Issued at
-            .setExpiration(new Date(expirationTimeMillis))    // Expiration
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)   // Signature
-            .compact()
-        );
+        return (Jwts.builder()
+            .setHeaderParam("alg", "HS256") // Algorithm
+            .setHeaderParam("typ", "JWT") // Type
+            .setSubject(user.getUsername()) // Subject
+            .claim("user_id", user.getId()) // Custom claim
+            .setIssuedAt(new Date(currentTimeMillis)) // Issued at
+            .setExpiration(new Date(expirationTimeMillis)) // Expiration
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // Signature
+            .compact());
     }
 
-    public static ResponseEntity<Map<String, String>> login(NotAuthedUserEntity notAuthedUser) {
+    public ResponseEntity<Map<String, String>> login(NotAuthedUserEntity notAuthedUser) {
 
-        // retirve user data from db
+        // Retrieve user data from db
         List<UserEntity> usersInDatabase = userRepo.findByUsername(notAuthedUser.getUsername());
 
         if (usersInDatabase.isEmpty()) {
@@ -59,54 +60,60 @@ public class AuthService {
 
         UserEntity user = usersInDatabase.get(0);
 
-        // check if password matches
+        // Check if password matches
         Boolean passwordIsValid = passwordService.checkPassword(notAuthedUser.getPassword(), user.getHash());
 
         if (passwordIsValid == null || !passwordIsValid) {
             return CustomResponse.invalidPassword();
         }
 
-        // generate token
+        // Generate token
         return CustomResponse.returnToken(genToken(user));
     }
-    
+
+    public ResponseEntity<Map<String, String>> registerUser(NotAuthedUserEntity notAuthedUser) {
+
+        // Check if user already exists
+        List<UserEntity> existentUsers = userRepo.findByUsername(notAuthedUser.getUsername());
+        if (!existentUsers.isEmpty()) {
+            return CustomResponse.existentUser();
+        }
+
+        // Hash password
+        String hashedPassword = passwordService.hashPassword(notAuthedUser.getPassword());
+        UserEntity user = new UserEntity(notAuthedUser.getUsername(), hashedPassword);
+
+        userRepo.save(user);
+        return CustomResponse.created();
+    }
 
     public static Claims extractAllClaims(String token) {
-        // throw ExpiredJwtException if token is expired
-        // throw SignatureException if signature is invalid
+        // Throw ExpiredJwtException if token is expired
+        // Throw SignatureException if signature is invalid
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
     public static UUID extractUserId(Claims claims) {
         return UUID.fromString(claims.get("user_id").toString());
     }
-    
 
-    public static Boolean verifyId(Claims claims, UUID id) {
+    public static Boolean verifyId(String token, UUID id) {
+        Claims claims = extractAllClaims(token);
         return id.equals(extractUserId(claims));
     }
-    
 
-    public static ResponseEntity<Map<String, String>> verifyToken(String token, UUID id) {
-
-        Claims claims = null;
-
-        try {
-            claims = extractAllClaims(token);
-        }
-        catch (ExpiredJwtException e) {
-            return CustomResponse.tokenExpired();
-        }
-        catch (SignatureException e) {
-            return CustomResponse.invalidSignature();
-        }
-
-        if (verifyId(claims, id) == null || !verifyId(claims, id)) {
-            return CustomResponse.invalidUserId();
-        }
+    public static ResponseEntity<Map<String, String>> verifyToken(String token) {
         
-        return CustomResponse.ok();
+        try {
+            extractAllClaims(token);
+        } catch (ExpiredJwtException e) {
+            return CustomResponse.tokenExpired();
+        } catch (SignatureException e) {
+            return CustomResponse.invalidSignature();
+        } catch (JwtException e) {
+            return CustomResponse.tokenException();
+        }
 
+        return CustomResponse.ok();
     }
-    
 }
