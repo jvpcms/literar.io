@@ -22,87 +22,98 @@ import com.literario.api.utils.CustomResponse;
 
 @Service
 public class AuthService {
+    
+    private static final String SECRET_KEY = System.getProperty("HS256_SECRET");
 
-  private AuthService() {
-  }
+    private UserRepo userRepo;
+    private PasswordService passwordService;
 
-  private static final String SECRET_KEY = System.getProperty("HS256_SECRET");
-
-  private static UserRepo userRepo;
-  private static PasswordService passwordService;
-
-  public static String genToken(UserEntity user) {
-
-    long currentTimeMillis = System.currentTimeMillis();
-    long expirationTimeMillis = currentTimeMillis + 1000 * 60 * 60 * 24 * 7;
-
-    return (Jwts.builder()
-        .setHeaderParam("alg", "HS256") // Algorithm
-        .setHeaderParam("typ", "JWT") // Type
-        .setSubject(user.getUsername()) // Subject
-        .claim("user_id", user.getId()) // Custom claim
-        .setIssuedAt(new Date(currentTimeMillis)) // Issued at
-        .setExpiration(new Date(expirationTimeMillis)) // Expiration
-        .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // Signature
-        .compact());
-  }
-
-  public static ResponseEntity<Map<String, String>> login(NotAuthedUserEntity notAuthedUser) {
-
-    // retirve user data from db
-    List<UserEntity> usersInDatabase = userRepo.findByUsername(notAuthedUser.getUsername());
-
-    if (usersInDatabase.isEmpty()) {
-      return CustomResponse.userNotFound();
+    public AuthService(UserRepo userRepo, PasswordService passwordService) {
+        this.userRepo = userRepo;
+        this.passwordService = passwordService;
     }
 
-    UserEntity user = usersInDatabase.get(0);
+    public static String genToken(UserEntity user) {
 
-    // check if password matches
-    Boolean passwordIsValid = passwordService.checkPassword(notAuthedUser.getPassword(), user.getHash());
+        long currentTimeMillis = System.currentTimeMillis();
+        long expirationTimeMillis = currentTimeMillis + 1000 * 60 * 60 * 24 * 7;
 
-    if (passwordIsValid == null || !passwordIsValid) {
-      return CustomResponse.invalidPassword();
+        return (Jwts.builder()
+            .setHeaderParam("alg", "HS256") // Algorithm
+            .setHeaderParam("typ", "JWT") // Type
+            .setSubject(user.getUsername()) // Subject
+            .claim("user_id", user.getId()) // Custom claim
+            .setIssuedAt(new Date(currentTimeMillis)) // Issued at
+            .setExpiration(new Date(expirationTimeMillis)) // Expiration
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // Signature
+            .compact());
     }
 
-    // generate token
-    return CustomResponse.returnToken(genToken(user));
-  }
+    public ResponseEntity<Map<String, String>> login(NotAuthedUserEntity notAuthedUser) {
 
-  public static Claims extractAllClaims(String token) {
-    // throw ExpiredJwtException if token is expired
-    // throw SignatureException if signature is invalid
-    return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-  }
+        // Retrieve user data from db
+        List<UserEntity> usersInDatabase = userRepo.findByUsername(notAuthedUser.getUsername());
 
-  public static UUID extractUserId(Claims claims) {
-    return UUID.fromString(claims.get("user_id").toString());
-  }
+        if (usersInDatabase.isEmpty()) {
+            return CustomResponse.userNotFound();
+        }
 
-  public static Boolean verifyId(Claims claims, UUID id) {
-    return id.equals(extractUserId(claims));
-  }
+        UserEntity user = usersInDatabase.get(0);
 
-  public static ResponseEntity<Map<String, String>> verifyToken(String token, UUID id) {
+        // Check if password matches
+        Boolean passwordIsValid = passwordService.checkPassword(notAuthedUser.getPassword(), user.getHash());
 
-    Claims claims = null;
+        if (passwordIsValid == null || !passwordIsValid) {
+            return CustomResponse.invalidPassword();
+        }
 
-    try {
-      claims = extractAllClaims(token);
-    } catch (ExpiredJwtException e) {
-      return CustomResponse.tokenExpired();
-    } catch (SignatureException e) {
-      return CustomResponse.invalidSignature();
-    } catch (JwtException e) {
-      return CustomResponse.tokenException();
+        // Generate token
+        return CustomResponse.returnToken(genToken(user));
     }
 
-    if (verifyId(claims, id) == null || !verifyId(claims, id)) {
-      return CustomResponse.invalidUserId();
+    public ResponseEntity<Map<String, String>> registerUser(NotAuthedUserEntity notAuthedUser) {
+
+        // Check if user already exists
+        List<UserEntity> existentUsers = userRepo.findByUsername(notAuthedUser.getUsername());
+        if (!existentUsers.isEmpty()) {
+            return CustomResponse.existentUser();
+        }
+
+        // Hash password
+        String hashedPassword = passwordService.hashPassword(notAuthedUser.getPassword());
+        UserEntity user = new UserEntity(notAuthedUser.getUsername(), hashedPassword);
+
+        userRepo.save(user);
+        return CustomResponse.created();
     }
 
-    return CustomResponse.ok();
+    public static Claims extractAllClaims(String token) {
+        // Throw ExpiredJwtException if token is expired
+        // Throw SignatureException if signature is invalid
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    }
 
-  }
+    public static UUID extractUserId(Claims claims) {
+        return UUID.fromString(claims.get("user_id").toString());
+    }
 
+    public static Boolean verifyId(String token, UUID id) {
+        Claims claims = extractAllClaims(token);
+        return id.equals(extractUserId(claims));
+    }
+
+    public static ResponseEntity<Map<String, String>> verifyToken(String token) {
+        
+        try {
+            extractAllClaims(token);
+        } catch (ExpiredJwtException e) {
+            return CustomResponse.tokenExpired();
+        } catch (SignatureException e) {
+            return CustomResponse.invalidSignature();
+        } catch (JwtException e) {
+            return CustomResponse.tokenException();
+        }
+
+        return CustomResponse.ok();
+    }
 }
