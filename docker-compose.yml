@@ -16,8 +16,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./initdb/initdatapostgres_data:/var/lib/postgresql/data 
-      - ./initdb/initfiles:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data 
+      - ./initdb:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_DB: master
       POSTGRES_USER: postgres
