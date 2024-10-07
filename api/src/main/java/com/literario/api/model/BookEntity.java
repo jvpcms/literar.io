@@ -8,8 +8,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 
 import java.util.UUID;
 import java.util.List;
@@ -42,12 +45,13 @@ public class BookEntity {
     
     @Column(nullable = false)
     private String synopsis;
-    
-    @Column(nullable = false)
-    private UUID authorId;
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<ReviewEntity> reviews = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "author_id", foreignKey = @ForeignKey(name = "fk_author", foreignKeyDefinition = "FOREIGN KEY (author_id) REFERENCES author(id) ON DELETE CASCADE"))
+    private AuthorEntity author;
 
     public UUID getId() {
         return id;
@@ -61,7 +65,7 @@ public class BookEntity {
                 ", title='" + title + '\'' +
                 ", year=" + year +
                 ", synopsis='" + synopsis + '\'' +
-                ", author='" + authorId + '\'' +
+                ", author='" + author + '\'' +
                 '}';
     }
 }

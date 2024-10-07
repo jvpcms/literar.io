@@ -30,7 +30,7 @@ public class ReviewService {
 
     public ResponseEntity<List<ReviewEntity>> getReviewsByUser(UUID userId){
         Optional<UserEntity> user = userRepo.findUserById(userId);
-        if (user == null) {
+        if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(reviewRepo.findReviewsByUser(user.get()));
