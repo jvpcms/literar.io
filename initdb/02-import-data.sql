@@ -1,4 +1,0 @@
--- COPY author (id, name, description) FROM '/docker-entrypoint-initdb.d/authors_sample_data.csv' DELIMITER ',' CSV HEADER;
--- COPY books (id, title, year, synopsis, author_id) FROM '/docker-entrypoint-initdb.d/books_sample_data.csv' DELIMITER ',' CSV HEADER;
--- COPY users (id, username, hash) FROM '/docker-entrypoint-initdb.d/users_sample_data.csv' DELIMITER ',' CSV HEADER;
--- COPY reviews (id, review, rating, user_id, book_id) FROM '/docker-entrypoint-initdb.d/reviews_sample_data.csv' DELIMITER ',' CSV HEADER;
