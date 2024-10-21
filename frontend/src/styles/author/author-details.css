@@ -1,0 +1,36 @@
+
+#author-details {
+    display: flex;
+    width: auto;
+    height: calc(100vh - 90px);
+    margin-top: 3%;
+    gap: 50px;
+}
+
+.image-placeholder {
+    width: 300px;
+    height: 440px;
+    object-fit: cover;
+    background-color: #e0e0e0;
+    display: flex;
+    overflow: hidden;
+    border-radius: 10%;
+    box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
+}
+
+.author-info{
+    display: flex;
+    flex-direction: column;
+}
+
+.author-name{
+    font-size: xx-large;
+    margin-bottom: 60px;
+    text-decoration: none;
+    color: #0d0d0d;
+}
+
+.description h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
