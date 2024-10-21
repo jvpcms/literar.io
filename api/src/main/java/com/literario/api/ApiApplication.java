@@ -8,16 +8,16 @@ import io.github.cdimascio.dotenv.Dotenv;
 @SpringBootApplication
 public class ApiApplication {
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        Dotenv dotenv = Dotenv.load();
+    Dotenv dotenv = Dotenv.load();
 
-		System.setProperty("POSTGRES_URL", dotenv.get("POSTGRES_URL"));
-        System.setProperty("POSTGRES_USER", dotenv.get("POSTGRES_USER"));
-        System.setProperty("POSTGRES_PASSWORD", dotenv.get("POSTGRES_PASSWORD"));
-		System.setProperty("HS256_SECRET", dotenv.get("HS256_SECRET"));
+    System.setProperty("POSTGRES_URL", dotenv.get("POSTGRES_URL"));
+    System.setProperty("POSTGRES_USER", dotenv.get("POSTGRES_USER"));
+    System.setProperty("POSTGRES_PASSWORD", dotenv.get("POSTGRES_PASSWORD"));
+    System.setProperty("HS256_SECRET", dotenv.get("HS256_SECRET"));
 
-		SpringApplication.run(ApiApplication.class, args);
-	}
+    SpringApplication.run(ApiApplication.class, args);
+  }
 
 }

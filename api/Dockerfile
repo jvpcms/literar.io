@@ -7,4 +7,4 @@ COPY . /app
 
 RUN chmod +x ./gradlew
 
-CMD ["./gradlew", "clean", "build", "bootRun"]
+CMD ["bash", "./gradlew", "clean", "build", "bootRun"]
