@@ -1,4 +1,12 @@
 services:
+  front:
+    build: ./frontend 
+    ports:
+      - "9090:80"
+    volumes:
+      - ./frontend:/app-front
+    depends_on:
+      - web
   web:
     build: ./api
     ports:
