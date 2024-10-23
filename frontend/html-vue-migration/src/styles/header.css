@@ -1,0 +1,128 @@
+header{
+    width: 100%;
+    padding: 28px 8%;
+    position: sticky;
+    top: 0;
+    background: linear-gradient(to bottom, #eff0f3, #e3e4e7);
+    z-index: 3;
+}
+
+#nav_logo{
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 30px;
+    color: #262626;
+}
+
+.fa-solid {
+    color: #0d0d0d;
+    font-size: 30px; 
+}
+
+#navbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#nav_list {
+    display: flex;
+    list-style: none;
+    gap: 48px;
+}
+
+#nav-account {
+    display: flex;
+    justify-content: space-between;
+}
+
+#nav-account .btn{
+    appearance: none;
+    background: linear-gradient(#ff7b1d, #ff8e3c);
+    border: 0.125em;
+    border-radius: 0.9375em;
+    box-sizing: border-box;
+    color: #1A1A1A;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 16px;
+    font-weight: 600;
+    margin: 2px;
+    height: 45px;
+    min-width: 0;
+    padding: 0 2em; 
+    text-align: center; 
+    line-height: 45px;  
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    will-change: transform;
+}
+
+#nav-account .btn:disabled{
+    pointer-events: none;
+}
+#nav-account .btn:hover{
+    color: #fff;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+}
+#nav-account .btn:active{
+    box-shadow: none;
+    transform: translateY(0);
+}
+.nav-item a{
+    text-decoration: none;
+    color: #0d0d0d;
+    font-weight: 600;
+}
+
+.nav-item.active a{
+    color: #0d0d0d;
+    border-bottom: 3px solid #ff8e3c;
+}
+
+#mobile_btn {
+    display: none;
+}
+
+#mobile_menu {
+    display: none;
+}
+
+@media screen and (max-width: 1170px) {
+    #nav_list,
+    #navbar .btn {
+        display: none;
+    }
+
+    #mobile_btn {
+        display: block;
+        border: none;
+        background-color: transparent;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    #mobile_menu.active {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #mobile_nav_list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 12px 0px;
+    }
+
+    #mobile_nav_list .nav-item {
+        list-style: none;
+        text-align: center;
+    }  
+}

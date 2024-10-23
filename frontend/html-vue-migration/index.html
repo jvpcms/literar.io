@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="src/styles/styles.css">
+    <link rel="stylesheet" href="src/styles/header.css">
+    <link rel="stylesheet" href="src/styles/index/home.css">
+    <link rel="stylesheet" href="src/styles/index/catalog.css">
+    <link rel="stylesheet" href="src/styles/index/ratings.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <title>document</title>
+</head>
+<body>
+    <header>
+        <nav id="navbar">
+            <a href="http://127.0.0.1:5500/index.html"><i class="fa-solid fa-book"> <span id="nav_logo">Literar.io</span></i></a>
+            <ul id="nav_list">
+                <li class="nav-item active">
+                    <a href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#catalog">Catalog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#rating">Reviews</a>
+                </li>
+            </ul>
+            
+        <nav id="nav-account">            
+                <form action="login.html">
+                    <button class="btn">
+                        Sign in
+                    </button>
+                </form>
+
+                <form action="register.html">
+                    <button class="btn">
+                        Register
+                    </button>
+                </form>
+        </nav>
+        <button id="mobile_btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        </nav>
+        <div id="mobile_menu">
+            <ul id="mobile_nav_list">
+                <li class="nav-item active">
+                    <a href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#catalog">Catalog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#rating">Reviews</a>
+                </li>
+            </ul>
+    </header>
+
+    <main id="content">
+        <section id="home">
+            <div id="cta">
+                <h1 class="title">
+                    Literar.io
+                </h1>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+                    Est cumque unde ex nulla molestias. In voluptas nihil hic, incidunt expedita atque fuga. 
+                    Accusamus, sunt dolor facere aliquid velit architecto iure?
+            
+                </p>
+            </div>
+            <div id="cta-button">
+                <input placeholder="Books or Authors" type="text" name="text" class="input">
+                <button class="btn">
+                    Search
+                </button>
+            </div>
+        </section>
+
+        <section id="book-container">
+
+                <h2 class="section-title">
+                    Catalog
+                </h2>
+                <h3 class="section-subtitle">Trending books</h3>
+
+           
+                <div class="book-wrapper">
+                    <div class="book-list">
+                        <div class="book">
+                            <a href="http://127.0.0.1:5500/book.html"><img src="src/images/books.jpg" class="book-image"></a>
+                            <a href="http://127.0.0.1:5500/book.html">
+                                Lorem Ipsum
+                            </a>
+                            <span class="book-description">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                Officiis aut odio totam dignissimos quia eos, placeat eius quisquam id saepe earum consectetur nisi minima vitae atque,
+                                esse, harum ducimus exercitationem!
+                            </span>
+                            <div class="book-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <span>(500+)</span>
+                            </div>
+                        </div>
+                        <div class="book">
+                            <a href="http://127.0.0.1:5500/book.html"><img src="src/images/books.jpg" class="book-image"></a>
+                            <a href="http://127.0.0.1:5500/book.html">
+                                Lorem Ipsum
+                            </a>
+                            <span class="book-description">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                Officiis aut odio totam dignissimos quia eos, placeat eius quisquam id saepe earum consectetur nisi minima vitae atque,
+                                esse, harum ducimus exercitationem!
+                            </span>
+                            <div class="book-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <span>(500+)</span>
+                            </div>
+                        </div>
+                        <div class="book">
+                            <a href="http://127.0.0.1:5500/book.html"><img src="src/images/books.jpg" class="book-image"></a>
+                            <a href="http://127.0.0.1:5500/book.html">
+                                Lorem Ipsum
+                            </a>
+                            <span class="book-description">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                Officiis aut odio totam dignissimos quia eos, placeat eius quisquam id saepe earum consectetur nisi minima vitae atque,
+                                esse, harum ducimus exercitationem!
+                            </span>
+                            <div class="book-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <span>(500+)</span>
+                            </div>
+                        </div>
+                        <div class="book">
+                            <a href="http://127.0.0.1:5500/book.html"><img src="src/images/books.jpg" class="book-image"></a>
+                            <a href="http://127.0.0.1:5500/book.html">
+                                Lorem Ipsum
+                            </a>
+                            <span class="book-description">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                Officiis aut odio totam dignissimos quia eos, placeat eius quisquam id saepe earum consectetur nisi minima vitae atque,
+                                esse, harum ducimus exercitationem!
+                            </span>
+                            <div class="book-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <span>(500+)</span>
+                            </div>
+                        </div>
+                        <div class="book">
+                            <a href="http://127.0.0.1:5500/book.html"><img src="src/images/books.jpg" class="book-image"></a>
+                            <a href="http://127.0.0.1:5500/book.html">
+                                Lorem Ipsum
+                            </a>
+                            <span class="book-description">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                Officiis aut odio totam dignissimos quia eos, placeat eius quisquam id saepe earum consectetur nisi minima vitae atque,
+                                esse, harum ducimus exercitationem!
+                            </span>
+                            <div class="book-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <span>(500+)</span>
+                            </div>
+                        </div>
+                        <div class="book">
+                            <a href="http://127.0.0.1:5500/book.html"><img src="src/images/books.jpg" class="book-image"></a>
+                            <a href="http://127.0.0.1:5500/book.html">
+                                Lorem Ipsum
+                            </a>
+                            <span class="book-description">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                                Officiis aut odio totam dignissimos quia eos, placeat eius quisquam id saepe earum consectetur nisi minima vitae atque,
+                                esse, harum ducimus exercitationem!
+                            </span>
+                            <div class="book-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <span>(500+)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                
+        </div>
+        <i class="fas fa-chevron-right arrow right"></i>
+
+
+
+
+        </section>
+
+        <section id="rating">
+            <img src="https://img.freepik.com/fotos-gratis/celebracao-do-dia-mundial-do-livro_23-2151245176.jpg?t=st=1729194335~exp=1729197935~hmac=07903d0ccd6112001a8ef17177e512a619df39060bd35161105601486f2c8a8f&w=996" alt="" class="rating-image">
+            
+            <div id="rating_content">
+
+                <h2 class="section-title">Reviews</h2>
+                <h3 class="section-subtitle">Popular reviews</h3>
+
+                <div id="reviews">                    
+                    <div class="review">
+                        <a href="#"><img src="src/images/books.jpg" class="book-image"></a>
+                        
+                        <div class="review-content">
+                            <a class="book-title" href="#">Book Title</a>
+                                <div class="profile">
+                                    <div class="profile-review">
+                                        <a href="http://127.0.0.1:5500/profile.html" class="profile-info" > <img src="src/images/avatar-image.avif" class="avatar-image"> Fulano Sicrano</a>
+                                        <span>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    </div>
+                                    <p>
+                                    "Lorem ipsum dolor sit amet consectetur adipisicing elit."
+                                    </p>
+
+                                </div>
+                        </div>
+                    </div>
+                    <div class="review">
+                        <a href="#"><img src="src/images/books.jpg" class="book-image"></a>
+                        
+                        <div class="review-content">
+                            <a class="book-title" href="#">Book Title</a>
+                                <div class="profile">
+                                    <div class="profile-review">
+                                        <a href="http://127.0.0.1:5500/profile.html" class="profile-info" > <img src="src/images/avatar-image.avif" class="avatar-image"> Fulano Sicrano</a>
+                                        <span>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </span>
+                                    </div>
+                                    <p>
+                                    "Lorem ipsum dolor sit amet consectetur adipisicing elit."
+                                    </p>
+
+                                </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+        </section>
+
+        <footer>
+            <img src="src/images/wave.svg" alt="">
+        </footer>
+
+    </main>
+
+    <script src="src/javascript/script.js"></script>
+    
+</body>
+</html>
