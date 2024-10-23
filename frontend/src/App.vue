@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue'
 
 const loggedIn = ref(false)
 </script>
@@ -13,7 +14,7 @@ const loggedIn = ref(false)
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/register">Register</RouterLink>
-        <RouterLink to="/profile">Profile</RouterLink>
+        <RouterLink v-if="loggedIn" to="/profile">Profile</RouterLink>
       </nav>
     </div>
   </header>
@@ -27,6 +28,10 @@ nav {
   font-size: 12px;
   text-align: center;
   margin-top: 2rem;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
 }
 
 nav a.router-link-exact-active {
