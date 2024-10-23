@@ -8,7 +8,7 @@
 
 .book-wrapper {
     position: relative;
-    overflow: hidden;
+    overflow: hidden; 
     width: 100%;
 }
 
@@ -17,8 +17,7 @@
     align-items: center;
     gap: 22px;
     margin-top: 32px;
-    transform: translateX(0);
-    transition: all 1s ease-in-out;
+    transition: transform 0.5s ease-in-out; 
 }
 
 .book {
@@ -74,13 +73,22 @@
     font-size: 60px;
     position: absolute;
     top: 330px;
-    right: 50px;
+    right: 10px;
     color: rgb(61, 61, 61);
     opacity: 0.5;
     cursor: pointer;
 }
+
+.book-list {
+    transform: translateX(0); 
+}
+
+.book-wrapper:hover .book-list {
+    transform: translateX(-400px); 
+}
+
 @media screen and (max-width: 1170px) {
-    #book-list {
+    .book-list {
         flex-wrap: wrap;
         justify-content: center;
     }
@@ -92,10 +100,10 @@
 
 @media screen and (max-width: 600px) {
     .book {
-        width: 50%;
+        width: 100%;
     }
 
     #catalog .section-subtitle {
         text-align: center;
     }
-} 
+}

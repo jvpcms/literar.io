@@ -9,7 +9,7 @@
 .profile-settings-container {
     display: flex;    
     background-color: #fff;
-    height: 600px;
+    height: 625px;
     border-radius: 10%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 800px;
@@ -44,17 +44,25 @@
     margin-bottom: 20px;
 }
 
-#description{
+#description {
     height: 110px;
 }
-#confirm-password{
+
+#confirm-password {
     margin-bottom: 15px;
 }
 
-form .input {
-    width: 100%;
-    padding: 12px;
-    margin: 5px;
+/* Garantir que labels e inputs fiquem empilhados verticalmente */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form .input, .description-input {
+    width: 92%;
+    padding: 8px;
+    margin-bottom: 3px; /* Espaço embaixo de cada campo */
     border-radius: 12px;
     border: 1.5px solid lightgrey;
     outline: none;
@@ -62,16 +70,35 @@ form .input {
     box-shadow: 0px 0px 20px -18px;
 }
 
-form .input:hover {
+form .description-input {
+    resize: vertical;
+}
+
+form .input:hover, .description-input:hover {
     border: 2px solid lightgrey;
     box-shadow: 0px 0px 20px -17px;
 }
-  
-form .input:active {
-    transform: scale(0.99);
+
+form .input:active, .description-input:active {
+    transform: scale(0.80);
 }
-  
-form .input:focus {
+
+form .input:focus, .description-input:focus {
     border: 2px solid grey;
 }
 
+.btn {
+    width: 100%;
+    display: center;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
