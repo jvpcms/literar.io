@@ -1,9 +1,22 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import { ref } from 'vue'
 
+const router = useRouter()
 const loggedIn = ref(false)
+
+function handleAuthEvent(authEvent: string) {
+  if (authEvent === 'login' || authEvent === 'register') {
+    loggedIn.value = true
+    router.push('/profile')
+  }
+  else if (authEvent === 'logout') {
+    loggedIn.value = false
+    router.push('/')
+  }
+}
+
 </script>
 
 <template>
@@ -12,14 +25,14 @@ const loggedIn = ref(false)
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/register">Register</RouterLink>
-        <RouterLink v-if="loggedIn" to="/profile">Profile</RouterLink>
+        <RouterLink v-if="!loggedIn" to="/login">Login</RouterLink>
+        <RouterLink v-if="!loggedIn" to="/register">Register</RouterLink>
+        <RouterLink v-else to="/profile">Profile</RouterLink>
       </nav>
     </div>
   </header>
 
-  <RouterView />
+  <RouterView @authEvent="handleAuthEvent" />
 </template>
 
 <style scoped>
