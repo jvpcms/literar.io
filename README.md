@@ -8,7 +8,7 @@ Bem-vindo ao **Literar.io** - uma rede social para amantes de livros! Este proje
 - **Framework**: Spring Boot
 - **Ferramenta de Build**: Gradle
 - **Banco de Dados**: PostgreSQL
-- **Frontend**: A definir
+- **Frontend**: Vue
 
 ## Descrição do Projeto
 
