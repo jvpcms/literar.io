@@ -1,0 +1,61 @@
+#home {
+    text-align: center;
+    min-height: calc(100vh-88.8px); 
+    background: linear-gradient(to top left, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
+    linear-gradient(to top right, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
+    linear-gradient(to bottom left, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
+    linear-gradient(to bottom right, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
+
+
+    url('https://img.freepik.com/fotos-gratis/arranjo-de-livros-de-vista-acima_23-2148882757.jpg?t=st=1729189342~exp=1729192942~hmac=d7d25804d0d57df5310b9ae738c2fc9487f3824b7bf27a491b73ceec81666baf&w=1060');
+    background-size: cover; /* Faz com que a imagem cubra toda a área */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat;
+    height: calc(100vh - 85px);
+    padding: 7%;
+    width: 100%;
+    
+}
+
+#cta .title {
+    font-size: 70px;
+    font-weight: bold; 
+    color: #0d0d0d;
+    margin-bottom: 10px;
+    padding-top: 2%;
+}
+
+#cta p {
+    font-size: 18px;
+    padding: 28px 8%;
+    margin: 20px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+#cta-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#cta-button .input{
+    width: 20%;
+    height: 45px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+}
+#cta-button .input:hover{
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+}
+#cta-button .input:active{
+    transform: scale(0.99);
+}
+#cta-button .input:focus{
+    border: 2px solid grey;
+}

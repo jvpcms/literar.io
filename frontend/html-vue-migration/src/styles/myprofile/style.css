@@ -1,0 +1,104 @@
+
+#profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.profile-settings-container {
+    display: flex;    
+    background-color: #fff;
+    height: 625px;
+    border-radius: 10%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 800px;
+    padding: 20px;
+}
+
+.profile-picture-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-right: 20px;
+    border-right: 1px solid #ccc;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+
+.profile-info-section {
+    flex: 2;
+    padding-left: 20px;
+}
+
+.profile-info-section h2 {
+    margin-bottom: 20px;
+}
+
+#description {
+    height: 110px;
+}
+
+#confirm-password {
+    margin-bottom: 15px;
+}
+
+/* Garantir que labels e inputs fiquem empilhados verticalmente */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form .input, .description-input {
+    width: 92%;
+    padding: 8px;
+    margin-bottom: 3px; /* Espaço embaixo de cada campo */
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+}
+
+form .description-input {
+    resize: vertical;
+}
+
+form .input:hover, .description-input:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+}
+
+form .input:active, .description-input:active {
+    transform: scale(0.80);
+}
+
+form .input:focus, .description-input:focus {
+    border: 2px solid grey;
+}
+
+.btn {
+    width: 100%;
+    display: center;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}

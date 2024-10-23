@@ -8,7 +8,7 @@ Bem-vindo ao **Literar.io** - uma rede social para amantes de livros! Este proje
 - **Framework**: Spring Boot
 - **Ferramenta de Build**: Gradle
 - **Banco de Dados**: PostgreSQL
-- **Frontend**: A definir
+- **Frontend**: Vue
 
 ## Descrição do Projeto
 
@@ -20,11 +20,11 @@ O **Literar.io** permitirá que os usuários:
 
 ## Estrutura do Projeto
 
-O projeto está dividido em duas partes principais:
+O projeto está dividido em tres partes principais:
 
 1. **API Backend**: Desenvolvida em Java utilizando Spring Boot, a API será responsável por gerenciar todas as operações de backend, incluindo autenticação, gerenciamento de usuários, livros, resenhas, entre outros.
 
-2. **Frontend**: A definir
+2. **Frontend**: Desenvolvido utilizando Vue.js, o frontend é responsável por fornecer uma interface interativa e amigável para os usuários. Ele se comunica com a API backend para exibir e manipular dados em tempo real. Para hospedar a interface, foi configurado o servidor web Nginx, garantindo alta performance e confiabilidade na entrega de conteúdo estático.
 
 ## Documentação
 
@@ -36,6 +36,7 @@ Aproveite o Literar.io!
 ## Setup
 
 Para realizar os testes da aplicação serão utilizados ambientes configurados em `Docker`. Por default, as portas configuradas no arquivo `docker-compose.yml` são:
+- 9090: Serviço de servidor web
 - 8080: Serviço da API
 - 5432: Serviço do banco de dados (postgres v12)
 
