@@ -86,28 +86,53 @@ $(document).ready(function() {
             origin: 'right',
             distance: '10%'
         })
+        ScrollReveal().reveal('#review-container',{
+            duration:2000,
+            origin: 'left',
+            distance: '10%'
+        })
 
     });
 
 function goBack() {
     window.history.back();
-  }
+}
 
 const arrows = document.querySelectorAll(".arrow");
-const movieLists = document.querySelectorAll(".book-list");
+const bookLists = document.querySelectorAll(".book-list");
 
 arrows.forEach((arrow, i) => {
-  const itemNumber = movieLists[i].querySelectorAll("img").length;
+  const itemNumber = bookLists[i].querySelectorAll("img").length;
   let clickCounter = 0;
   arrow.addEventListener("click", () => {
     const ratio = Math.floor(window.innerWidth / 270);
     clickCounter++;
     if (itemNumber - (4 + clickCounter) + (5 - ratio) >= 0) {
-      movieLists[i].style.transform = `translateX(${
-        movieLists[i].computedStyleMap().get("transform")[0].x.value - 320
+      bookLists[i].style.transform = `translateX(${
+        bookLists[i].computedStyleMap().get("transform")[0].x.value - 320
       }px)`;
     } else {
-      movieLists[i].style.transform = "translateX(0)";
+      bookLists[i].style.transform = "translateX(0)";
+      clickCounter = 0;
+    }
+  });
+});
+
+const arrowsReview = document.querySelectorAll(".arrow_review"); // Seleciona as setas de review
+const reviewLists = document.querySelectorAll(".review-list");
+
+arrowsReview.forEach((arrow, i) => {
+  const itemNumber = reviewLists[i].querySelectorAll(".review-card").length;
+  let clickCounter = 0;
+  arrow.addEventListener("click", () => {
+    const ratio = Math.floor(window.innerWidth / 270);
+    clickCounter++;
+    if (itemNumber - (3 + clickCounter) + (5 - ratio) >= 0) {
+      reviewLists[i].style.transform = `translateX(${
+        reviewLists[i].computedStyleMap().get("transform")[0].x.value - 435
+      }px)`;
+    } else {
+      reviewLists[i].style.transform = "translateX(0)";
       clickCounter = 0;
     }
   });
