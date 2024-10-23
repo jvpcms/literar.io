@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+const loggedIn = ref(false)
 </script>
 
 <template>
   <header>
 
     <div class="wrapper">
-      <HelloWorld msg="Literario" />
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
+        <RouterLink to="/register">Register</RouterLink>
+        <RouterLink to="/profile">Profile</RouterLink>
       </nav>
     </div>
   </header>
