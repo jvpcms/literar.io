@@ -57,6 +57,22 @@ public class BookEntity {
         return id;
     }
 
+    public Integer getYear(){
+        return year;
+    }
+
+    public String getTitle(){
+        return title;
+    }
+
+    public String getSynopsis(){
+        return synopsis;
+    }
+
+    public UUID getAuthorId(){
+        return author.getId();
+    }
+
     @Override
     public String toString() {
         return "Book{" +

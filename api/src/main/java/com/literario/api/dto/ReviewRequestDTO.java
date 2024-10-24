@@ -5,7 +5,7 @@ import java.util.UUID;
 public class ReviewRequestDTO {
     private UUID bookId;
     private UUID userId;
-    private int rating;
+    private Integer rating;
     private String review;
 
     // Getters and setters
@@ -25,12 +25,12 @@ public class ReviewRequestDTO {
         this.userId = userId;
     }
 
-    public int getRate() {
+    public Integer getRate() {
         return rating;
     }
 
-    public void setRate(int rate) {
-        this.rating = rate;
+    public void setRate(Integer rating) {
+        this.rating = rating;
     }
 
     public String getReview() {

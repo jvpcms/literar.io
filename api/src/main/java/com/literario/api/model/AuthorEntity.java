@@ -32,6 +32,10 @@ public class AuthorEntity{
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<BookEntity> books = new ArrayList<>();    
 
+    public UUID getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Author{" +
