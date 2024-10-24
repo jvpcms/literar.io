@@ -36,6 +36,14 @@ public class AuthorEntity{
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public String toString() {
         return "Author{" +
