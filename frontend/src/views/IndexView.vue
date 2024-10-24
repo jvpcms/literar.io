@@ -130,19 +130,20 @@
       })
       .then(response => response.json())
       .then(data => {
-        this.books.append({
-          id: data.id,
-          title: data.title,
-          description: data.description,
-          image: "/images/books.jpg",
-          link: "#",
-        }) data;
+        data.forEach(book => {
+          this.books.push({
+            id: book.id,
+            title: book.title,
+            description: book.description,
+            image: "/images/books.jpg",
+            link: "#"
+            });
+          });
+        });
         // Dar um for ( elemento em data ) para cada elemento, fazer 
         // data é uma lista de livros, pegar cada elemento dele e extrair os campos.
         // Precisamos que essa função seja rodada assim que a página seja inicializada. Depois, construri
-      });
-
-    }
+    },
     mounted() {
       // Lógica para o ScrollReveal e funcionalidade mobile
       document.querySelector("#mobile_btn").addEventListener("click", function () {
