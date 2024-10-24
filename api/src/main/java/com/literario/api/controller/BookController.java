@@ -14,6 +14,7 @@ import com.literario.api.repo.ReviewRepo;
 import com.literario.api.repo.UserRepo;
 import com.literario.api.service.ReviewService;
 import com.literario.api.model.ReviewEntity;
+import com.literario.api.model.BookEntity;
 @RestController
 @RequestMapping("/books")
 public class BookController {
@@ -27,8 +28,8 @@ public class BookController {
     }
 
     @GetMapping
-    public String getBooks() {
-        return bookRepo.findAll().toString();
+    public List<BookEntity> getBooks() {
+        return bookRepo.findAll();
     }
 
     @GetMapping("/{year}")
@@ -40,5 +41,4 @@ public class BookController {
     public ResponseEntity<List<ReviewEntity>> getReviews(@PathVariable("id") UUID bookId) {
         return reviewService.getReviewsByBook(bookId);
     }
-
 }
