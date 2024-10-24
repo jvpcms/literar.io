@@ -36,55 +36,104 @@ function handleAuthEvent(authEvent: string) {
 </template>
 
 <style scoped>
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
+* {
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+html {
+  scroll-behavior: smooth;
 }
 
-nav a {
+body {
+  background-color: #eff0f3;
+}
+
+section {
+  padding: 28px 8%;
+}
+
+footer {
+  background-color: #c6c6c6;
+}
+
+.section-title {
+  color: #ff8e3c;
+  font-size: 1.56rem;
+}
+
+.section-subtitle {
+  font-size: 2.8175rem;
+}
+
+.btn {
+  appearance: none;
+  background-color: #0d0d0d;
+  border: 0.125em solid #0d0d0d;
+  border-radius: 0.9375em;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
   display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  height: 45px;
+  min-width: 0;
+  padding: 0 2em;
+  text-align: center;
+  align-items: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
 }
 
-nav a:first-of-type {
-  border: 0;
+.btn:disabled {
+  pointer-events: none;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.btn:hover {
+  color: #0d0d0d;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+.btn:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.input {
+  width: 100%;
+  height: 45px;
+  padding: 12px;
+  margin: 5px;
+  border-radius: 12px;
+  border: 1.5px solid lightgrey;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0px 0px 20px -18px;
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
+.input:hover {
+  border: 2px solid lightgrey;
+  box-shadow: 0px 0px 20px -17px;
+}
 
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.input:active {
+  transform: scale(0.99);
+}
+
+.input:focus {
+  border: 2px solid grey;
 }
 </style>
