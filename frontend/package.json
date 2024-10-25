@@ -12,6 +12,7 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "scrollreveal": "^4.0.9",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },

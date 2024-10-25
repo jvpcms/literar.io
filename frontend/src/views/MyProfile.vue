@@ -51,7 +51,10 @@ export default {
   },
   methods: {
     async fetchUserProfile(userId) {
-      const response = await fetch("http://localhost:8080/users/${userId}");
+      const response = await fetch('http://localhost:8080/users/${userId}', {
+                headers: {
+                    'authentication': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M"
+                }});
       if (response.ok) {
         this.user = await response.json();
         this.fetchUserReviews(userId);
@@ -60,7 +63,11 @@ export default {
       }
     },
     async fetchUserReviews(userId) {
-      const response = await fetch("http://localhost:8080/users/${userId}/reviews");
+      const response = await fetch('http://localhost:8080/users/${userId}/reviews', {
+                headers: {
+                    'authentication': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M"
+                }
+            });
       if (response.ok) {
         this.books = await response.json();
       } else {
