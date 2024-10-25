@@ -79,10 +79,6 @@
     cursor: pointer;
 }
 
-.book-wrapper:hover .book-list {
-    transform: translateX(-400px); 
-}
-
 @media screen and (max-width: 1170px) {
     .book-list {
         flex-wrap: wrap;
@@ -154,10 +150,6 @@
     box-shadow: 0px 0px 20px -18px;
 }
 
-#cta-button .input:hover {
-    border: 2px solid lightgrey;
-    box-shadow: 0px 0px 20px -17px;
-}
 
 #cta-button .input:active {
     transform: scale(0.99);
