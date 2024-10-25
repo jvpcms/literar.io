@@ -1,7 +1,9 @@
 <template>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <div id="app">
-     <main id="content">
+    <main id="content">
       <!-- Home Section -->
       <section id="home">
         <div id="cta">
@@ -13,12 +15,7 @@
           </p>
         </div>
         <div id="cta-button">
-          <input
-            placeholder="Books or Authors"
-            type="text"
-            class="input"
-            v-model="searchQuery"
-          />
+          <input placeholder="Books or Authors" type="text" class="input" v-model="searchQuery" />
           <button class="btn" @click="search">Search</button>
         </div>
       </section>
@@ -29,33 +26,25 @@
         <h3 class="section-subtitle">Trending books</h3>
         <div class="book-wrapper">
           <div class="book-list">
-            <div class="book" v-for="book in filteredBooks" :key="book.id">  
+            <div class="book" v-for="book in filteredBooks" :key="book.id">
               <a @click.prevent="goToBookView(book)">
                 <img :src="bookImage" class="book-image" />
               </a>
               <a @click.prevent="goToBookView(book)">{{ book.title }}</a>
               <span class="book-description">{{ book.synopsis }}</span>
               <div class="book-rating">
-                <i
-                  class="fa-solid fa-star"
-                  v-for="n in 5"
-                  :key="n"
-                  :class="{ active: n <= book.rating }"
-                ></i>
+                <i class="fa-solid fa-star" v-for="n in 5" :key="n" :class="{ active: n <= book.rating }"></i>
                 <span>({{ book.reviews }}+)</span>
               </div>
             </div>
-          </div>            
+          </div>
         </div>
       </section>
 
       <!-- Reviews Section -->
       <section id="rating">
-        <img
-          src="https://img.freepik.com/fotos-gratis/celebracao-do-dia-mundial-do-livro_23-2151245176.jpg"
-          alt=""
-          class="rating-image"
-        />
+        <img src="https://img.freepik.com/fotos-gratis/celebracao-do-dia-mundial-do-livro_23-2151245176.jpg" alt=""
+          class="rating-image" />
 
         <div id="rating_content">
           <h2 class="section-title">Reviews</h2>
@@ -78,12 +67,7 @@
                       {{ review.userName }}
                     </a>
                     <span>
-                      <i
-                        v-for="n in 5"
-                        :key="n"
-                        class="fa-solid fa-star"
-                        :class="{ active: n <= review.rating }"
-                      ></i>
+                      <i v-for="n in 5" :key="n" class="fa-solid fa-star" :class="{ active: n <= review.rating }"></i>
                     </span>
                   </div>
                   <p>"{{ review.text }}"</p>
@@ -136,15 +120,15 @@ export default {
     };
   },
   computed: {
-  filteredBooks() {
-    return this.books.filter((book) =>
-      book.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
+    filteredBooks() {
+      return this.books.filter((book) =>
+        book.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
+    visibleBooks() {
+      return this.filteredBooks.slice(0, this.visibleCount);
+    },
   },
-  visibleBooks() {
-    return this.filteredBooks.slice(0, this.visibleCount);
-  },
-},
   methods: {
     toggleMobileMenu() {
       this.isMobileMenuActive = !this.isMobileMenuActive;
@@ -178,7 +162,7 @@ export default {
         }
       }
     },
-    goToBookView(book){
+    goToBookView(book) {
       this.$router.push({
         name: "BookrView",
         query: {
@@ -190,7 +174,7 @@ export default {
           rating: book.rating,
           reviews: book.reviews,
         }
-    })
+      })
     },
     async fetchBooks() {
       try {
@@ -365,23 +349,24 @@ section {
 #home {
   text-align: center;
   background: linear-gradient(to top left, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
-  linear-gradient(to top right, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
-  linear-gradient(to bottom left, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
-  linear-gradient(to bottom right, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
+    linear-gradient(to top right, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
+    linear-gradient(to bottom left, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
+    linear-gradient(to bottom right, rgba(239, 240, 243, 0), rgba(239, 240, 243, 0.6)),
 
 
-  url('https://img.freepik.com/fotos-gratis/arranjo-de-livros-de-vista-acima_23-2148882757.jpg?t=st=1729189342~exp=1729192942~hmac=d7d25804d0d57df5310b9ae738c2fc9487f3824b7bf27a491b73ceec81666baf&w=1060');
+    url('https://img.freepik.com/fotos-gratis/arranjo-de-livros-de-vista-acima_23-2148882757.jpg?t=st=1729189342~exp=1729192942~hmac=d7d25804d0d57df5310b9ae738c2fc9487f3824b7bf27a491b73ceec81666baf&w=1060');
   background-size: cover;
-  background-position: center; 
+  background-position: center;
   background-repeat: no-repeat;
-  height: calc(100vh-88.8px); 
+  height: calc(100vh-88.8px);
   padding: 7%;
   width: 100%;
-  
+
 }
+
 #cta .title {
   font-size: 70px;
-  font-weight: bold; 
+  font-weight: bold;
   color: #0d0d0d;
   margin-bottom: 10px;
   padding-top: 2%;
@@ -401,7 +386,7 @@ section {
   align-items: center;
 }
 
-#cta-button .input{
+#cta-button .input {
   width: 20%;
   height: 45px;
   padding: 12px;
@@ -411,14 +396,17 @@ section {
   transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
   box-shadow: 0px 0px 20px -18px;
 }
-#cta-button .input:hover{
+
+#cta-button .input:hover {
   border: 2px solid lightgrey;
   box-shadow: 0px 0px 20px -17px;
 }
-#cta-button .input:active{
+
+#cta-button .input:active {
   transform: scale(0.99);
 }
-#cta-button .input:focus{
+
+#cta-button .input:focus {
   border: 2px solid grey;
 }
 
@@ -436,7 +424,7 @@ section {
 
 .book-wrapper {
   position: relative;
-  overflow: hidden; 
+  overflow: hidden;
   width: 100%;
   max-width: 1500px;
 }
@@ -446,8 +434,8 @@ section {
   align-items: center;
   gap: 22px;
   margin-top: 32px;
-  transition: transform 1s ease-in-out; 
-  transform: translateX(0); 
+  transition: transform 1s ease-in-out;
+  transform: translateX(0);
 }
 
 .book {
@@ -500,86 +488,88 @@ section {
 }
 
 .load-book {
-appearance: none;
-background-color: #0d0d0d;
-border: 0.125em solid #0d0d0d;
-border-radius: 0.9375em;
-box-sizing: border-box;
-color: #ffffff;
-cursor: pointer;
-display: inline-block;
-font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-font-size: 16px;
-font-weight: 600;
-margin: 0;
-height: 45px;
-min-width: 0;
-padding: 0 2em;
-text-align: center;
-align-items: center;
-text-decoration: none;
-transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-user-select: none;
--webkit-user-select: none;
-touch-action: manipulation;
-will-change: transform;
+  appearance: none;
+  background-color: #0d0d0d;
+  border: 0.125em solid #0d0d0d;
+  border-radius: 0.9375em;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  height: 45px;
+  min-width: 0;
+  padding: 0 2em;
+  text-align: center;
+  align-items: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
 }
 
 .load-book:disabled {
-pointer-events: none;
+  pointer-events: none;
 }
 
 .load-book:hover {
-color: #0d0d0d;
-background-color: #fff;
-box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-transform: translateY(-2px);
+  color: #0d0d0d;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
 }
 
 .load-book:active {
-box-shadow: none;
-transform: translateY(0);
+  box-shadow: none;
+  transform: translateY(0);
 }
 
 @media screen and (max-width: 1170px) {
   .book-list {
-      flex-wrap: wrap;
-      justify-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .book {
-      width: calc(50% - 12px);
+    width: calc(50% - 12px);
   }
 }
 
 @media screen and (max-width: 600px) {
   .book {
-      width: 100%;
+    width: 100%;
   }
 
   #catalog .section-subtitle {
-      text-align: center;
+    text-align: center;
   }
 }
 
 /* Conteudo para o ratings */
 
-#rating{
+#rating {
   min-height: calc(110vh - 91px);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 48px;
 }
+
 .rating-image {
   width: 670px;
   height: auto;
   border-radius: 5%;
 }
 
-#rating_content{
+#rating_content {
   width: 50%;
 }
+
 #reviews {
   display: flex;
   flex-direction: column;
@@ -597,38 +587,43 @@ transform: translateY(0);
   border-radius: 12px;
   box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
 }
-.book-image{
+
+.book-image {
   width: 100px;
   height: auto;
 }
-.book-title{
+
+.book-title {
   text-decoration: none;
   color: #0d0d0d;
   font-size: 1.56rem;
 }
-.review-content{
+
+.review-content {
   display: flex;
   flex-direction: column;
 }
 
-.profile{
+.profile {
   display: flex;
   flex-direction: column;
 }
 
-.profile-info{
+.profile-info {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   text-decoration: none;
   color: #0d0d0d;
 }
-.profile i{
-  color:#f6e553;
+
+.profile i {
+  color: #f6e553;
   font-size: 20px;
   margin-right: 5px;
 }
-.avatar-image{
+
+.avatar-image {
   width: 30px;
   height: 30px;
   border-radius: 10%;
@@ -636,51 +631,49 @@ transform: translateY(0);
 
 }
 
-.profile-review{
+.profile-review {
   display: flex;
 
 }
 
-.review-content p{
+.review-content p {
   display: flex;
 
 }
 
 @media screen and (max-width: 1170px) {
   #rating {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   #rating .section-subtitle {
-      text-align: center;
-      font-size: 2.5rem;
+    text-align: center;
+    font-size: 2.5rem;
   }
 
   .rating-image {
-      display: none;
+    display: none;
   }
 
   #rating_content {
-      width: 70%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 
 @media screen and (max-width: 600px) {
   #ratings .section-subtitle {
-      font-size: 2rem;
+    font-size: 2rem;
   }
 
   #rating_content {
-      width: 100%;
+    width: 100%;
   }
 
   .review {
-      flex-direction: column;
+    flex-direction: column;
   }
-} 
-
-
+}
 </style>
