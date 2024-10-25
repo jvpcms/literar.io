@@ -44,7 +44,7 @@
 <script lang="ts">
 export default {
     data(this: any): {
-         book: {
+        book: {
              id: string; 
              name: string; 
              year: string; 
@@ -109,14 +109,9 @@ export default {
             };
         },
         listReviews(this: any) {
-            fetch("http://localhost:8080/books/" + this.book.id + "/reviews", {
-                headers: {
-                    'authentication': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M"
-                }
-            })
+            fetch("http://localhost:8080/books/" + this.book.id + "/reviews")
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 this.reviewList = data;
             }
             )
@@ -138,8 +133,12 @@ export default {
         },
         goToAuthorView(this: any) {
             this.$router.push({ 
-                name: 'AuthorView', 
-                query: { author: this.author } 
+                name: 'author', 
+                query: { 
+                    id: this.author.id,
+                    name: this.author.name,
+                    description: this.author.description 
+                } 
             });
         },
         getUserById(this: any, user_id: string){
@@ -158,7 +157,6 @@ export default {
         },
         getUsersForReviews(this: any){
             this.reviewList.forEach((review: { id: string; title: string; rating: number; review: string; user_id: string }) => {
-                console.log(review.user_id);
                 this.getUserById(review.user_id).then((user: { id: string; name: string }) => {
                     this.userList.push(user);
                 })
@@ -180,8 +178,8 @@ export default {
     },
     created() {
         this.getBookFromQuery();
+        this.getBookAuthor();
         const accessToken = localStorage.getItem('literarioToken');
-        this.getBookFromQuery();
         this.listReviews();
         this.getUsersForReviews();
     }

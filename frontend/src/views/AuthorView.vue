@@ -34,7 +34,22 @@
 
 <script lang="ts">
 export default {
-    data() {
+    data(this: any): {
+        author: {
+            id: string;
+            name: string;
+            description: string;
+        };
+        authorImage: string;
+        bookImage: string;
+        bookList: Array<{
+            id: string; 
+            name: string; 
+            year: string; 
+            synopsis: string; 
+            author_id: string 
+        }>;
+    } {
         return {
             author: {
                 id: '',
@@ -47,26 +62,39 @@ export default {
         }
     },
     methods: {
-        getAuthorFromDom(){
-            const author = this.$route.params.author;
-            if (typeof author === 'object' && author !== null && 'id' in author && 'name' in author && 'description' in author) {
-                this.author = author as { id: string; name: string; description: string };
-            }
+        getAuthorFromQuery(){
+            this.author = {
+                id: this.$route.query.id as string || '',
+                name: this.$route.query.name as string || '',
+                description: this.$route.query.description as string || '',
+            };
         },
         listBooks() {
-            fetch("http://localhost:8080/api/authors/" + this.author.id + "/books")
+            fetch("http://localhost:8080/authors/" + this.author.id + "/books")
                 .then(response => response.json())
                 .then(data => {
                     this.bookList = data;
                 })
                 .catch(error => console.error(error));
         },
-        goToBookView(book: { id: string; name: string; synopsis: string }) {
-            this.$router.push({ name: 'BookView', params: { book: JSON.stringify(book) } });
+        goToBookView(book: {
+            id: string; 
+            name: string; 
+            year: string; 
+            synopsis: string; 
+            author_id: string
+         }) {
+            this.$router.push({ name: 'book', query: { 
+                id: book.id,
+                name: book.name,
+                year: book.year,
+                synopsis: book.synopsis,
+                author_id: book.author_id  
+            }});
         }
     },
     created() {
-        this.getAuthorFromDom();
+        this.getAuthorFromQuery();
         this.listBooks();
     }
 }
