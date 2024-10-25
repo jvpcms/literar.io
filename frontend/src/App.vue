@@ -7,9 +7,13 @@ const router = useRouter()
 const loggedIn = ref(false)
 
 function handleAuthEvent(authEvent: string) {
-  if (authEvent === 'login' || authEvent === 'register') {
+  if (authEvent === 'login') {
     loggedIn.value = true
     router.push('/profile')
+  }
+  else if (authEvent === 'register') {
+    loggedIn.value = false
+    router.push('/login')
   }
   else if (authEvent === 'logout') {
     loggedIn.value = false
