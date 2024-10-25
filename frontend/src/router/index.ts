@@ -27,8 +27,18 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: () => import('../views/TassView.vue') // Mudo de ProfileView.vue para MyProfile ?
+    },
+    {
+    path: '/book',
+    name: 'book',
+    component: () => import('../views/BookView.vue')
+    },
+    {
+    path: '/author',
+    name: 'author',
+    component: () => import('../views/AuthorView.vue')
     }
-  ]
+    ]
 })
 
 export default router

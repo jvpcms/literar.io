@@ -257,6 +257,20 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
   },
+
+  goToBookView(book) {
+      this.$router.push({
+        name: 'book', // O nome da rota que você configurou para a página de detalhes
+        query: {
+          id: book.id,
+          title: book.title,
+          year: book.year,
+          synopsis: book.synopsis,
+          author_id: book.author_id
+        }
+      });
+  }
+
 };
 </script>
 
