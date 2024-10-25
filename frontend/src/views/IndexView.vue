@@ -180,15 +180,9 @@ export default {
     },
     goToBookView(book){
       this.$router.push({
-        name: "BookrView",
+        name: "book",
         query: {
-          authorId: book.authorId,
-          bookId: book.id,
-          title: book.title,
-          synopsis: book.synopsis,
-          image: book.image,
-          rating: book.rating,
-          reviews: book.reviews,
+          id: book.id
         }
     })
     },

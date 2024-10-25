@@ -10,7 +10,7 @@
       </section>
   
       <section id="book-container">
-        <h1><b>Reviews</b></h1> 
+        <h1><b>Reviews</b></h1>
         <div class="book-wrapper">
           <div class="book-list">
             <div class="book-card" v-for="review in visibleReviews" :key="review.bookId">
@@ -32,49 +32,73 @@
     </div>
   </template>
   
-  <script>
+  <script lang="ts">
+  interface Review {
+    bookId: string;
+    bookTitle: string;
+    text: string;
+  }
+  
+  interface User {
+    username: string;
+  }
+  
   export default {
-    name: 'BookReview',
-    data() {
+    data(this: any): {
+      user: User;
+      allReviews: Review[]; // Para armazenar todas as reviews recebidas
+      visibleReviews: Review[]; // Para armazenar as reviews que serão exibidas
+      visibleCount: number; // Contador de reviews visíveis
+    } {
       return {
-        user: {
-          id: this.$route.query.user_id || '',
-          username: 'Usuário'
-        },
-        reviews: [],
-        visibleCount: 5,
+        user: { username: '' },
+        allReviews: [],
+        visibleReviews: [],
+        visibleCount: 5, // Inicialmente mostrar 5 reviews
       };
     },
-    computed: {
-      visibleReviews() {
-        return this.reviews.slice(0, this.visibleCount);
-      },
-    },
     methods: {
-      listUserReviews(accessToken) {
-        fetch(`http://localhost:8080/users/${this.user.id}/reviews`, {
+      fetchUserDetails(this: any) {
+        const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M";
+        fetch("http://localhost:8080/users/me", {
           headers: {
-            'Authorization': accessToken
+            'authentication': accessToken
           }
         })
         .then(response => response.json())
-        .then(data => {
-          this.reviews = data;
-        })
-        .catch(error => console.error("Erro ao carregar reviews:", error));
+        .then((data: User) => {
+          this.user.username = data.username;
+        });
       },
-      loadMoreReviews() {
-        this.visibleCount += 5;
+      fetchReviews(this: any) {
+        const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M";
+        fetch("http://localhost:8080/users/me/reviews", {
+          headers: {
+            'authentication': accessToken
+          }
+        })
+        .then(response => response.json())
+        .then((data: Review[]) => {
+          this.allReviews = data.map((review: any) => ({
+            bookId: review.bookId,
+            bookTitle: review.bookTitle,
+            text: review.text,
+          }));
+          this.updateVisibleReviews(); // Atualiza as reviews visíveis ao carregar
+        });
+      },
+      updateVisibleReviews(this: any) {
+        this.visibleReviews = this.allReviews.slice(0, this.visibleCount);
+      },
+      loadMoreReviews(this: any) {
+        this.visibleCount += 5; // Aumenta o contador de reviews visíveis em 5
+        this.updateVisibleReviews(); // Atualiza as reviews visíveis
       }
     },
     created() {
-      const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M";
-      if (this.user.id) {
-        this.listUserReviews(accessToken);
-      } else {
-        console.warn("ID do usuário não encontrado na rota.");
-      }
-    },
+      this.fetchUserDetails();
+      this.fetchReviews();
+    }
   };
   </script>
   
