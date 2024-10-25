@@ -1,230 +1,235 @@
-<!-- src/components/MyProfile.vue -->
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const emit = defineEmits(['authEvent'])
-
-const profileImage = ref('src/images/avatar-image.avif')
-const formData = ref({
-  username: '',
-  email: '',
-  description: '',
-  password: '',
-  confirmPassword: ''
-})
-
-const fileInput = ref<HTMLInputElement | null>(null)
-
-const handleImageChange = () => {
-  fileInput.value?.click()
-}
-
-const onFileChange = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  if (target.files && target.files[0]) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      if (e.target?.result) {
-        profileImage.value = e.target.result as string
-      }
-    }
-    reader.readAsDataURL(target.files[0])
-  }
-}
-
-const handleSubmit = () => {
-  if (formData.value.password !== formData.value.confirmPassword) {
-    alert('As senhas não correspondem!')
-    return
-  }
-  console.log('Dados do formulário:', formData.value)
-}
-
-const handleLogout = () => {
-  emit('authEvent', 'logout')
-}
-</script>
-
 <template>
-  <div id="profile">
-    <div class="profile-settings-container">
-      <div class="profile-picture-section">
-        <img :src="profileImage" alt="Foto do Perfil" class="profile-picture">
-        <button class="btn" @click="handleImageChange">Alterar Foto</button>
-        <input 
-          type="file" 
-          ref="fileInput" 
-          @change="onFileChange" 
-          style="display: none"
-          accept="image/*"
-        >
-        <button class="btn btn-logout" @click="handleLogout">Logout</button>
+  <div>
+    <section id="profile-info">
+      <div class="image-container">
+        <a href="#" class="image-placeholder">
+          <img class="profile-image" src="/images/avatar-image.avif" alt="Profile Image" />
+        </a>
       </div>
+      <div class="profile">
+        <a href="#" class="profile-name"><b>{{ user.username }}</b></a>
+      </div>
+    </section>
 
-      <div class="profile-info-section">
-        <h2>Profile settings</h2>
-        <form @submit.prevent="handleSubmit">
-          <label for="username">Username</label>
-          <input 
-            type="text" 
-            id="username" 
-            v-model="formData.username" 
-            placeholder="New username" 
-            class="input"
-          >
-      
-          <label for="email">E-mail</label>
-          <input 
-            type="email" 
-            id="email" 
-            v-model="formData.email" 
-            placeholder="New e-mail" 
-            class="input"
-          >
-      
-          <label for="description">Description</label>
-          <textarea 
-            id="description" 
-            v-model="formData.description" 
-            placeholder="Sua nova descrição" 
-            rows="6" 
-            class="description-input"
-          ></textarea>
-      
-          <div class="form-divider"></div>
-      
-          <label for="password">New password</label>
-          <input 
-            type="password" 
-            id="password" 
-            v-model="formData.password" 
-            placeholder="Nova senha" 
-            class="input"
-          >
-      
-          <label for="confirm-password">Confirm password</label>
-          <input 
-            type="password" 
-            id="confirm-password" 
-            v-model="formData.confirmPassword" 
-            placeholder="Confirme sua nova senha" 
-            class="input"
-          >
-      
-          <button type="submit" class="btn">Save changes</button>
-        </form>
-      </div>   
-    </div>
+    <section id="book-container">
+      <h1><b>Reviews</b></h1> 
+      <div class="book-wrapper">
+        <div class="book-list">
+          <div class="book-card" v-for="book in visibleBooks" :key="book.id">
+            <div class="image-container">
+              <img class="book-image" src="/images/books.jpg" alt="Book Image" />
+              <div class="book-info">
+                <span class="book-title">{{ book.title }}</span>
+                <p class="book-desc">{{ book.description }}</p>
+              </div>
+            </div>
+            <a :href="'http://127.0.0.1:5500/frontend/book.html?id=' + book.id">
+              <button class="book-button">Read more</button>
+            </a>
+          </div>
+        </div>
+      </div>
+      <button class="more-books" @click="loadMoreBooks">Mais livros</button>
+    </section>
   </div>
 </template>
 
-<style scoped>
-#profile {
+
+<script>
+export default {
+  data() {
+    return {
+      user: {},
+      books: [],
+      visibleCount: 4,
+    };
+  },
+  computed: {
+    visibleBooks() {
+      return this.books.slice(0, this.visibleCount);
+    },
+  },
+  methods: {
+    async fetchUserProfile(userId) {
+      const response = await fetch("http://localhost:8080/users/${userId}");
+      if (response.ok) {
+        this.user = await response.json();
+        this.fetchUserReviews(userId);
+      } else {
+        console.error('Erro ao buscar o perfil do usuário:', response.status);
+      }
+    },
+    async fetchUserReviews(userId) {
+      const response = await fetch("http://localhost:8080/users/${userId}/reviews");
+      if (response.ok) {
+        this.books = await response.json();
+      } else {
+        console.error('Erro ao buscar reviews do usuário:', response.status);
+      }
+    },
+    loadMoreBooks() {
+      this.visibleCount += 4;
+    },
+    getUserIdFromToken() {
+      const token = localStorage.getItem('userToken'); 
+      if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.userId; 
+      }
+      return null;
+    },
+  },
+  mounted() {
+    const userId = this.getUserIdFromToken(); 
+    if (userId) {
+      this.fetchUserProfile(userId);
+    } else {
+      console.error('Usuário não está autenticado.');
+    }
+  },
+};
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+* {
+  font-family: Roobert, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #eff0f3;
+}
+section {
+  padding: 28px 8%;
+}
+
+h1 {
+  color: #0d0d0d; /* Define a cor como preto */
+  font-weight: bold; /* Garante que o texto ficará em negrito */
+}
+
+.image-container {
+  margin-bottom: 60px; /* Ajuste este valor conforme necessário */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 100px);
-  padding: 20px;
+  justify-content: center; /* Centraliza a imagem no container */
 }
 
-.profile-settings-container {
-  display: flex;    
-  background-color: #fff;
-  min-height: 625px;
-  border-radius: 10%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 800px;
-  padding: 20px;
+.profile-image {
+  width: 200px; /* Ajuste a largura para uma imagem menor */
+  height: 200px; /* Ajuste a altura para uma imagem menor */
+  border-radius: 50%; /* Mantém a imagem em formato circular */
+  margin-top: 20vh;
 }
-
-.profile-picture-section {
-  flex: 1;
+#profile-info {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-right: 20px;
-  border-right: 1px solid #ccc;
+  flex-direction: column; /* Alinha verticalmente */
+  align-items: center; /* Centraliza horizontalmente */
+  margin-top: 3%;
 }
 
-.profile-picture {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-
-.profile-info-section {
-  flex: 2;
-  padding-left: 20px;
-}
-
-.profile-info-section h2 {
-  margin-bottom: 20px;
-}
-
-#description {
-  height: 110px;
-}
-
-#confirm-password {
-  margin-bottom: 15px;
-}
-
-form label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-form .input, .description-input {
-  width: 92%;
-  padding: 8px;
-  margin-bottom: 3px;
-  border-radius: 12px;
-  border: 1.5px solid lightgrey;
-  outline: none;
-  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-  box-shadow: 0px 0px 20px -18px;
-}
-
-form .description-input {
-  resize: vertical;
-}
-
-form .input:hover, .description-input:hover {
-  border: 2px solid lightgrey;
-  box-shadow: 0px 0px 20px -17px;
-}
-
-form .input:active, .description-input:active {
-  transform: scale(0.95);
-}
-
-form .input:focus, .description-input:focus {
-  border: 2px solid grey;
+#book-container {
+  margin-top: 10%;
 }
 
 .btn {
-  width: 100%;
-  max-width: 200px;
-  padding: 8px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  appearance: none;
+  background-color: #0d0d0d;
+  border: 0.125em solid #0d0d0d;
+  border-radius: 0.9375em;
+  box-sizing: border-box;
+  color: #ffffff;
   cursor: pointer;
+  font-family: Roobert, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   font-size: 16px;
-  margin: 5px 0;
-}
-
-.btn-logout {
-  background-color: #dc3545;
-  margin-top: 20px;
+  font-weight: 600;
+  height: 45px;
+  padding: 0 2em;
+  text-align: center;
+  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  user-select: none;
 }
 
 .btn:hover {
-  opacity: 0.9;
+  color: #0d0d0d;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+
+.image-placeholder {
+  width: 10px; /* Ajuste a largura para uma imagem menor, se necessário */
+  height: 10px; /* Ajuste a altura para uma imagem menor, se necessário */
+  border-radius: 50%; /* Mantém a imagem em formato circular */
+  display: flex; /* Centraliza a imagem dentro do placeholder */
+  justify-content: center;
+  align-items: center;
+  background-color: #e0e0e0;
+  box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-name {
+  font-size: xx-large;
+  margin-top: 80px; /* Aumente o espaço entre a imagem e o nome */
+  text-decoration: none;
+  color: #0d0d0d;
+}
+
+.book-title {
+  font-size: 32px;
+  font-weight: bold;
+  position: relative; /* Mudei de absolute para relative */
+  margin-top: 10px; /* Adiciona um espaço acima do título */
+  color: #0d0d0d; /* Define a cor como preto */
+}
+
+.book-desc {
+  font-size: 14px; /* Tamanho da fonte para a descrição */
+  color: #0d0d0d; /* Define a cor como preto */
+  opacity: 1; /* Remove a transparência */
+  margin-top: 5px; /* Espaçamento acima da descrição */
+}
+
+.book-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.book-list {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os cards se ajustem na linha */
+  gap: 20px; /* Espaçamento entre os cards */
+}
+
+.book-card {
+  flex: 0 0 calc(25% - 20px); /* Exibe 4 livros por linha */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.more-books {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #0d0d0d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.more-books:hover {
+  background-color: #333; /* Muda a cor do botão ao passar o mouse */
 }
 </style>
