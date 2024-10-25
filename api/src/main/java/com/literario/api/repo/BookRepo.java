@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.literario.api.model.AuthorEntity;
 import com.literario.api.model.BookEntity;
 
 @RepositoryRestResource
@@ -21,5 +22,8 @@ public interface BookRepo extends JpaRepository<BookEntity, UUID> {
         Optional<BookEntity> book = findById(bookId);
         return book;
     }
+
+    @Query("SELECT b FROM BookEntity b WHERE b.author = :author")
+    List<BookEntity> findBooksByAuthor(@Param("author") AuthorEntity author);
 }
 

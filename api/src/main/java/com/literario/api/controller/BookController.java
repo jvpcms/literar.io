@@ -28,8 +28,8 @@ public class BookController {
     }
 
     @GetMapping
-    public List<BookEntity> getBooks() {
-        return bookRepo.findAll();
+    public ResponseEntity<List<BookEntity>> getBooks() {
+        return ResponseEntity.ok(bookRepo.findAll());
     }
 
     @GetMapping("/{year}")
@@ -41,5 +41,4 @@ public class BookController {
     public ResponseEntity<List<ReviewEntity>> getReviews(@PathVariable("id") UUID bookId) {
         return reviewService.getReviewsByBook(bookId);
     }
-
 }
