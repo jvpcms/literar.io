@@ -5,14 +5,14 @@
                 <a href="" class="image-placeholder"> <img :src="bookImage" alt="Book image placeholder"></a>
             </div>
             <div class="book-info">
-                <a href="" class="book-title"><b>{{ book.title }}</b></a>
+                <a href="" class="book-title"><b>{{ book.name }}</b></a>
                 <a @click.prevent="goToAuthorView" class="book-author">{{ author.name }}</a>
                 <div class="description">
                     <span v-for="n in 5" :key="n">
                         <i :class="n <= getAvaregeRating() ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
                     </span>
                     ({{ reviewList.length }}+)
-                    <h1 class="description">Description:</h1>
+                    <h1 class>Description:</h1>
                     <p class="book-synopsis">{{ book.synopsis }}</p>
                 </div>
             </div>
@@ -46,10 +46,10 @@ export default {
     data(this: any): {
         book: {
              id: string; 
-             title: string; 
+             name: string; 
              year: string; 
-             synopsis: string;
-             author_id: string
+             synopsis: string; 
+             author_id: string 
         }; 
         author: { 
             id: string; 

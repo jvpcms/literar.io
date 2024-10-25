@@ -90,6 +90,26 @@ function handleScroll(event: Event) {
           <RouterLink class="btn" to="/profile" v-else>
             Profile
           </RouterLink>
+
+          <RouterLink class="btn" :to="{path :'/author', query:{
+            id: '4f0216c6-4c62-4788-8e48-42cb304f68b4',
+            name: 'Author 1',
+            description: 'This is the description of author 1'
+          }}">
+          TestAuthor
+          </RouterLink>
+
+          <RouterLink class="btn" :to="{ path: '/book', query: { 
+              id: 'e797e3c3-db76-4523-96c5-e48b4f02b781',
+              name: 'Book 1 by Author 1',
+              year: 1991,
+              synopsis: 'This is the synopsis of book 1',
+              author_id:'4f0216c6-4c62-4788-8e48-42cb304f68b4'
+            } 
+          }">
+          TestBook
+          </RouterLink>
+
         </nav>
 
       </div>
