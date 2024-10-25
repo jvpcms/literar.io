@@ -27,13 +27,13 @@
                         <div class="reviewer-info">
                             <a @click.prevent="goToProfileView(review.user_id)" class="reviewer-info">
                                 <img :src="reviewerImage" alt="Reviewer image">
-                                <p>{{ findUserById(review.user_id).name }}</p>
+                                <p>{{ findUserNameById(review.user_id) }}</p>
                             </a>
                             <span v-for="n in 5" :key="n">
                             <i :class="n <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
                         </span>
                         </div>
-                        <p>{{ review.review }}</p>
+                        <p class="review-text">{{ review.review }}</p>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
 
 <script lang="ts">
 export default {
-    data(): {
+    data(this: any): {
          book: {
              id: string; 
              name: string; 
@@ -63,12 +63,12 @@ export default {
             rating: number; 
             review: string; 
             user_id: string 
-        }>; 
-        usersList: Array<{ 
+        }>;
+        userList: Array<{ 
             id: string; 
             name: string 
-        }>; 
-        reviewerImage: string 
+        }>;
+        reviewerImage: string;
     } {
         return {
             book: {
@@ -79,27 +79,27 @@ export default {
                 author_id: ''
             },
             author: {
-                id: '21312321321312',
-                name: 'Gracialiano Ramos',
-                description: 'dsajhdshasdhasahdsdass'
+                id: '',
+                name: '',
+                description: ''
             },
             bookImage: 'src/images/books.jpg',
             reviewList: [{
-                id: '98y2398y2uihwdijasid',
-                title: 'Great book!',
-                rating: 5,
-                review: 'This is a great book, I loved it!',
-                user_id: 'e87753e4-90ae-4150-b930-05bc465a317d'
+                id: '',
+                title: '',
+                rating: 0,
+                review: '',
+                user_id: ''
             }],
-            usersList: [{
-                id: 'e87753e4-90ae-4150-b930-05bc465a317d',
-                name: 'Bruno'
+            userList: [{
+                id: '',
+                name: ''
             }],
             reviewerImage: 'src/images/avatar-image.avif',
         }
     },
     methods: {
-        getBookFromQuery(){
+        getBookFromQuery(this: any){
             this.book = {
                 id: this.$route.query.id as string || '',
                 name: this.$route.query.name as string || '',
@@ -107,9 +107,8 @@ export default {
                 synopsis: this.$route.query.synopsis as string || '',
                 author_id: this.$route.query.author_id as string || ''
             };
-            console.log(this.book);
         },
-        listReviews() {
+        listReviews(this: any) {
             fetch("http://localhost:8080/books/" + this.book.id + "/reviews", {
                 headers: {
                     'authentication': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M"
@@ -117,56 +116,73 @@ export default {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 this.reviewList = data;
             }
             )
         },
-        getAvaregeRating() {
+        getAvaregeRating(this: any) {
             let sum = 0;
-            this.reviewList.forEach(review => {
+            this.reviewList.forEach((review: { id: string; title: string; rating: number; review: string; user_id: string }) => {
                 sum += review.rating;
             });
             return sum / this.reviewList.length;
         },
-        getBookAuthor(){
-            fetch("http://localhost:8080/books/" + this.book.id + "/author")
+        getBookAuthor(this: any){
+            fetch("http://localhost:8080/authors/" + this.book.author_id)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     this.author = data;
                 }
             )
         },
-        goToAuthorView() {
+        goToAuthorView(this: any) {
             this.$router.push({ 
                 name: 'AuthorView', 
                 query: { author: this.author } 
             });
         },
-        getUsers(){
-            fetch("http://localhost:8080/users")
-                .then(response => response.json())
-                .then(data => {
-                    this.usersList = data;
-                }
-            )
+        getUserById(this: any, user_id: string){
+            return fetch("http://localhost:8080/users/" + user_id, {
+            headers: {
+                'authentication': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M"
+            }
+            })
+            .then(response => response.json())
+            .then(data => {
+            return {
+                id: data.id as string,
+                name: data.name as string
+            };
+            });
         },
-        findUserById(user_id: string){
-            return this.usersList.find(user => user.id === user_id);
+        getUsersForReviews(this: any){
+            this.reviewList.forEach((review: { id: string; title: string; rating: number; review: string; user_id: string }) => {
+                console.log(review.user_id);
+                this.getUserById(review.user_id).then((user: { id: string; name: string }) => {
+                    this.userList.push(user);
+                })
+            });
         },
-        goToProfileView(user_id: string){
+        findUserNameById(this: any, user_id: string){
+            return this.userList.find((user: { id: string; name: string }) => user.id === user_id)?.name || '';
+        },
+        goToProfileView(this: any, user_id: string){
+            const name = this.userList.find((user: { id: string; name: string }) => user.id === user_id)?.name || '';
             this.$router.push({ 
                 name: 'ProfileView', 
-                query: { user_id: user_id } 
+                query: { 
+                    user_id: user_id,
+                    name: name
+                } 
             });
         }
     },
     created() {
         this.getBookFromQuery();
+        const accessToken = localStorage.getItem('literarioToken');
+        this.getBookFromQuery();
         this.listReviews();
-        this.getBookAuthor();
-        this.getUsers();
+        this.getUsersForReviews();
     }
 }
 </script>
@@ -264,6 +280,7 @@ export default {
     margin-top: 32px;
     transform: translateX(0);
     transition: all 1s ease-in-out;
+    justify-content: center;
 }
 
 .review-card {
@@ -273,7 +290,7 @@ export default {
     margin-bottom: 30px;
     min-width: 410px;
     max-width: 410px;
-    max-height: 300px;
+    min-height: 300px;
     box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -298,8 +315,8 @@ export default {
 .reviewer-info img {
     object-fit: center;
     overflow: hidden;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background-color: #ffffff;
     border-radius: 50%;
 }
@@ -307,7 +324,13 @@ export default {
 
 .reviewer-info i{
     color:#f6e553;
-    font-size: 15px;
+    font-size: 20px;
+}
+
+.review-text {
+    font-size: 20px;
+    color: #0d0d0d;
+    margin-top: 10px;
 }
 
 .review-btn{
