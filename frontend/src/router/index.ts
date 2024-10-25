@@ -26,8 +26,28 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: () => import('../views/ProfileView.vue')
+    },
+    {
+      path: '/book',
+      name: 'book',
+      component: () => import('../views/BookView.vue')
+    },
+    {
+      path: '/author',
+      name: 'author',
+      component: () => import('../views/AuthorView.vue')
+    },
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (to.name === 'book') {
+      return { left: 0, top: 0 };
     }
-  ]
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { left: 0, top: 0 };
+    }
+  }
 })
 
 export default router
