@@ -112,6 +112,7 @@ export default {
             fetch("http://localhost:8080/books/" + this.book.id + "/reviews")
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 this.reviewList = data;
             }
             )
@@ -127,7 +128,6 @@ export default {
             fetch("http://localhost:8080/authors/" + this.book.authorId)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     this.author = data;
                 }
             )
@@ -148,6 +148,7 @@ export default {
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
             return {
                 id: data.id as string,
                 name: data.name as string
@@ -165,12 +166,10 @@ export default {
             return this.userList.find((user: { id: string; name: string }) => user.id === userId)?.name || '';
         },
         goToProfileView(this: any, userId: string){
-            const name = this.userList.find((user: { id: string; name: string }) => user.id === userId)?.name || '';
             this.$router.push({ 
                 name: 'ProfileView', 
                 query: { 
-                    userId: userId,
-                    name: name
+                    id: userId,
                 } 
             });
         }
@@ -226,6 +225,11 @@ export default {
     text-decoration: none;
     font-size: larger;
     margin-bottom: 40px;
+}
+
+.book-author:hover{
+    color: #ff7b1d;
+    cursor: pointer;
 }
 
 .book-info i{
@@ -307,6 +311,11 @@ export default {
     text-decoration: none;
 }
 
+.reviewer-info:hover{
+    color: #ff7b1d;
+    cursor: pointer;
+}
+
 .reviewer-info img {
     object-fit: center;
     overflow: hidden;
@@ -315,7 +324,6 @@ export default {
     background-color: #ffffff;
     border-radius: 50%;
 }
-
 
 .reviewer-info i{
     color:#f6e553;
