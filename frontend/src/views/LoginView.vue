@@ -42,7 +42,6 @@ function fetchLogin() {
       else {
         localStorage.setItem('literarioToken', responseBody.token)
         emitLogin()
-        console.log(localStorage.getItem('literarioToken'))
       }
     })
     .catch(error => {
