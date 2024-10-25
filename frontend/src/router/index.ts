@@ -26,7 +26,7 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: () => import('../views/MyProfile.vue') // Mudo de ProfileView.vue para MyProfile ?
+      component: () => import('../views/TassView.vue') // Mudo de ProfileView.vue para MyProfile ?
     }
   ]
 })
