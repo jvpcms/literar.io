@@ -19,7 +19,7 @@
                 <div class="book-list">
                     <div class="book-card" v-for="book in bookList" :key="book.id">
                         <img class="book-image" :src="bookImage" alt="">
-                            <span class="book-title">{{ book.name }}</span>
+                            <span class="book-title">{{ book.title }}</span>
                             <p class="book-desc">{{ book.synopsis }}</p>
                             <a @click.prevent="goToBookView(book)">
                                 <button class="book-button">Read more</button>
@@ -44,10 +44,10 @@ export default {
         bookImage: string;
         bookList: Array<{
             id: string; 
-            name: string; 
+            title: string; 
             year: string; 
             synopsis: string; 
-            author_id: string 
+            authorId: string 
         }>;
     } {
         return {
@@ -62,39 +62,44 @@ export default {
         }
     },
     methods: {
-        getAuthorFromQuery(){
-            this.author = {
-                id: this.$route.query.id as string || '',
-                name: this.$route.query.name as string || '',
-                description: this.$route.query.description as string || '',
-            };
+        getAuthor(){
+            fetch("http://localhost:8080/authors/" + this.$route.query.id)
+                .then(response => response.json())
+                .then(data => {
+                    this.author = data;
+                })
+                .catch(error => console.error(error));
         },
         listBooks() {
             fetch("http://localhost:8080/authors/" + this.author.id + "/books")
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     this.bookList = data;
                 })
                 .catch(error => console.error(error));
         },
         goToBookView(book: {
             id: string; 
-            name: string; 
+            title: string; 
             year: string; 
             synopsis: string; 
-            author_id: string
+            authorId: string
          }) {
-            this.$router.push({ name: 'book', query: { 
-                id: book.id,
-                name: book.name,
-                year: book.year,
-                synopsis: book.synopsis,
-                author_id: book.author_id  
-            }});
+            this.$router.push({ 
+                name: 'book', 
+                query: { 
+                    id: book.id,
+                    title: book.title,
+                    year: book.year,
+                    synopsis: book.synopsis,
+                    authorId: book.authorId
+                }
+            });
         }
     },
     created() {
-        this.getAuthorFromQuery();
+        this.getAuthor();
         this.listBooks();
     }
 }

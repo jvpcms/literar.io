@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
 import java.util.List;
+import java.util.Optional;
 
 import com.literario.api.repo.BookRepo;
 import com.literario.api.repo.ReviewRepo;
@@ -30,6 +31,15 @@ public class BookController {
     @GetMapping
     public ResponseEntity<List<BookEntity>> getBooks() {
         return ResponseEntity.ok(bookRepo.findAll());
+    }
+
+    @GetMapping("/info/{id}")
+    public ResponseEntity<BookEntity> getBookById(@PathVariable("id") UUID bookId) {
+        Optional<BookEntity> book = bookRepo.findBookById(bookId);
+        if (book.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(book.get());
     }
 
     @GetMapping("/{year}")

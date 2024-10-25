@@ -5,7 +5,7 @@
                 <a href="" class="image-placeholder"> <img :src="bookImage" alt="Book image placeholder"></a>
             </div>
             <div class="book-info">
-                <a href="" class="book-title"><b>{{ book.name }}</b></a>
+                <a href="" class="book-title"><b>{{ book.title }}</b></a>
                 <a @click.prevent="goToAuthorView" class="book-author">{{ author.name }}</a>
                 <div class="description">
                     <span v-for="n in 5" :key="n">
@@ -25,9 +25,9 @@
                 <div class="review-list">
                     <div class="review-card" v-for="review in reviewList" :key="review.id">
                         <div class="reviewer-info">
-                            <a @click.prevent="goToProfileView(review.user_id)" class="reviewer-info">
+                            <a @click.prevent="goToProfileView(review.userId)" class="reviewer-info">
                                 <img :src="reviewerImage" alt="Reviewer image">
-                                <p>{{ findUserNameById(review.user_id) }}</p>
+                                <p>{{ findUserNameById(review.userId) }}</p>
                             </a>
                             <span v-for="n in 5" :key="n">
                             <i :class="n <= review.rate ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
@@ -46,10 +46,10 @@ export default {
     data(this: any): {
         book: {
              id: string; 
-             name: string; 
+             title: string; 
              year: string; 
              synopsis: string; 
-             author_id: string 
+             authorId: string 
         }; 
         author: { 
             id: string; 
@@ -59,10 +59,9 @@ export default {
         bookImage: string; 
         reviewList: Array<{ 
             id: string; 
-            title: string; 
             rate: number; 
             review: string; 
-            user_id: string 
+            userId: string 
         }>;
         userList: Array<{ 
             id: string; 
@@ -73,10 +72,10 @@ export default {
         return {
             book: {
                 id: '',
-                name: '',
+                title: '',
                 year: '',
                 synopsis: '',
-                author_id: ''
+                authorId: ''
             },
             author: {
                 id: '',
@@ -86,10 +85,9 @@ export default {
             bookImage: 'src/images/books.jpg',
             reviewList: [{
                 id: '',
-                title: '',
                 rate: 0,
                 review: '',
-                user_id: ''
+                userId: ''
             }],
             userList: [{
                 id: '',
@@ -99,17 +97,16 @@ export default {
         }
     },
     methods: {
-        getBookFromQuery(this: any){
-            this.book = {
-                id: this.$route.query.id as string || '',
-                name: this.$route.query.name as string || '',
-                year: this.$route.query.year as string || '',
-                synopsis: this.$route.query.synopsis as string || '',
-                author_id: this.$route.query.author_id as string || ''
-            };
+        getBook(){
+            fetch("http://localhost:8080/books/info/" + this.$route.query.id)
+                .then(response => response.json())
+                .then(data => {
+                    this.book = data;
+                }
+            )
         },
         listReviews(this: any) {
-            fetch("http://localhost:8080/books/" + this.book.id + "/reviews")
+            fetch("http://localhost:8080/books/info/" + this.book.id + "/reviews")
             .then(response => response.json())
             .then(data => {
                 this.reviewList = data;
@@ -118,15 +115,16 @@ export default {
         },
         getAvaregeRating(this: any) {
             let sum = 0;
-            this.reviewList.forEach((review: { id: string; title: string; rate: number; review: string; user_id: string }) => {
+            this.reviewList.forEach((review: { id: string; title: string; rate: number; review: string; userId: string }) => {
                 sum += review.rate;
             });
             return sum / this.reviewList.length;
         },
         getBookAuthor(this: any){
-            fetch("http://localhost:8080/authors/" + this.book.author_id)
+            fetch("http://localhost:8080/authors/" + this.book.authorId)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     this.author = data;
                 }
             )
@@ -136,13 +134,11 @@ export default {
                 name: 'author', 
                 query: { 
                     id: this.author.id,
-                    name: this.author.name,
-                    description: this.author.description 
                 } 
             });
         },
-        getUserById(this: any, user_id: string){
-            return fetch("http://localhost:8080/users/" + user_id, {
+        getUserById(this: any, userId: string){
+            return fetch("http://localhost:8080/users/info/" + userId, {
             headers: {
                 'authentication': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M"
             }
@@ -156,33 +152,33 @@ export default {
             });
         },
         getUsersForReviews(this: any){
-            this.reviewList.forEach((review: { id: string; title: string; rating: number; review: string; user_id: string }) => {
-                this.getUserById(review.user_id).then((user: { id: string; name: string }) => {
+            this.reviewList.forEach((review: { id: string; title: string; rating: number; review: string; userId: string }) => {
+                this.getUserById(review.userId).then((user: { id: string; name: string }) => {
                     this.userList.push(user);
                 })
             });
         },
-        findUserNameById(this: any, user_id: string){
-            return this.userList.find((user: { id: string; name: string }) => user.id === user_id)?.name || '';
+        findUserNameById(this: any, userId: string){
+            return this.userList.find((user: { id: string; name: string }) => user.id === userId)?.name || '';
         },
-        goToProfileView(this: any, user_id: string){
-            const name = this.userList.find((user: { id: string; name: string }) => user.id === user_id)?.name || '';
+        goToProfileView(this: any, userId: string){
+            const name = this.userList.find((user: { id: string; name: string }) => user.id === userId)?.name || '';
             this.$router.push({ 
                 name: 'ProfileView', 
                 query: { 
-                    user_id: user_id,
+                    userId: userId,
                     name: name
                 } 
             });
         }
     },
     created() {
-        this.getBookFromQuery();
+        this.getBook();
         this.getBookAuthor();
         const accessToken = localStorage.getItem('literarioToken');
         this.listReviews();
         this.getUsersForReviews();
-    }
+    },
 }
 </script>
 
