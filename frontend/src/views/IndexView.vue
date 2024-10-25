@@ -236,19 +236,6 @@ export default {
     window.removeEventListener('scroll', this.handleScroll);
   },
 
-  goToBookView(book) {
-      this.$router.push({
-        name: 'book', // O nome da rota que você configurou para a página de detalhes
-        query: {
-          id: book.id,
-          title: book.title,
-          year: book.year,
-          synopsis: book.synopsis,
-          author_id: book.author_id
-        }
-      });
-  }
-
 };
 </script>
 
@@ -423,11 +410,12 @@ section {
 #book-container {
   width: 100%;
   position: relative;
-  height: 100vh;
-  padding: 28px 8%;
+  height: 70vh;
+  padding: 20px 7.5%;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-bottom: 0px; /* Diminua a margem inferior */
 }
 
 .book-wrapper {

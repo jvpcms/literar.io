@@ -19,7 +19,7 @@
         </section>
 
         <h2 class="section-subtitle">Reviews</h2>
-            
+
         <section id="review-container">
             <div class="review-wrapper">
                 <div class="review-list">
@@ -112,6 +112,7 @@ export default {
             fetch("http://localhost:8080/books/" + this.book.id + "/reviews")
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 this.reviewList = data;
             }
             )
@@ -127,7 +128,6 @@ export default {
             fetch("http://localhost:8080/authors/" + this.book.authorId)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     this.author = data;
                 }
             )
@@ -148,6 +148,7 @@ export default {
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
             return {
                 id: data.id as string,
                 name: data.name as string
@@ -165,12 +166,10 @@ export default {
             return this.userList.find((user: { id: string; name: string }) => user.id === userId)?.name || '';
         },
         goToProfileView(this: any, userId: string){
-            const name = this.userList.find((user: { id: string; name: string }) => user.id === userId)?.name || '';
             this.$router.push({ 
                 name: 'ProfileView', 
                 query: { 
-                    userId: userId,
-                    name: name
+                    id: userId,
                 } 
             });
         }
@@ -192,7 +191,6 @@ export default {
     gap: 50px;
     justify-content: center;
 }
-
 .image-placeholder {
     width: 400px;
     height: 600px;
@@ -205,7 +203,6 @@ export default {
     margin: 0 auto;
     justify-content: center;
 }
-
 .book-info {
     display: flex;
     flex-direction: column;
@@ -213,28 +210,28 @@ export default {
     text-align: left;
     width: 50%;
 }
-
 .book-title{
     font-size: xx-large;
     margin-bottom: 10px;
     text-decoration: none;
     color: #0d0d0d;
 }
-
 .book-author{
     color: #464646;
     text-decoration: none;
     font-size: larger;
     margin-bottom: 40px;
 }
-
+.book-author:hover{
+    color: #ff7b1d;
+    cursor: pointer;
+}
 .book-info i{
     color:#f6e553;
     margin-bottom: 50px;
     font-size: 30px;
     max-width: 40px;
 }
-
 .book-synopsis{
     font-size: 20px;
     margin-top: 20px;
@@ -245,7 +242,6 @@ export default {
     font-size: 30px;
     margin-bottom: 10px;
 }
-
 .section-subtitle{
     font-size: 50px;
     margin-top: 50px;
@@ -253,7 +249,6 @@ export default {
     color: #0d0d0d;
     text-align: center;
 }
-
 #review-container {
     width: 100%;
     height: 55vh;
@@ -261,13 +256,11 @@ export default {
     align-items: center;
     position: relative;
 }
-
 .review-wrapper {
     position: relative;
     overflow: hidden;
     width: 100%;
 }
-
 .review-list {
     display: flex;
     align-items: center;
@@ -277,7 +270,6 @@ export default {
     transition: all 1s ease-in-out;
     justify-content: center;
 }
-
 .review-card {
     background-color: #ffffff;
     padding: 20px;
@@ -288,16 +280,13 @@ export default {
     min-height: 300px;
     box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
 }
-
 .review-card h3 {
     font-size: 18px;
     text-align: center;
 }
-
 .review-card p{
     padding: 5px;
 }
-
 .reviewer-info {
     display: flex;
     gap: 10px;
@@ -306,7 +295,10 @@ export default {
     color: #0d0d0d;
     text-decoration: none;
 }
-
+.reviewer-info:hover{
+    color: #ff7b1d;
+    cursor: pointer;
+}
 .reviewer-info img {
     object-fit: center;
     overflow: hidden;
@@ -315,19 +307,15 @@ export default {
     background-color: #ffffff;
     border-radius: 50%;
 }
-
-
 .reviewer-info i{
     color:#f6e553;
     font-size: 20px;
 }
-
 .review-text {
     font-size: 20px;
     color: #0d0d0d;
     margin-top: 10px;
 }
-
 .review-btn{
     appearance: none;
     background-color: #0d0d0d;
@@ -354,23 +342,19 @@ export default {
     touch-action: manipulation;
     will-change: transform;
 }
-
 .review-btn:disabled{
     pointer-events: none;
 }
-
 .review-btn:hover{
     color: #0d0d0d;
     background-color: #fff;
     box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
     transform: translateY(-2px);
 }
-
 .review-btn:active{
     box-shadow: none;
     transform: translateY(0);
 }
-
 .arrow_review {
     font-size: 60px;
     position: absolute;
