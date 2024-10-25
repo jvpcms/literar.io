@@ -102,11 +102,14 @@ export default {
                 .then(response => response.json())
                 .then(data => {
                     this.book = data;
+                    this.getBookAuthor();
+                    this.listReviews();
+                    this.getUsersForReviews();
                 }
             )
         },
         listReviews(this: any) {
-            fetch("http://localhost:8080/books/info/" + this.book.id + "/reviews")
+            fetch("http://localhost:8080/books/" + this.book.id + "/reviews")
             .then(response => response.json())
             .then(data => {
                 this.reviewList = data;
@@ -174,10 +177,7 @@ export default {
     },
     created() {
         this.getBook();
-        this.getBookAuthor();
         const accessToken = localStorage.getItem('literarioToken');
-        this.listReviews();
-        this.getUsersForReviews();
     },
 }
 </script>
