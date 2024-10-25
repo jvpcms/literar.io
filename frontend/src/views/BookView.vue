@@ -1,7 +1,7 @@
 <template>
     <main>
         <section id="book-details">
-            <div>
+            <div class="image-box">
                 <a href="" class="image-placeholder"> <img :src="bookImage" alt="Book image placeholder"></a>
             </div>
             <div class="book-info">
@@ -12,9 +12,9 @@
                         <i :class="n <= getAvaregeRating() ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
                     </span>
                     ({{ reviewList.length }}+)
+                    <h1 class>Description:</h1>
+                    <p class="book-synopsis">{{ this.book.synopsis }}</p>
                 </div>
-                    <h1>Description:</h1>
-                    <p>{{ this.book.synopsis }}</p>
             </div>
         </section>
 
@@ -24,7 +24,6 @@
             <div class="review-wrapper">
                 <div class="review-list">
                     <div class="review-card" v-for="review in reviewList" :key="review.id">
-                        <h3>{{ review.title }}</h3>
                         <div class="reviewer-info">
                             <a @click.prevent="goToProfileView(review.user_id)" class="reviewer-info">
                                 <img :src="reviewerImage" alt="Reviewer image">
@@ -42,31 +41,85 @@
     </main>
 </template>
 
-<script lang="js">
+<script lang="ts">
 export default {
-    data() {
+    data(): {
+         book: {
+             id: string; 
+             name: string; 
+             year: string; 
+             synopsis: string; 
+             author_id: string 
+        }; 
+        author: { 
+            id: string; 
+            name: string; 
+            description: string 
+        }; 
+        bookImage: string; 
+        reviewList: Array<{ 
+            id: string; 
+            title: string; 
+            rating: number; 
+            review: string; 
+            user_id: string 
+        }>; 
+        usersList: Array<{ 
+            id: string; 
+            name: string 
+        }>; 
+        reviewerImage: string 
+    } {
         return {
-            book: '',
-            author: '',
+            book: {
+                id: '',
+                name: '',
+                year: '',
+                synopsis: '',
+                author_id: ''
+            },
+            author: {
+                id: '21312321321312',
+                name: 'Gracialiano Ramos',
+                description: 'dsajhdshasdhasahdsdass'
+            },
             bookImage: 'src/images/books.jpg',
-            reviewList: [],
-            usersList: [],
-            reviewerImage: 'src/images/profile.jpg',
+            reviewList: [{
+                id: '98y2398y2uihwdijasid',
+                title: 'Great book!',
+                rating: 5,
+                review: 'This is a great book, I loved it!',
+                user_id: 'e87753e4-90ae-4150-b930-05bc465a317d'
+            }],
+            usersList: [{
+                id: 'e87753e4-90ae-4150-b930-05bc465a317d',
+                name: 'Bruno'
+            }],
+            reviewerImage: 'src/images/avatar-image.avif',
         }
     },
     methods: {
-        getBookFromDom(){
-            const book = this.$route.params.book;
-            if (book) {
-                this.book = book;
-            }
+        getBookFromQuery(){
+            this.book = {
+                id: this.$route.query.id as string || '',
+                name: this.$route.query.name as string || '',
+                year: this.$route.query.year as string || '',
+                synopsis: this.$route.query.synopsis as string || '',
+                author_id: this.$route.query.author_id as string || ''
+            };
+            console.log(this.book);
         },
         listReviews() {
-            fetch("http://localhost:8080/api/books/" + this.book.id + "/reviews")
-                .then(response => response.json())
-                .then(data => {
-                    this.reviewList = data;
+            fetch("http://localhost:8080/books/" + this.book.id + "/reviews", {
+                headers: {
+                    'authentication': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M"
                 }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                this.reviewList = data;
+            }
             )
         },
         getAvaregeRating() {
@@ -77,9 +130,10 @@ export default {
             return sum / this.reviewList.length;
         },
         getBookAuthor(){
-            fetch("http://localhost:8080/api/books/" + this.book.id + "/author")
+            fetch("http://localhost:8080/books/" + this.book.id + "/author")
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     this.author = data;
                 }
             )
@@ -87,29 +141,29 @@ export default {
         goToAuthorView() {
             this.$router.push({ 
                 name: 'AuthorView', 
-                params: { author: this.author } 
+                query: { author: this.author } 
             });
         },
         getUsers(){
-            fetch("http://localhost:8080/api/users")
+            fetch("http://localhost:8080/users")
                 .then(response => response.json())
                 .then(data => {
                     this.usersList = data;
                 }
             )
         },
-        findUserById(user_id){
+        findUserById(user_id: string){
             return this.usersList.find(user => user.id === user_id);
         },
-        goToProfileView(user_id){
+        goToProfileView(user_id: string){
             this.$router.push({ 
                 name: 'ProfileView', 
-                params: { user_id: user_id } 
+                query: { user_id: user_id } 
             });
         }
     },
     created() {
-        this.getBookFromDom();
+        this.getBookFromQuery();
         this.listReviews();
         this.getBookAuthor();
         this.getUsers();
@@ -121,25 +175,32 @@ export default {
 #book-details {
     display: flex;
     width: auto;
+    padding: 28px 8%;
     height: calc(100vh - 90px);
     margin-top: 3%;
     gap: 50px;
+    justify-content: center;
 }
 
 .image-placeholder {
-    width: 300px;
-    height: 440px;
+    width: 400px;
+    height: 600px;
     object-fit: cover;
     background-color: #e0e0e0;
     display: flex;
     overflow: hidden;
     border-radius: 10%;
     box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    justify-content: center;
 }
 
-.book-info{
+.book-info {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 50%;
 }
 
 .book-title{
@@ -153,18 +214,33 @@ export default {
     color: #464646;
     text-decoration: none;
     font-size: larger;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .book-info i{
     color:#f6e553;
     margin-bottom: 50px;
-    font-size: 25px;
+    font-size: 30px;
+    max-width: 40px;
 }
 
-.description h1 {
+.book-synopsis{
     font-size: 20px;
+    margin-top: 20px;
+    color: #0d0d0d;
+}
+.description h1 {
+    color: #0d0d0d;
+    font-size: 30px;
     margin-bottom: 10px;
+}
+
+.section-subtitle{
+    font-size: 50px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    color: #0d0d0d;
+    text-align: center;
 }
 
 #review-container {
@@ -180,7 +256,6 @@ export default {
     overflow: hidden;
     width: 100%;
 }
-
 
 .review-list {
     display: flex;
@@ -219,7 +294,6 @@ export default {
     color: #0d0d0d;
     text-decoration: none;
 }
-
 
 .reviewer-info img {
     object-fit: center;
