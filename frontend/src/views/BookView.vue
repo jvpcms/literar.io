@@ -30,7 +30,7 @@
                                 <p>{{ findUserNameById(review.user_id) }}</p>
                             </a>
                             <span v-for="n in 5" :key="n">
-                            <i :class="n <= review.rating ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
+                            <i :class="n <= review.rate ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
                         </span>
                         </div>
                         <p class="review-text">{{ review.review }}</p>
@@ -60,7 +60,7 @@ export default {
         reviewList: Array<{ 
             id: string; 
             title: string; 
-            rating: number; 
+            rate: number; 
             review: string; 
             user_id: string 
         }>;
@@ -87,7 +87,7 @@ export default {
             reviewList: [{
                 id: '',
                 title: '',
-                rating: 0,
+                rate: 0,
                 review: '',
                 user_id: ''
             }],
@@ -116,14 +116,15 @@ export default {
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 this.reviewList = data;
             }
             )
         },
         getAvaregeRating(this: any) {
             let sum = 0;
-            this.reviewList.forEach((review: { id: string; title: string; rating: number; review: string; user_id: string }) => {
-                sum += review.rating;
+            this.reviewList.forEach((review: { id: string; title: string; rate: number; review: string; user_id: string }) => {
+                sum += review.rate;
             });
             return sum / this.reviewList.length;
         },

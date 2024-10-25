@@ -32,11 +32,15 @@
     </main>
 </template>
 
-<script>
+<script lang="ts">
 export default {
     data() {
         return {
-            author: '',
+            author: {
+                id: '',
+                name: '',
+                description: ''
+            },
             authorImage: 'src/images/author.jpg',
             bookImage: 'src/images/books.jpg',
             bookList: [],
@@ -45,20 +49,20 @@ export default {
     methods: {
         getAuthorFromDom(){
             const author = this.$route.params.author;
-            if (author) {
-                this.author = author;
+            if (typeof author === 'object' && author !== null && 'id' in author && 'name' in author && 'description' in author) {
+                this.author = author as { id: string; name: string; description: string };
             }
         },
         listBooks() {
-            fetch("http://localhost:8080/api/authors/" + this.authorId + "/books")
+            fetch("http://localhost:8080/api/authors/" + this.author.id + "/books")
                 .then(response => response.json())
                 .then(data => {
                     this.bookList = data;
                 })
                 .catch(error => console.error(error));
         },
-        goToBookView(book) {
-            this.$router.push({ name: 'BookView', params: { book: book } });
+        goToBookView(book: { id: string; name: string; synopsis: string }) {
+            this.$router.push({ name: 'BookView', params: { book: JSON.stringify(book) } });
         }
     },
     created() {
@@ -69,6 +73,65 @@ export default {
 </script>
 
 <style>
+ 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+ 
+* {
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+html {
+    scroll-behavior: smooth;
+}
+ 
+body{
+    background-color: #eff0f3;
+}
+section {
+    padding: 28px 8%;
+}
+ 
+footer {
+    background-color:  #c6c6c6;
+}
+ 
+.section-title{
+    color: #ff8e3c;
+    font-size: 1.56rem;
+}
+ 
+.section-subtitle{
+    font-size: 2.8175rem;
+}
+ 
+.input {
+    width: 100%;
+    height: 45px;
+    padding: 12px;
+    margin: 5px;
+    border-radius: 12px;
+    border: 1.5px solid lightgrey;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: 0px 0px 20px -18px;
+  }
+ 
+.input:hover {
+    border: 2px solid lightgrey;
+    box-shadow: 0px 0px 20px -17px;
+}
+ 
+.input:active {
+    transform: scale(0.99);
+}
+ 
+.input:focus {
+    border: 2px solid grey;
+}
+ 
 #author-details {
     display: flex;
     width: auto;
@@ -76,7 +139,7 @@ export default {
     margin-top: 3%;
     gap: 50px;
 }
-
+ 
 .image-placeholder {
     width: 300px;
     height: 440px;
@@ -87,44 +150,49 @@ export default {
     border-radius: 10%;
     box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
 }
-
+ 
 .author-info{
     display: flex;
     flex-direction: column;
 }
-
+ 
 .author-name{
     font-size: xx-large;
     margin-bottom: 60px;
     text-decoration: none;
     color: #0d0d0d;
 }
-
+ 
 .description h1 {
     font-size: 20px;
     margin-bottom: 10px;
+    color: #0d0d0d;
 }
-
+ 
+.description p{
+    color: #0d0d0d;
+}
+ 
 #book-container {
     width: auto;
     height: 100vh;
     margin-top: 3%;
     justify-content: center;
     align-items: center;
-
+ 
 }
-
+ 
 #book-container h1{
     font-size: xx-large;
     text-decoration: none;
     color: #0d0d0d;
 }
-
+ 
 .book-wrapper {
     position: relative;
     overflow: hidden;
 }
-  
+ 
 .book-list {
     display: flex;
     align-items: center;
@@ -132,30 +200,15 @@ export default {
     transform: translateX(0);
     transition: all 1s ease-in-out;
 }
-  
+ 
 .book-card {
     margin-right: 50px;
     position: relative;
     justify-content: center;
     align-items: center;
 }
-  
-.book-card:hover .book-image {
-    transform: scale(1.05);
-    margin: 0 30px;
-    opacity: 0.3;
-}
-  
-.book-card:hover .book-title,
-.book-card:hover .book-desc,
-.book-card:hover .book-button {
-    opacity: 1;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-}
-  
+ 
+ 
 .book-image {
     transition: all 1s ease-in-out;
     width: 270px;
@@ -164,7 +217,7 @@ export default {
     overflow: hidden;
     border-radius: 10%;
   }
-  
+ 
 .book-title {
     background-color: transparent;
     padding: 0 10px;
@@ -176,59 +229,14 @@ export default {
     opacity: 0;
     transition: 1s all ease-in-out;
 }
-  
-.book-desc {
-    background-color: transparent;
-    padding: 10px;
-    font-size: 14px;
-    position: absolute;
-    top: 30%;
-    left: 50px;
-    width: 230px;
-    opacity: 0;
-    transition: 1s all ease-in-out;
-}
-  
-.book-button {
-    padding: 10px;
-    background-color: #ff8e3c;
-    color: white;
-    border-radius: 10px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    bottom: 20px;
-    left: 120px;
-    opacity: 0;
-    transition: 1s all ease-in-out;
-}
-
-.arrow {
-    font-size: 60px;
-    position: absolute;
-    top: 250px;
-    right: 0;
-    color: rgb(61, 61, 61);
-    opacity: 0.5;
-    cursor: pointer;
-}
-
-.arrow.left {
-    left: 50px; /* Posição para a seta da esquerda */
-}
-
-.arrow.right {
-    right: 50px; /* Posição para a seta da direita */
-}
-
+ 
 .container.active {
     background-color: white;
   }
-  
+ 
 .book-title.active {
     color: black;
   }
-
-  
+ 
+ 
 </style>
