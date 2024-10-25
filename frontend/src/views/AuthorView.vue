@@ -62,12 +62,13 @@ export default {
         }
     },
     methods: {
-        getAuthorFromQuery(){
-            this.author = {
-                id: this.$route.query.id as string || '',
-                name: this.$route.query.name as string || '',
-                description: this.$route.query.description as string || '',
-            };
+        getAuthor(){
+            fetch("http://localhost:8080/authors/" + this.$route.query.id)
+                .then(response => response.json())
+                .then(data => {
+                    this.author = data;
+                })
+                .catch(error => console.error(error));
         },
         listBooks() {
             fetch("http://localhost:8080/authors/" + this.author.id + "/books")
@@ -98,7 +99,7 @@ export default {
         }
     },
     created() {
-        this.getAuthorFromQuery();
+        this.getAuthor();
         this.listBooks();
     }
 }

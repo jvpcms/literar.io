@@ -97,17 +97,16 @@ export default {
         }
     },
     methods: {
-        getBookFromQuery(this: any){
-            this.book = {
-                id: this.$route.query.id as string || '',
-                title: this.$route.query.title as string || '',
-                year: this.$route.query.year as string || '',
-                synopsis: this.$route.query.synopsis as string || '',
-                authorId: this.$route.query.authorId as string || ''
-            };
+        getBook(){
+            fetch("http://localhost:8080/books/info/" + this.$route.query.id)
+                .then(response => response.json())
+                .then(data => {
+                    this.book = data;
+                }
+            )
         },
         listReviews(this: any) {
-            fetch("http://localhost:8080/books/" + this.book.id + "/reviews")
+            fetch("http://localhost:8080/books/info/" + this.book.id + "/reviews")
             .then(response => response.json())
             .then(data => {
                 this.reviewList = data;
@@ -125,6 +124,7 @@ export default {
             fetch("http://localhost:8080/authors/" + this.book.authorId)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     this.author = data;
                 }
             )
@@ -134,13 +134,11 @@ export default {
                 name: 'author', 
                 query: { 
                     id: this.author.id,
-                    name: this.author.name,
-                    description: this.author.description 
                 } 
             });
         },
         getUserById(this: any, userId: string){
-            return fetch("http://localhost:8080/users/" + userId, {
+            return fetch("http://localhost:8080/users/info/" + userId, {
             headers: {
                 'authentication': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJibGEiLCJ1c2VyX2lkIjoiZTg3NzUzZTQtOTBhZS00MTUwLWI5MzAtMDViYzQ2NWEzMTdkIiwiaWF0IjoxNzI5ODE4MTA0LCJleHAiOjE3MzA0MjI5MDR9.VgcLkbvyeLToz2tIm50SOBlR2JfHyL1m6MqRkmnxy0M"
             }
@@ -175,7 +173,7 @@ export default {
         }
     },
     created() {
-        this.getBookFromQuery();
+        this.getBook();
         this.getBookAuthor();
         const accessToken = localStorage.getItem('literarioToken');
         this.listReviews();
