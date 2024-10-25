@@ -17,7 +17,7 @@ function handleAuthEvent(authEvent: string) {
   }
 }
 
-const homeButtonClass = ref('nav-item active')
+const homeButtonClass = ref('nav-item')
 const catalogButtonClass = ref('nav-item')
 const reviewsButtonClass = ref('nav-item')
 
@@ -61,9 +61,8 @@ function handleScroll(event: Event) {
       <div class="center-container">
         <ul id="nav_list">
           <li :class="homeButtonClass" id="home" @click="handleScroll">
-            <RouterLink class="btn" to="/">
-              Home
-            </RouterLink>
+            <!-- TODO: usar routerlink! -->
+            <a>Home</a>
           </li>
           <li :class="catalogButtonClass" id="catalog" @click="handleScroll">
             <!-- TODO: usar routerlink! -->
