@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/TesteView.vue'
+import HomeView from '../views/IndexView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,12 +16,12 @@ const router = createRouter({
       // this generates a separate chunk (Login.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       // component: HomeView
-      component: () => import('../views/NewIndexView.vue')
+      component: () => import('../views/LoginView.vue')
     },
     {
       path: '/register',
       name: 'register',
-      component: () => import('../views/IndexView.vue')
+      component: () => import('../views/RegisterView.vue')
     },
     {
       path: '/profile',

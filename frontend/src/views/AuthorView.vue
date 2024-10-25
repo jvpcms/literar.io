@@ -67,8 +67,8 @@ export default {
                 .then(response => response.json())
                 .then(data => {
                     this.author = data;
+                    this.listBooks();
                 })
-                .catch(error => console.error(error));
         },
         listBooks() {
             fetch("http://localhost:8080/authors/" + this.author.id + "/books")
@@ -89,18 +89,12 @@ export default {
             this.$router.push({ 
                 name: 'book', 
                 query: { 
-                    id: book.id,
-                    title: book.title,
-                    year: book.year,
-                    synopsis: book.synopsis,
-                    authorId: book.authorId
-                }
+                    id: book.id,}
             });
         }
     },
     created() {
         this.getAuthor();
-        this.listBooks();
     }
 }
 </script>

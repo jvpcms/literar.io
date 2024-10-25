@@ -166,7 +166,7 @@ export default {
       this.$router.push({
         name: "book",
         query: {
-          id: book.id
+          id : book.id,
         }
       })
     },
@@ -235,7 +235,6 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
   },
-
 };
 </script>
 
@@ -410,12 +409,11 @@ section {
 #book-container {
   width: 100%;
   position: relative;
-  height: 70vh;
-  padding: 20px 7.5%;
+  height: 100vh;
+  padding: 28px 8%;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  margin-bottom: 0px; /* Diminua a margem inferior */
 }
 
 .book-wrapper {
@@ -454,13 +452,6 @@ section {
   height: auto;
   max-height: 157px;
   border-radius: 8px;
-}
-
-.book-image:hover,
-.book-title:hover,
-a:hover {
-  transform: translateY(-2px);
-  cursor: pointer;
 }
 
 .book a {

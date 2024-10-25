@@ -40,11 +40,12 @@ public class UserController {
 
     @GetMapping("/info/{id}")
     public ResponseEntity<UserEntity> getUserInfo(@PathVariable("id") UUID userId) {
+        System.out.println("Recebido UUID: " + userId);
         return userRepo.findById(userId)
             .map(user -> ResponseEntity.ok().body(user))
             .orElse(ResponseEntity.notFound().build());
     }
-
+    
     @GetMapping("/{id}/reviews")
     public ResponseEntity<List<ReviewEntity>> getReviews(@PathVariable("id") UUID userId) {
         return reviewService.getReviewsByUser(userId);
