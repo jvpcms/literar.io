@@ -480,6 +480,13 @@ section {
   border-radius: 8px;
 }
 
+.book-image:hover,
+.book-title:hover,
+a:hover {
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
 .book a {
   text-decoration: none;
   color: #0d0d0d;
