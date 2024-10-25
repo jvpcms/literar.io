@@ -89,6 +89,7 @@ function submitLogin(event: Event) {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 70vh;
 }
 
 .container {
