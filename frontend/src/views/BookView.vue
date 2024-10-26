@@ -171,7 +171,7 @@ export default {
                 name: 'profile',  // Nome da rota correspondente à página TassView
                 path: '/profile',  // Caminho da URL que será usado
                 query: { 
-                    id: userId,     // Envia o ID do usuário como parâmetro na URL
+                    id: userId    // Envia o ID do usuário como parâmetro na URL
                 } 
             });
         }

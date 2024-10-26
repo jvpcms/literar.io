@@ -7,7 +7,7 @@
             <img class="profile-image" :src="reviewerImage" alt="Profile Image" />
           </a>
         </div>
-        <div class="profile-name"><b>{{ user.username }}</b></div>
+        <div v-if="user.username" class="profile-name"><b>{{ user.username }}</b></div>
       </section>
   
       <!-- Exibir reviews -->
@@ -17,13 +17,13 @@
           <div class="book-list">
             <div class="book-card" v-for="review in visibleReviews" :key="review.id">
               <div class="image-container">
-                <img class="book-image" :src="review.book.image" alt="Book Image" />
+                <img class="book-image" src="/images/books.jpg" alt="Book Image" />
                 <div class="book-info">
                   <span class="book-title">{{ review.book.title }}</span>
                   <p class="book-desc">{{ review.text }}</p>
                 </div>
               </div>
-              <a @click.prevent="goToBookView(review.book.id)">
+              <a @click.prevent="goToBookView(review.book.bookId)">
                 <button class="book-button">Read more</button>
               </a>
             </div>
@@ -50,7 +50,9 @@ export default {
         userId: string;
         book: {
             title: string;
-            image: string;
+            bookId: string;
+            authorId: string;
+            synopsis: string;
         };
     }>;
     reviewerImage: string;
@@ -59,9 +61,12 @@ export default {
         text: string;
         book: {
             title: string;
-            image: string;
+            bookId: string;
+            authorId: string;
+            synopsis: string;
         };
     }>;
+    bookImage: string;
     isDataLoaded: boolean;
     visibleCount: number;
 } {
@@ -76,7 +81,9 @@ export default {
             userId: '',
             book: {
                 title: '',
-                image: ''
+                bookId: '',
+                authorId: '',
+                synopsis: '',
             }
         }],
         reviewerImage: 'src/images/avatar-image.avif',
@@ -85,9 +92,12 @@ export default {
             text: '',
             book: {
                 title: '',
-                image: ''
+                bookId: '',
+                authorId: '',
+                synopsis: '',
             }
         }],
+        bookImage: 'src/images/books.jpg',
         isDataLoaded: false,
         visibleCount: 5 // Inicialmente mostra 5 reviews
     };
@@ -101,7 +111,7 @@ export default {
             })
             .then(response => response.json())
             .then(data => {
-                this.user = { id: data.id, username: data.name };
+                this.user = { id: data.id, username: data.username };
                 this.listReviews();
             });
         },
@@ -132,7 +142,10 @@ export default {
                         ...review,
                         book: {
                             title: bookData.title,
-                            image: bookData.image
+                            bookId: bookData.id,
+                            authorId: bookData.authorId,
+                            synopsis: bookData.synopsis,
+                            
                         }
                     };
                 })
@@ -155,9 +168,12 @@ export default {
         
         goToBookView(this: any, bookId: string) {
             this.$router.push({
-                name: 'BookView',
-                query: { id: bookId }
-            });
+                name: 'book',  // Nome da rota correspondente à página TassView
+                path: '/book',  // Caminho da URL que será usado
+                query: { 
+                    id: bookId, 
+            }});
+            
         }
     },
     created() {
@@ -168,7 +184,7 @@ export default {
 
 
 
-  <style scoped>
+  <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
   
   * {

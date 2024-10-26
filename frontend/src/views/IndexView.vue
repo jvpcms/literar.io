@@ -9,9 +9,8 @@
         <div id="cta">
           <h1 class="title">Literar.io</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Est cumque unde ex nulla
-            molestias. In voluptas nihil hic, incidunt expedita atque fuga. Accusamus, sunt dolor
-            facere aliquid velit architecto iure?
+            Descubra novos livros, compartilhe suas leituras e conecte-se com outros apaixonados por literatura. 
+            No Literar.io, cada página vira uma nova experiência!
           </p>
         </div>
         <div id="cta-button">
@@ -452,6 +451,13 @@ section {
   height: auto;
   max-height: 157px;
   border-radius: 8px;
+}
+
+.book-image:hover,
+.book-title:hover,
+a:hover {
+  transform: translateY(-2px);
+  cursor: pointer;
 }
 
 .book a {

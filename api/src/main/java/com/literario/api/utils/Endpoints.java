@@ -15,6 +15,6 @@ public class Endpoints {
     }
 
     public static boolean isUserSpecific(String path) {
-        return path.startsWith("/users");
+        return path.startsWith("/yhjftkfgft");
     }
 }
