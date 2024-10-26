@@ -57,9 +57,9 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 server.port=8080
 ```
-Para inserir os dados de teste para a API, vá até a pasta 'sample_data', acesse os bancos de dados Postgres do docker pelo comando:
-'''
+Para inserir os dados de teste para a API, vá até a pasta `sample_data`, acesse os bancos de dados Postgres do docker pelo comando:
+```
 docker exec -it literario-db-1 psql -U postgres -d master 
-'''
+```
 Depois, insira os dados manualmente utilizando comandos SQL adequados para tanto. Logo após, sinta-se à vontade para testar todos os endpoints de nosso backend e as funcionalidades que já foram adaptadas para o frontend. 
 
