@@ -9,7 +9,7 @@ const loggedIn = ref(false)
 function handleAuthEvent(authEvent: string) {
   if (authEvent === 'login') {
     loggedIn.value = true
-    router.push('/profile')
+    router.push('/')
   }
   else if (authEvent === 'register') {
     loggedIn.value = false
@@ -91,9 +91,11 @@ function handleScroll(event: Event) {
             Register
           </RouterLink>
 
-          <RouterLink class="btn" to="/profile" v-else>
+          <RouterLink class="btn" to="/profile" v-if="loggedIn">
             Profile
           </RouterLink>
+
+
         </nav>
 
       </div>

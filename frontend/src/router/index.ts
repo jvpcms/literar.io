@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '../views/IndexView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +15,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (Login.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
+      // component: HomeView
       component: () => import('../views/LoginView.vue')
     },
     {
@@ -25,18 +26,18 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: () => import('../views/ProfileView.vue')
+      component: () => import('../views/TassView.vue') // Mudo de ProfileView.vue para MyProfile ?
     },
     {
-      path: '/book',
-      name: 'book',
-      component: () => import('../views/BookView.vue')
+    path: '/book',
+    name: 'book',
+    component: () => import('../views/BookView.vue')
     },
     {
-      path: '/author',
-      name: 'author',
-      component: () => import('../views/AuthorView.vue')
-    },
+    path: '/author',
+    name: 'author',
+    component: () => import('../views/AuthorView.vue')
+    }
   ],
   scrollBehavior(to, from, savedPosition) {
     if (to.name === 'book') {

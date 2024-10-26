@@ -7,7 +7,7 @@ public class Endpoints {
     }
 
     public static boolean isPublic(String path) {
-        return path.equals("/") || path.equals("/login") || path.startsWith("/auth") || path.startsWith("/books") || path.startsWith("/authors");
+        return path.equals("/") || path.equals("/login") || path.startsWith("/auth") || path.startsWith("/books") || path.startsWith("/users") || path.startsWith("/authors");
     }
 
     public static boolean isProtected(String path) {
@@ -15,6 +15,6 @@ public class Endpoints {
     }
 
     public static boolean isUserSpecific(String path) {
-        return path.startsWith("/users");
+        return path.startsWith("/yhjftkfgft");
     }
 }

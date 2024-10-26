@@ -25,13 +25,14 @@
                 <div class="review-list">
                     <div class="review-card" v-for="review in reviewList" :key="review.id">
                         <div class="reviewer-info">
+                            <!-- Altere aqui o clique para o redirecionamento correto -->
                             <a @click.prevent="goToProfileView(review.userId)" class="reviewer-info">
                                 <img :src="reviewerImage" alt="Reviewer image">
                                 <p>{{ findUserNameById(review.userId) }}</p>
                             </a>
                             <span v-for="n in 5" :key="n">
-                            <i :class="n <= review.rate ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
-                        </span>
+                                <i :class="n <= review.rate ? 'fa-solid fa-star' : 'fa-regular fa-star'"></i>
+                            </span>
                         </div>
                         <p class="review-text">{{ review.review }}</p>
                     </div>
@@ -45,11 +46,11 @@
 export default {
     data(this: any): {
         book: {
-             id: string; 
-             title: string; 
-             year: string; 
-             synopsis: string; 
-             authorId: string 
+            id: string; 
+            title: string; 
+            year: string; 
+            synopsis: string; 
+            authorId: string 
         }; 
         author: { 
             id: string; 
@@ -149,10 +150,10 @@ export default {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-            return {
-                id: data.id as string,
-                name: data.name as string
-            };
+                return {
+                    id: data.id as string,
+                    name: data.name as string
+                };
             });
         },
         getUsersForReviews(this: any){
@@ -167,9 +168,10 @@ export default {
         },
         goToProfileView(this: any, userId: string){
             this.$router.push({ 
-                name: 'ProfileView', 
+                name: 'profile',  // Nome da rota correspondente à página TassView
+                path: '/profile',  // Caminho da URL que será usado
                 query: { 
-                    id: userId,
+                    id: userId    // Envia o ID do usuário como parâmetro na URL
                 } 
             });
         }
@@ -180,7 +182,6 @@ export default {
     },
 }
 </script>
-
 <style>
 #book-details {
     display: flex;

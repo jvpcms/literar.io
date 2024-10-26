@@ -18,15 +18,18 @@
             <div class="book-wrapper">
                 <div class="book-list">
                     <div class="book-card" v-for="book in bookList" :key="book.id">
-                        <img class="book-image" :src="bookImage" alt="">
-                            <span class="book-title">{{ book.title }}</span>
-                            <p class="book-desc">{{ book.synopsis }}</p>
-                            <a @click.prevent="goToBookView(book)">
-                                <button class="book-button">Read more</button>
-                            </a>
+                        <div class="image-container">
+                            <img class="book-image" :src="bookImage" alt="Book image">
+                            <div class="book-info">
+                                <span class="book-title">{{ book.title }}</span>
+                                <p class="book-desc">{{ book.synopsis }}</p>
+                            </div>
+                        </div>
+                        <a @click.prevent="goToBookView(book)">
+                            <button class="book-button">Read more</button>
+                        </a>
                     </div>
                 </div>
-                <i class="fas fa-chevron-right arrow"></i>
             </div>
         </section>
     </main>
@@ -89,7 +92,7 @@ export default {
             this.$router.push({ 
                 name: 'book', 
                 query: { 
-                    id: book.id,}
+                    id: book.id }
             });
         }
     },
@@ -100,65 +103,27 @@ export default {
 </script>
 
 <style>
- 
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
- 
+
 * {
     font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
- 
+
 html {
     scroll-behavior: smooth;
 }
- 
+
 body{
     background-color: #eff0f3;
 }
+
 section {
     padding: 28px 8%;
 }
- 
-footer {
-    background-color:  #c6c6c6;
-}
- 
-.section-title{
-    color: #ff8e3c;
-    font-size: 1.56rem;
-}
- 
-.section-subtitle{
-    font-size: 2.8175rem;
-}
- 
-.input {
-    width: 100%;
-    height: 45px;
-    padding: 12px;
-    margin: 5px;
-    border-radius: 12px;
-    border: 1.5px solid lightgrey;
-    outline: none;
-    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-    box-shadow: 0px 0px 20px -18px;
-  }
- 
-.input:hover {
-    border: 2px solid lightgrey;
-    box-shadow: 0px 0px 20px -17px;
-}
- 
-.input:active {
-    transform: scale(0.99);
-}
- 
-.input:focus {
-    border: 2px solid grey;
-}
- 
+
 #author-details {
     display: flex;
     width: auto;
@@ -166,7 +131,7 @@ footer {
     margin-top: 3%;
     gap: 50px;
 }
- 
+
 .image-placeholder {
     width: 300px;
     height: 440px;
@@ -177,93 +142,131 @@ footer {
     border-radius: 10%;
     box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.1);
 }
- 
-.author-info{
+
+.author-info {
     display: flex;
     flex-direction: column;
 }
- 
-.author-name{
+
+.author-name {
     font-size: xx-large;
     margin-bottom: 60px;
     text-decoration: none;
     color: #0d0d0d;
 }
- 
+
 .description h1 {
     font-size: 20px;
     margin-bottom: 10px;
     color: #0d0d0d;
 }
- 
-.description p{
+
+.description p {
     color: #0d0d0d;
 }
- 
+
 #book-container {
     width: auto;
-    height: 100vh;
     margin-top: 3%;
     justify-content: center;
     align-items: center;
- 
 }
- 
-#book-container h1{
+
+#book-container h1 {
     font-size: xx-large;
-    text-decoration: none;
     color: #0d0d0d;
+    margin-bottom: 40px;
 }
- 
+
 .book-wrapper {
     position: relative;
     overflow: hidden;
 }
- 
+
 .book-list {
     display: flex;
-    align-items: center;
-    height: 600px;
-    transform: translateX(0);
-    transition: all 1s ease-in-out;
+    gap: 40px; /* Aumenta o espaçamento entre os cards */
 }
- 
+
 .book-card {
-    margin-right: 50px;
     position: relative;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
 }
- 
- 
-.book-image {
-    transition: all 1s ease-in-out;
+
+.image-container {
+    position: relative;
     width: 270px;
     height: 400px;
-    object-fit: cover;
     overflow: hidden;
     border-radius: 10%;
-  }
- 
-.book-title {
-    background-color: transparent;
-    padding: 0 10px;
-    font-size: 32px;
-    font-weight: bold;
-    position: absolute;
-    top: 10%;
-    left: 50px;
-    opacity: 0;
-    transition: 1s all ease-in-out;
+    margin-bottom: 20px; /* Adiciona espaço entre a imagem e o botão */
 }
- 
-.container.active {
-    background-color: white;
-  }
- 
-.book-title.active {
-    color: black;
-  }
- 
- 
+
+.book-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.book-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.image-container:hover .book-info {
+    opacity: 1;
+}
+
+.book-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.book-desc {
+    font-size: 14px;
+    line-height: 1.3;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+}
+
+.book-button {
+    width: 100%;
+    padding: 8px 16px;
+    background-color: #0d0d0d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.book-button:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.book-button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
 </style>

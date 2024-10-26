@@ -33,6 +33,15 @@ public class BookController {
         return ResponseEntity.ok(bookRepo.findAll());
     }
 
+    @GetMapping("/info/{id}")
+    public ResponseEntity<BookEntity> getBookById(@PathVariable("id") UUID bookId) {
+        Optional<BookEntity> book = bookRepo.findBookById(bookId);
+        if (book.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(book.get());
+    }
+
     @GetMapping("/{year}")
     public String getBooksByYear(@PathVariable Integer year) {
         return bookRepo.findBooksByYear(year).toString();

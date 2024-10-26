@@ -9,10 +9,12 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "postinstall": "npm install scrollreveal"
   },
   "dependencies": {
-    "vue": "^3.5.11",
+    "scrollreveal": "^4.0.9",
+    "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
