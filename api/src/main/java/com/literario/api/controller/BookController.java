@@ -47,14 +47,14 @@ public class BookController {
         return bookRepo.findBooksByYear(year).toString();
     }
 
-    @GetMapping("/info/{id}")
-    public ResponseEntity<BookEntity> getBookById(@PathVariable("id") UUID bookId) {
-        Optional<BookEntity> book = bookRepo.findBookById(bookId);
-        if (book.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(book.get());
-    }
+    // @GetMapping("/info/{id}")
+    // public ResponseEntity<BookEntity> getBookById(@PathVariable("id") UUID bookId) {
+    //     Optional<BookEntity> book = bookRepo.findBookById(bookId);
+    //     if (book.isEmpty()) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     return ResponseEntity.ok(book.get());
+    // }
 
     @GetMapping("/{id}/reviews")
     public ResponseEntity<List<ReviewEntity>> getReviews(@PathVariable("id") UUID bookId) {
