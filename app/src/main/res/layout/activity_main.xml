@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Campo para a nota -->
+    <EditText
+        android:id="@+id/etRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nota (1-5)"
+        android:inputType="number"/>
+
+    <!-- Campo para a review -->
+    <EditText
+        android:id="@+id/etReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Sua review"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:maxLines="5"
+        android:gravity="top|start"/>
+
+    <!-- Botão para enviar a review -->
+    <Button
+        android:id="@+id/btnSubmitReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enviar Review"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
