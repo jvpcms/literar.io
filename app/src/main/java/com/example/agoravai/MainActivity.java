@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
 
     private EditText etReview;
-    private EditText etRating;
+    private RatingBar etRating;
     private Button btnSubmitReview;
 
     private RetrofitService retrofitService;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Inicializando os componentes da interface
         etReview = findViewById(R.id.etReview);
-        etRating = findViewById(R.id.etRating);
+        etRating = findViewById(R.id.etRating);  // Alterado para RatingBar
         btnSubmitReview = findViewById(R.id.btnSubmitReview);
 
         // Inicializando o RetrofitService
@@ -39,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Pegando os valores do usuário
                 String review = etReview.getText().toString();
-                String ratingText = etRating.getText().toString();
+                float ratingValue = etRating.getRating();  // Obtenha o valor da RatingBar
 
-                if (review.isEmpty() || ratingText.isEmpty()) {
+                if (review.isEmpty() || ratingValue == 0) {
                     Toast.makeText(MainActivity.this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Convertendo a nota para inteiro
-                int rate = Integer.parseInt(ratingText);
+                // Convertendo a nota para Integer
+                Integer rate = Integer.valueOf((int) ratingValue);
 
                 // Usando um ID de usuário e livro de exemplo (substitua conforme necessário)
                 UUID userId = UUID.fromString("7b10a04e-0987-4fdd-a6e9-0f342915fcf1");  // ID do usuário

@@ -26,7 +26,7 @@ public class RetrofitService {
 
     private void initializeRetrofit() {
         // Substitua pelo token real
-        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnYWJyaWVsIiwidXNlcl9pZCI6IjdiMTBhMDRlLTA5ODctNGZkZC1hNmU5LTBmMzQyOTE1ZmNmMSIsImlhdCI6MTczMTE3OTEwMSwiZXhwIjoxNzMxNzgzOTAxfQ.TLGM9U7Cmhx_ZJoVe6K4DUR0UyroEtBCRF3p7__bsAQ";
+        String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJnYWJyaWVsIiwidXNlcl9pZCI6IjdiMTBhMDRlLTA5ODctNGZkZC1hNmU5LTBmMzQyOTE1ZmNmMSIsImlhdCI6MTczMTI4ODAyNiwiZXhwIjoxNzMxODkyODI2fQ.x0Cl4pKNZ7xPomWPKFK0g1xnAhdrTL7Nnt2Qv2tEwd8";
 
         // Interceptor para adicionar o token ao cabeçalho "authentication" sem o prefixo "Bearer "
         OkHttpClient client = new OkHttpClient.Builder()
