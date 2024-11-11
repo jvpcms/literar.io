@@ -1,4 +1,4 @@
-Esta branch corresponde à adaptação de um método ***POST*** para um aplicativo android, contendo um design relativamente simples. 
+Esta branch corresponde à adaptação de um método ***POST*** para um aplicativo android, mais especificamente, do endpoint ``/reviews/post`` de nossa API, contendo um design relativamente simples. Esse método equivale à criação de uma review por um usuário de nossa rede social de livros.
 Para a integração com a API feita em Java e SpringBoot, foi usado o [*Retrofit*](https://square.github.io/retrofit/) uma API de conexão HTTP para Android.
 A página representada nessa branch já leva em conta que o usuário está logado no app, isto é, não há um acesso prévio a uma página de login.
 Assim, foi adaptado de nossa API a postagem de uma review por um usuário.
