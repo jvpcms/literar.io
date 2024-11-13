@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Agoravai</string>
+    <string name="login">Login</string>
+    <string name="books">Books</string>
 </resources>

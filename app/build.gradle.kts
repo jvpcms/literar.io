@@ -49,6 +49,8 @@ dependencies {
     // Gson
     implementation(libs.gson)  // Dependência do Gson
 
-    implementation("com.squareup.okhttp3:okhttp:4.10.0") // Biblioteca principal do OkHttp
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation(libs.okhttp) // Biblioteca principal do OkHttp
+    implementation(libs.logging.interceptor)
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+
 }
