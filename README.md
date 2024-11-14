@@ -64,4 +64,4 @@ docker exec -it literario-db-1 psql -U postgres -d master
 ```
 Depois, insira os dados manualmente utilizando comandos SQL adequados para tanto. Logo após, sinta-se à vontade para testar todos os endpoints de nosso backend e as funcionalidades que já foram adaptadas para o frontend. 
 
-Para detalhes sobre o App Android, cheque a branch [tentativa-integrada](https://github.com/jvpcms/literar.io/tree/tentativa-integrada)
+Para detalhes sobre o App Android, cheque a branch [tentativa-integrada](https://github.com/jvpcms/literar.io/tree/tentativa-integrada).
