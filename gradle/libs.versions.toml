@@ -3,6 +3,8 @@ agp = "8.6.0"
 gson = "2.10.1"
 javaJwt = "3.18.2"
 jjwt = "0.11.5"
+jjwtApi = "0.12.6"
+jjwtImpl = "0.12.6"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -18,6 +20,9 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 java-jwt = { module = "com.auth0:java-jwt", version.ref = "javaJwt" }
 jjwt = { module = "io.jsonwebtoken:jjwt", version.ref = "jjwt" }
+jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+jjwt-api-v0126 = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwtApi" }
+jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwtImpl" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

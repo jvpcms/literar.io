@@ -1,11 +1,11 @@
 package com.example.agoravai.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.agoravai.R;
 import com.example.agoravai.models.BookEntity;
 import com.example.agoravai.services.RetrofitService;
@@ -17,28 +17,26 @@ import java.util.List;
 
 public class BookActivity extends AppCompatActivity {
 
-    private TextView bookTitle;
-    private TextView bookDescription;
+    private RecyclerView recyclerView;
+    private TextView headerText;
     private RetrofitService retrofitService;
-    private String bookId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_book);
+        setContentView(R.layout.activity_books);
 
-        bookTitle = findViewById(R.id.bookTitle);
-        bookDescription = findViewById(R.id.bookSynopsis);
+        recyclerView = findViewById(R.id.recyclerViewBooks);
+        headerText = findViewById(R.id.headerText);
 
-        // Obtendo o ID do livro passado pela BookAdapter
-        Intent intent = getIntent();
-        bookId = intent.getStringExtra("bookId");
+        // Configurando o texto no topo da página
+        headerText.setText("Clique no livro para fazer a review");
 
+        // Inicializando Retrofit
         retrofitService = new RetrofitService(this);
 
-        if (bookId != null) {
-            fetchBooks();
-        }
+        // Buscando livros
+        fetchBooks();
     }
 
     private void fetchBooks() {
@@ -47,26 +45,22 @@ public class BookActivity extends AppCompatActivity {
             public void onResponse(Call<List<BookEntity>> call, Response<List<BookEntity>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<BookEntity> books = response.body();
-                    // Filtrando o livro com base no ID recebido
-                    for (BookEntity book : books) {
-                        if (book.getId().toString().equals(bookId)) {
-                            bookTitle.setText(book.getTitle());
-                            bookDescription.setText(book.getSynopsis());
-                            return;
-                        }
-                    }
-                    Toast.makeText(BookActivity.this, "Livro não encontrado.", Toast.LENGTH_SHORT).show();
+                    setupRecyclerView(books);
                 } else {
-                    Log.e("BookActivity", "Erro ao obter os livros.");
-                    Toast.makeText(BookActivity.this, "Erro ao obter os livros.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BookActivity.this, "Erro ao carregar livros.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<BookEntity>> call, Throwable t) {
-                Log.e("BookActivity", "Falha na requisição: " + t.getMessage());
                 Toast.makeText(BookActivity.this, "Falha na requisição: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void setupRecyclerView(List<BookEntity> books) {
+        BookAdapter bookAdapter = new BookAdapter(this, books);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(bookAdapter);
     }
 }

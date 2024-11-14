@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.agoravai.MainActivity;
 import com.example.agoravai.R;
 import com.example.agoravai.models.BookEntity;
@@ -44,25 +43,25 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public class BookViewHolder extends RecyclerView.ViewHolder {
 
         TextView bookTitle;
-        TextView bookSynopsis; // Adicionando a sinopse
+        TextView bookSynopsis;
 
         public BookViewHolder(View itemView) {
             super(itemView);
             bookTitle = itemView.findViewById(R.id.bookTitle);
-            bookSynopsis = itemView.findViewById(R.id.bookSynopsis);  // Sinopse
+            bookSynopsis = itemView.findViewById(R.id.bookSynopsis);
         }
 
         public void bind(final BookEntity book) {
             bookTitle.setText(book.getTitle());
-            bookSynopsis.setText(book.getSynopsis());  // Configurando a sinopse
+            bookSynopsis.setText(book.getSynopsis());
 
-            // Configurando o clique no título do livro
+            // Configurando o clique no livro
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Abrir a Activity de detalhes do livro para postar uma review
-                    Intent intent = new Intent(context, MainActivity.class);  // Aqui, você redireciona para a página de postagem de review
-                    intent.putExtra("bookId", book.getId().toString());  // Passa o ID do livro
+                    // Redirecionando para a página de review (MainActivity)
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.putExtra("bookId", book.getId().toString());
                     context.startActivity(intent);
                 }
             });

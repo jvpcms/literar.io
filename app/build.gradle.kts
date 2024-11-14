@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -51,6 +50,13 @@ dependencies {
 
     implementation(libs.okhttp) // Biblioteca principal do OkHttp
     implementation(libs.logging.interceptor)
+
+    // JJWT API
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 
+    // JJWT Impl
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+
+    // JJWT Gson (adicionando o Gson para deserialização)
+    implementation("io.jsonwebtoken:jjwt-gson:0.11.5")
 }

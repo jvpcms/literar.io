@@ -3,6 +3,7 @@ package com.example.agoravai;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.agoravai.services.RetrofitService;
 
+import java.security.Key;
+import java.security.SignatureException;
 import java.util.UUID;
+
+import java.util.Base64;
+import java.security.Key;
+
+import javax.crypto.spec.SecretKeySpec;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String bookIdString = intent.getStringExtra("bookId");
         if (bookIdString != null) {
-            bookId = UUID.fromString(bookIdString);  // Agora você tem o ID do livro
+            bookId = UUID.fromString(bookIdString); // Agora você tem o ID do livro
         }
 
         // Configurando o botão para enviar a review
@@ -53,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Pegando os valores do usuário
                 String review = etReview.getText().toString();
-                float ratingValue = etRating.getRating();  // Obtenha o valor da RatingBar
+                float ratingValue = etRating.getRating(); // Obtenha o valor da RatingBar
 
                 if (!isValidReview(review)) {
                     Toast.makeText(MainActivity.this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
@@ -64,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
                 Integer rate = (int) ratingValue;
 
                 // Obtendo o token de autenticação do SharedPreferences
-                SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                 String token = sharedPreferences.getString("auth_token", null);
 
                 if (token != null) {
-                    UUID userId = getUserIdFromToken(token);  // Extrai o userId do token
+                    UUID userId = getUserIdFromToken(token); // Extrai o userId do token
 
                     if (userId != null) {
                         // Enviando a review via Retrofit
@@ -86,21 +95,44 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private UUID getUserIdFromToken(String token) {
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey("1234")  // A chave secreta usada para gerar o token (deve ser a mesma usada no backend)
-                    .parseClaimsJws(token)
-                    .getBody();
 
-            return UUID.fromString(claims.get("user_id", String.class));  // Obtém o user_id do payload do token
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     private boolean isValidReview(String review) {
         return !review.isEmpty();
     }
+
+    private UUID getUserIdFromToken(String token) {
+        try {
+            // Sua chave secreta longa em formato String (garanta que seja a mesma no backend)
+            String secretKey = "c9b7ea623c10d528b07de40fc8e076f464d050811b4b37c8fd0a21fc9f3615d2112f4d78f7fa36e94d54ddfa6b389b9f67a40e052ea40109e3938ce47a893a58f09658d51df45e04ed32cac08734814e85d2aeb0e13603f9c636b901f96f739155ededb180e801df2247b75ddbf8c6e23c00edf749d760f094cf1a13e496ab8409cca04adb0d76dcb8d227a6b42fafaa6976172a5ddf65a0eb1bc190df78af8a8850f4f3a2b36af19507d2dd63a733d0e89f0750cabb9f56e635662f62edbf94bca1e2b1b4ac9c0ed06f139c29b41bce48b4178273b9b1f42502edc573536a7e8a8b3eb41ced908b6ae765dbd7e33c000a58a99689b378c14c86519b67b1a189";
+
+            // Criando a chave de assinatura (signingKey) a partir da chave secreta usando o algoritmo HS256
+            byte[] secretKeyBytes = null;  // Decodificando a chave, se necessário
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                secretKeyBytes = Base64.getDecoder().decode(secretKey);
+            }
+            Key signingKey = new SecretKeySpec(secretKeyBytes, "HmacSHA256");  // Usando o algoritmo HMAC-SHA256
+
+            // Verificando o token antes de extrair as claims
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(signingKey)  // Definindo a chave de assinatura
+                    .build()
+                    .parseClaimsJws(token)     // Parseando o token JWT
+                    .getBody();                // Obtendo o corpo do JWT (as claims)
+
+            // Obtendo o user_id como string do payload
+            String userIdString = claims.get("user_id", String.class);
+
+            // Verificando se o user_id é válido e tentando converter para UUID
+            if (userIdString != null && !userIdString.isEmpty()) {
+                return UUID.fromString(userIdString); // Convertendo a string para UUID
+            } else {
+                throw new IllegalArgumentException("user_id não encontrado ou inválido no token");
+            }
+        } catch (Exception e) {
+            Log.e("JWT", "Erro ao extrair user_id do token: " + e.getMessage());
+        }
+        return null;
+    }
 }
+

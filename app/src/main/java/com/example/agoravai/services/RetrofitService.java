@@ -81,10 +81,10 @@ public class RetrofitService {
     }
 
     // Método para realizar login
+    // Salvando o token em SharedPreferences após o login
     public void loginUser(NotAuthedUserEntity notAuthedUser, final LoginCallback callback, Context context) {
         LiterarioAPI api = getLiterarioAPI();
 
-        // Chamando o método loginUser da interface LiterarioAPI, que retorna um Call<LoginResponse>
         Call<LoginResponse> call = api.loginUser(notAuthedUser);
 
         call.enqueue(new Callback<LoginResponse>() {
@@ -93,18 +93,21 @@ public class RetrofitService {
                 if (response.isSuccessful()) {
                     LoginResponse loginResponse = response.body();
                     if (loginResponse != null && loginResponse.getToken() != null) {
-                        // Salve o token no SharedPreferences
+                        // Salve o token no SharedPreferences com commit síncrono
                         SharedPreferences sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("auth_token", loginResponse.getToken());  // Armazenando o token
-                        editor.apply();  // salva de forma assíncrona
+                        editor.putString("auth_token", loginResponse.getToken());
+                        boolean saved = editor.commit(); // Sincroniza para garantir que o token seja salvo antes de acessar outra Activity
 
-                        // Exibe o token no Logcat para depuração
-                        Log.d("LoginActivity", "Token de login: " + loginResponse.getToken());
-
-                        // Redireciona para a BooksActivity
-                        Intent intent = new Intent(context, BookActivity.class);
-                        context.startActivity(intent);
+                        if (saved) {
+                            Log.d("LoginActivity", "Token salvo: " + loginResponse.getToken());
+                            // Redireciona para a BooksActivity
+                            Intent intent = new Intent(context, BookActivity.class);
+                            context.startActivity(intent);
+                        } else {
+                            Log.e("LoginActivity", "Falha ao salvar o token.");
+                            callback.onFailure("Falha ao salvar o token.");
+                        }
                     } else {
                         callback.onFailure("Token não encontrado na resposta");
                     }
@@ -119,6 +122,7 @@ public class RetrofitService {
             }
         });
     }
+
 
     // Método para enviar review
     public void postReview(UUID userId, UUID bookId, Integer rate, String reviewText, Context context) {
