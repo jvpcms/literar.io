@@ -48,7 +48,7 @@ A assinatura do token é baseada na chave e no algoritmo HS256 (HMAC-SHA256). Qu
 
 Por isso, certifique-se de sincronizar as configurações do backend com o app.
 
-No backend, a chave geralmente é definida no arquivo `.env`, já no app, ela é definida na classe [MainCActivity.java](app/src/main/java/com/example/agoravai/MainActivity.java), no seu método `getUserIdFromToken(String token)`.
+No backend, a chave geralmente é definida no arquivo `.env`, já no app, ela é definida na classe [MainActivity.java](app/src/main/java/com/example/agoravai/MainActivity.java), no seu método `getUserIdFromToken(String token)`.
 
 ## Fluxo de Navegação
 
