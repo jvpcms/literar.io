@@ -54,7 +54,7 @@ No backend, a chave geralmente é definida no arquivo `.env`, já no app, ela é
 
 1. **Login**: O usuário acessa a página de login e insere suas credenciais. Após autenticação, o token JWT é armazenado e o usuário é redirecionado para a listagem de livros.
 2. **Listagem de Livros**: O usuário visualiza os livros disponíveis e pode selecionar um para criar uma review.
-3. **Postagem de Reviews**: O usuário acessa a página de criação de reviews, preenche sua avaliação e a envia. Após a postagem bem-sucedida, o app pode redirecionar para a listagem de livros ou exibir uma mensagem de sucesso.
+3. **Postagem de Reviews**: O usuário acessa a página de criação de reviews, preenche sua avaliação e a envia. Após a postagem bem-sucedida, o app exibe uma mensagem de sucesso.
 
 ## Conclusão
 
