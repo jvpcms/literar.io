@@ -1,20 +1,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#F9F9F9"
+    android:padding="16dp">
 
+    <!-- Header TextView -->
     <TextView
         android:id="@+id/headerText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textSize="18sp"
+        android:layout_marginBottom="12dp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:text="Clique no livro para fazer a review" />
+        android:gravity="center"
+        android:text="Clique no livro para fazer a review"
+        android:textColor="#333333"
+        android:background="#FFFFFF"
+        android:padding="12dp"
+        android:elevation="4dp"
+        android:shadowColor="#000000"
+        android:shadowRadius="4" />
 
+    <!-- RecyclerView for Book List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBooks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="4dp" />
 </LinearLayout>

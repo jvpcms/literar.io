@@ -2,25 +2,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F9F9F9">
 
+    <!-- Username Input -->
     <EditText
         android:id="@+id/editTextUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username"
-        android:inputType="text" />
+        android:inputType="text"
+        android:padding="12dp"
+        android:layout_marginBottom="12dp"
+        android:textColor="#333333"
+        android:textSize="16sp" />
 
+    <!-- Password Input -->
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:textColor="#333333"
+        android:textSize="16sp" />
 
+    <!-- Login Button -->
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:text="Login"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:elevation="4dp"
+        android:padding="12dp" />
 </LinearLayout>
