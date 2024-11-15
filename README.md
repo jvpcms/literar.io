@@ -27,7 +27,9 @@ O projeto está dividido em tres partes principais:
 
 1. **API Backend**: Desenvolvida em Java utilizando Spring Boot, a API será responsável por gerenciar todas as operações de backend, incluindo autenticação, gerenciamento de usuários, livros, resenhas, entre outros.
 
-2. **Frontend**: Desenvolvido utilizando Vue.js, o frontend é responsável por fornecer uma interface interativa e amigável para os usuários. Ele se comunica com a API backend para exibir e manipular dados em tempo real. Para hospedar a interface, foi configurado o servidor web Nginx, garantindo alta performance e confiabilidade na entrega de conteúdo estático.
+2. **Frontend**: Desenvolvido utilizando Vue.js, o frontend é responsável por fornecer uma interface interativa e amigável para os usuários. Ele se comunica com a API backend para exibir e manipular dados em tempo real.
+   
+3. **App Android**: Desenvolvido utilizando o AndroidStudio e faz uso da biblioteca Retrofit. Ele também se comunica com a API backend adaptando alguns de seus métodos, fazendo a manipulação de dados em tempo real.
 
 ## Setup
 
@@ -62,6 +64,6 @@ Para inserir os dados de teste para a API, vá até a pasta `sample_data`, acess
 ```
 docker exec -it literario-db-1 psql -U postgres -d master 
 ```
-Depois, insira os dados manualmente utilizando comandos SQL adequados para tanto. Logo após, sinta-se à vontade para testar todos os endpoints de nosso backend e as funcionalidades que já foram adaptadas para o frontend. 
+Depois, insira os dados manualmente utilizando comandos SQL adequados para tanto. Logo após, sinta-se à vontade para testar todos os endpoints de nosso backend e as funcionalidades que já foram adaptadas para o frontend e para o App Android.
 
 Para detalhes sobre o App Android, cheque a branch [tentativa-integrada](https://github.com/jvpcms/literar.io/tree/tentativa-integrada).
