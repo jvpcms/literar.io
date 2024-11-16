@@ -12,8 +12,7 @@ import retrofit2.http.POST;
 import retrofit2.http.GET;
 
 public interface LiterarioAPI {
-    // Método POST para enviar uma nova review
-    @POST("/reviews/post")  // URL correspondente ao endpoint da sua API
+    @POST("/reviews/post")  
     Call<ReviewEntity> createReview(@Body ReviewRequestDTO reviewRequest);
     @POST("/auth/login")
     Call<LoginResponse> loginUser(@Body NotAuthedUserEntity notAuthedUser);
